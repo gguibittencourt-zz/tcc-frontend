@@ -10,12 +10,20 @@ module.exports = {
 	entry: [
 		'./src/main.ts'
 	],
+	output: {
+		filename: "bundle.js",
+		path: path.resolve(__dirname, 'dist')
+	},
 	module: {
 		rules: [
 			{
 				test: /\.ts$/,
 				use: ['ts-loader', 'angular2-template-loader'],
 				exclude: /node_modules/
+			},
+			{
+				test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
+				parser: {system: true},
 			},
 			{
 				test: /\.html$/,
@@ -48,7 +56,12 @@ module.exports = {
 		extensions: ['.ts', '.js', '.scss']
 	},
 	plugins: [
-		new CleanWebpackPlugin('build'),
+		new CleanWebpackPlugin('dist'),
+		new webpack.ContextReplacementPlugin(
+			/angular([\\/])core/,
+			path.resolve(__dirname, 'src'),
+			{}
+		),
 		new HtmlWebpackPlugin({
 			template: './src/index.html',
 			filename: 'index.html',
@@ -73,29 +86,38 @@ module.exports = {
 			cacheGroups: {
 				commons: {
 					chunks: "initial",
-					minChunks: 3,
-					name: "commons",
-					enforce: true
+					minChunks:
+						3,
+					name:
+						"commons",
+					enforce:
+						true
 				}
 			}
-		},
+		}
+		,
 		runtimeChunk: true,
-		minimizer: [
-			new UglifyJsPlugin({
-				cache: true,
-				parallel: true,
-				uglifyOptions: {
-					compress: false,
-					ecma: 6,
-					mangle: true
-				},
-				sourceMap: true
-			})
-		]
-	},
+		minimizer:
+			[
+				new UglifyJsPlugin({
+					cache: true,
+					parallel: true,
+					uglifyOptions: {
+						compress: false,
+						ecma: 6,
+						mangle: true
+					},
+					sourceMap: true
+				})
+			]
+	}
+	,
 	devServer: {
 		port: 3000,
-		contentBase: './src/',
-		historyApiFallback: true
+		contentBase:
+			'./src/',
+		historyApiFallback:
+			true
 	}
-};
+}
+;
