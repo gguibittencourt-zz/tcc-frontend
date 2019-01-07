@@ -14,6 +14,7 @@ module.exports = {
 		filename: "bundle.js",
 		path: path.resolve(__dirname, 'dist')
 	},
+	devtool: 'inline-source-map',
 	module: {
 		rules: [
 			{
@@ -70,7 +71,7 @@ module.exports = {
 		new webpack.DefinePlugin({
 			// global app config object
 			config: JSON.stringify({
-				apiUrl: 'http://localhost:4000'
+				apiUrl: 'http://localhost:8080/rest'
 			})
 		}),
 		new webpack.ProvidePlugin({
