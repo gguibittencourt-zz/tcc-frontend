@@ -14,20 +14,26 @@ import { AlertService, AuthenticationService, UserService } from './_services';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
+import {NavbarComponent} from "./navbar";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {CustomMaterialModule} from "./material/material.module";
 
 @NgModule({
     imports: [
         BrowserModule,
         ReactiveFormsModule,
         HttpClientModule,
-        routing
+        routing,
+		BrowserAnimationsModule,
+		CustomMaterialModule
     ],
     declarations: [
         AppComponent,
         AlertComponent,
         HomeComponent,
         LoginComponent,
-        RegisterComponent
+        RegisterComponent,
+		NavbarComponent
     ],
     providers: [
 		{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

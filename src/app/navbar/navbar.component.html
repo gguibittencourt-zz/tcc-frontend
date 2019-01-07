@@ -1,0 +1,21 @@
+﻿<div *ngIf="isLoggedIn$ | async as isLoggedIn">
+	<mat-toolbar>
+		<mat-toolbar-row>
+			<button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" color="primary">
+				<mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+			</button>
+			<button mat-button (click)="onLogout()" *ngIf="isLoggedIn">Logout</button>
+
+		</mat-toolbar-row>
+	</mat-toolbar>
+	<mat-sidenav-container class="example-container">
+		<mat-sidenav #drawer mode="side" opened role="navigation">
+			<mat-nav-list>
+			</mat-nav-list>
+		</mat-sidenav>
+		<mat-sidenav-content>
+			<alert></alert>
+			<router-outlet></router-outlet>
+		</mat-sidenav-content>
+	</mat-sidenav-container>
+</div>
