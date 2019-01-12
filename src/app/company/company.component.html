@@ -1,0 +1,41 @@
+﻿<h2>Company</h2>
+<form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+	<div class="form-group">
+		<mat-form-field class="full-width-input">
+			<input matInput formControlName="name" class="form-control" placeholder="Name"
+				   [ngClass]="{ 'is-invalid': submitted && f.name.errors }"/>
+		</mat-form-field>
+		<div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+			<div *ngIf="f.name.errors.required">Name is required</div>
+		</div>
+
+		<mat-form-field class="full-width-input">
+			<input matInput type="number" formControlName="contributors" class="form-control" placeholder="Contributors"
+				   [ngClass]="{ 'is-invalid': submitted && f.contributors.errors }"/>
+		</mat-form-field>
+		<div *ngIf="submitted && f.contributors.errors" class="invalid-feedback">
+			<div *ngIf="f.contributors.errors.required">Contributors is required</div>
+		</div>
+
+		<mat-form-field class="full-width-input">
+			<input matInput type="number" formControlName="projects" class="form-control" placeholder="Projects"
+				   [ngClass]="{ 'is-invalid': submitted && f.projects.errors }"/>
+		</mat-form-field>
+		<div *ngIf="submitted && f.projects.errors" class="invalid-feedback">
+			<div *ngIf="f.projects.errors.required">Projects is required</div>
+		</div>
+
+		<mat-form-field class="full-width-input">
+			<input matInput placeholder="Occupation Area" formControlName="occupationArea"
+				   [ngClass]="{ 'is-invalid': submitted && f.occupationArea.errors }">
+		</mat-form-field>
+		<div *ngIf="submitted && f.occupationArea.errors" class="invalid-feedback">
+			<div *ngIf="f.occupationArea.errors.required">Occupation area is required</div>
+		</div>
+	</div>
+    <div class="form-group">
+        <button mat-raised-button [disabled]="loading" class="btn btn-primary">Save</button>
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        <a [routerLink]="['/home']" class="btn btn-link">Cancel</a>
+    </div>
+</form>

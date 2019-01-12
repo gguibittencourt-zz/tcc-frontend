@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {map} from 'rxjs/operators';
 import {BehaviorSubject} from "rxjs/internal/BehaviorSubject";
 import {Router} from "@angular/router";
+import {User} from "../_models";
 
 @Injectable()
 export class AuthenticationService {
@@ -12,7 +13,12 @@ export class AuthenticationService {
 	private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
 	get isLoggedIn() {
+		this.loggedIn.next(localStorage.getItem('currentUser') != null);
 		return this.loggedIn.asObservable();
+	}
+
+	get user() {
+		return JSON.parse(localStorage.getItem('currentUser'));
 	}
 
 	login(username: string, password: string) {

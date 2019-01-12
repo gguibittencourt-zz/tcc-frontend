@@ -2,9 +2,14 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 //@import '~font-awesome/css/font-awesome.css';
 
+html, body {
+	height: 100%;
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: 'Roboto', sans-serif; }
+body {
+	margin: 0;
+	font-family: 'Roboto', sans-serif;
+}
 
 .example-container {
 	height: 50%;
@@ -16,9 +21,11 @@ mat-card {
 	margin: 2em auto;
 	text-align: center;
 }
+
 .signin-content {
 	padding: 60px 1rem;
 }
+
 .full-width-input {
 	width: 100%;
 }
