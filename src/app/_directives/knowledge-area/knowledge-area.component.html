@@ -3,29 +3,39 @@
 	<div class="knowledge-area-header">
 		<div class="knowledge-area-header-title">
 			<div class="knowledge-area-header-title-spacer">Knowledge Areas</div>
-			<button mat-icon-button type="button" class="mat-icon-button">
+			<button mat-icon-button type="button" (click)="addKnowledgeArea()" class="mat-icon-button">
 			<span class="mat-button-wrapper">
-				<mat-icon class="mat-icon material-icons mat-icon-no-color"></mat-icon>
+				<mat-icon class="mat-icon material-icons">
+					<i class="fa fa-plus"></i>
+				</mat-icon>
 			</span>
 			</button>
 		</div>
 	</div>
 	<div class="knowledge-area-body">
 		<mat-accordion>
-			<mat-expansion-panel *ngFor="let knowledgeArea of knowledgeAreas">
+			<mat-expansion-panel *ngFor="let knowledgeArea of knowledgeAreas; let i = index">
 				<mat-expansion-panel-header>
-					<div>Teste</div>
-					<mat-panel-title>
+					<mat-panel-title class="padding-top">
 						<mat-form-field>
 							<input matInput value="{{knowledgeArea.name}}" placeholder="Name"/>
 						</mat-form-field>
 					</mat-panel-title>
-					<mat-panel-description>
-						<mat-form-field>
-							<input matInput value="{{knowledgeArea.purpose}}" placeholder="Purpose"/>
-						</mat-form-field>
-					</mat-panel-description>
 				</mat-expansion-panel-header>
+				<div class="padding-top">
+					<mat-form-field>
+						<input matInput value="{{knowledgeArea.purpose}}" placeholder="Purpose"/>
+					</mat-form-field>
+				</div>
+				<mat-action-row class="action-row">
+					<button mat-icon-button type="button" (click)="deleteKnowledgeArea(i)" class="mat-icon-button">
+							<span class="mat-button-wrapper">
+								<mat-icon class="mat-icon material-icons">
+									<i class="fa fa-remove"></i>
+								</mat-icon>
+							</span>
+					</button>
+				</mat-action-row>
 			</mat-expansion-panel>
 		</mat-accordion>
 	</div>

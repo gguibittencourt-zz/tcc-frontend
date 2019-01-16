@@ -70,13 +70,11 @@ export class RegisterReferenceModelComponent implements OnInit {
 				});
 	}
 
-	private buildFormArray(knowledgeAreas: KnowledgeArea[]) {
-		return knowledgeAreas.map((knowledgeArea : KnowledgeArea) => {
-			return this.formBuilder.group({
-				idKnowledgeArea: [knowledgeArea.idKnowledgeArea],
-				name: [knowledgeArea.name],
-				purpose: [knowledgeArea.purpose],
-			});
-		});
+	addKnowledgeArea(knowledgeArea: KnowledgeArea) {
+		this.knowledgeAreas.push(knowledgeArea);
+	}
+
+	deleteKnowledgeArea(index: number) {
+		this.knowledgeAreas.splice(index, 1);
 	}
 }

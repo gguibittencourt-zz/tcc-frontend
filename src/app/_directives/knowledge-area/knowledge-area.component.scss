@@ -23,5 +23,13 @@
 	.knowledge-area-body {
 		background-color: #fafafa;
 		padding: 20px;
+
+		.padding-top {
+			padding-top: 20px;
+		}
+		.action-row {
+			padding-top: 0;
+			padding-bottom: 0;
+		}
 	}
 }
