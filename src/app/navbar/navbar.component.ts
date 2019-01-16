@@ -5,7 +5,8 @@ import {User} from "../_models";
 
 @Component({
 	selector: 'nav-bar',
-	templateUrl: './navbar.component.html'
+	templateUrl: './navbar.component.html',
+	styleUrls: ['navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
 	isLoggedIn$: Observable<boolean>;

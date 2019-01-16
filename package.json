@@ -24,6 +24,7 @@
     "lodash": "^4.17.11",
     "popper.js": "^1.14.6",
     "rxjs": "^6.3.3",
+    "to-string-loader": "^1.1.5",
     "zone.js": "^0.8.27"
   },
   "devDependencies": {
