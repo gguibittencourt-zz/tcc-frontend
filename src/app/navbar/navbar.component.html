@@ -1,7 +1,8 @@
-﻿<div *ngIf="isLoggedIn$ | async">
+﻿<div *ngIf="isLoggedIn$ && isUserIn | async">
 	<mat-toolbar>
 		<mat-toolbar-row>
-			<button mat-button [routerLink]="['/company', user ? user.idCompany : null]">Company</button>
+			<button mat-button [routerLink]="['/company', getUser.idCompany]">Company</button>
+			<button mat-button *ngIf="getUser.role === 'ADM'" [routerLink]="['/reference-model']">Reference Model</button>
 			<button mat-button (click)="onLogout()">Logout</button>
 		</mat-toolbar-row>
 	</mat-toolbar>

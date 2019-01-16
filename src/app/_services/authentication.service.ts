@@ -4,6 +4,7 @@ import {map} from 'rxjs/operators';
 import {BehaviorSubject} from "rxjs/internal/BehaviorSubject";
 import {Router} from "@angular/router";
 import {User} from "../_models";
+import {Observable} from "rxjs";
 
 @Injectable()
 export class AuthenticationService {
@@ -11,15 +12,18 @@ export class AuthenticationService {
 	}
 
 	private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+	private userIn: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
 	get isLoggedIn() {
 		this.loggedIn.next(localStorage.getItem('currentUser') != null);
 		return this.loggedIn.asObservable();
 	}
 
-	get user() {
-		return JSON.parse(localStorage.getItem('currentUser'));
+	get isUserIn() : Observable<User> {
+		this.userIn.next(JSON.parse(localStorage.getItem('currentUser')));
+		return this.userIn.asObservable();
 	}
+
 
 	login(username: string, password: string) {
 		return this.http.post<any>(`${config.apiUrl}/users/login`, {username: username, password: password})
@@ -29,6 +33,7 @@ export class AuthenticationService {
 					// store user details and jwt token in local storage to keep user logged in between page refreshes
 					localStorage.setItem('currentUser', JSON.stringify(user));
 					this.loggedIn.next(true);
+					this.userIn.next(user);
 				}
 
 				return user;
@@ -38,6 +43,7 @@ export class AuthenticationService {
 	logout() {
 		// remove user from local storage to log user out
 		this.loggedIn.next(false);
+		this.userIn.next(null);
 		localStorage.removeItem('currentUser');
 		this.router.navigate(['/login']);
 	}

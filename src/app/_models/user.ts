@@ -4,4 +4,5 @@
     password: string;
     name: string;
     idCompany: number;
+    role: string;
 }

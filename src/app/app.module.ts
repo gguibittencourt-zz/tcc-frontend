@@ -7,10 +7,10 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
 
-import {AlertComponent} from './_directives';
+import {AlertComponent} from './_directives/alert/index';
 import {AuthGuard} from './_guards';
 import {ErrorInterceptor, JwtInterceptor} from './_helpers';
-import {AlertService, AuthenticationService, CompanyService, UserService} from './_services';
+import {AlertService, AuthenticationService, CompanyService, ReferenceModelService, UserService} from './_services';
 import {HomeComponent} from './home';
 import {LoginComponent} from './login';
 import {UserComponent} from './user';
@@ -18,6 +18,8 @@ import {NavbarComponent} from "./navbar";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CustomMaterialModule} from "./material/material.module";
 import {CompanyComponent} from "./company";
+import {ListReferenceModelComponent, RegisterReferenceModelComponent} from "./reference-model";
+import {KnowledgeAreaComponent} from "./_directives/knowledge-area";
 
 @NgModule({
 	imports: [
@@ -35,7 +37,10 @@ import {CompanyComponent} from "./company";
 		LoginComponent,
 		UserComponent,
 		CompanyComponent,
-		NavbarComponent
+		NavbarComponent,
+		ListReferenceModelComponent,
+		RegisterReferenceModelComponent,
+		KnowledgeAreaComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -44,7 +49,8 @@ import {CompanyComponent} from "./company";
 		AlertService,
 		AuthenticationService,
 		UserService,
-		CompanyService
+		CompanyService,
+		ReferenceModelService
 	],
 	bootstrap: [AppComponent]
 })

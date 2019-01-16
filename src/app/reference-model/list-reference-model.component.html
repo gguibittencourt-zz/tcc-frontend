@@ -1,0 +1,23 @@
+﻿<mat-form-field>
+	<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+	<ng-container matColumnDef="name">
+		<th mat-header-cell *matHeaderCellDef> Name</th>
+		<td mat-cell *matCellDef="let element"> {{element.name}}</td>
+	</ng-container>
+
+	<ng-container matColumnDef="actions">
+		<th mat-header-cell *matHeaderCellDef> Actions</th>
+		<td mat-cell *matCellDef="let element">
+			<button mat-button [routerLink]="['/reference-model', element.idReferenceModel]" class="btn btn-sm">
+				<i class="fas fa-edit"></i>
+			</button>
+		</td>
+	</ng-container>
+
+	<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+	<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

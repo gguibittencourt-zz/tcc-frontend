@@ -11,10 +11,9 @@ module.exports = {
 		'./src/main.ts'
 	],
 	output: {
+		path: path.resolve(__dirname, 'dist'),
 		filename: "bundle.js",
-		path: path.resolve(__dirname, 'dist')
 	},
-	devtool: 'inline-source-map',
 	module: {
 		rules: [
 			{
@@ -31,18 +30,22 @@ module.exports = {
 				loader: 'html-loader'
 			},
 			{
-				test: /\.scss$/,
-				use: [{
-					loader: "style-loader"
-				}, {
-					loader: "css-loader", options: {
-						sourceMap: true
-					}
-				}, {
-					loader: "sass-loader", options: {
-						sourceMap: true
-					}
-				}]
+				test: /\.(css|scss)$/,
+				use: [
+					{
+						loader: "to-string-loader"
+					},
+					{
+						loader: "style-loader"
+					}, {
+						loader: "css-loader", options: {
+							sourceMap: true
+						}
+					}, {
+						loader: "sass-loader", options: {
+							sourceMap: true
+						}
+					}]
 			},
 			{
 				test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -87,16 +90,12 @@ module.exports = {
 			cacheGroups: {
 				commons: {
 					chunks: "initial",
-					minChunks:
-						3,
-					name:
-						"commons",
-					enforce:
-						true
+					minChunks: 3,
+					name: "commons",
+					enforce: true
 				}
 			}
-		}
-		,
+		},
 		runtimeChunk: true,
 		minimizer:
 			[
@@ -111,14 +110,11 @@ module.exports = {
 					sourceMap: true
 				})
 			]
-	}
-	,
+	},
+	devtool: 'source-map',
 	devServer: {
 		port: 3000,
-		contentBase:
-			'./src/',
-		historyApiFallback:
-			true
+		contentBase: './src/',
+		historyApiFallback: true
 	}
-}
-;
+};

@@ -30,9 +30,7 @@ export class CompanyComponent implements OnInit {
 
 		this.route.params.subscribe(params => {
 			let idCompany: number = params['idCompany'];
-			console.log(idCompany, 'id-company:  ');
 			this.companyService.get(idCompany).subscribe(data => {
-				console.log(data);
 				this.companyForm.setValue(data);
 			});
 		});
