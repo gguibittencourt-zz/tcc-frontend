@@ -3,7 +3,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import {AlertService, ReferenceModelService} from '../_services';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {first} from "rxjs/operators";
 import {KnowledgeArea, ReferenceModel} from "../_models";
 
 @Component({templateUrl: './register-reference-model.component.html'})
@@ -57,21 +56,26 @@ export class RegisterReferenceModelComponent implements OnInit {
 		this.loading = true;
 
 		let action = this.idReferenceModel ? this.referenceModelService.update : this.referenceModelService.register;
-		action(this.referenceModelForm.value)
-			.pipe(first())
-			.subscribe(
-				data => {
-					this.alertService.success('Update successful', true);
-					this.router.navigate(['/home']);
-				},
-				error => {
-					this.alertService.error(error.error);
-					this.loading = false;
-				});
+		console.log(this.referenceModelForm.value);
+		// action(this.referenceModelForm.value)
+		// 	.pipe(first())
+		// 	.subscribe(
+		// 		data => {
+		// 			this.alertService.success('Update successful', true);
+		// 			this.router.navigate(['/home']);
+		// 		},
+		// 		error => {
+		// 			this.alertService.error(error.error);
+		// 			this.loading = false;
+		// 		});
 	}
 
 	addKnowledgeArea(knowledgeArea: KnowledgeArea) {
 		this.knowledgeAreas.push(knowledgeArea);
+	}
+
+	updateKnowledgeArea(index: number, knowledgeArea: KnowledgeArea) {
+		this.knowledgeAreas[index] = knowledgeArea;
 	}
 
 	deleteKnowledgeArea(index: number) {

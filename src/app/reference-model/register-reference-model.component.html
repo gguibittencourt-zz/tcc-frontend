@@ -10,7 +10,8 @@
 		</div>
 		<knowledge-area formArrayName="knowledgeAreas" [knowledgeAreas]="knowledgeAreas"
 						(onAddKnowledgeArea)="addKnowledgeArea($event)"
-						(onDeleteKnowledgeArea)="deleteKnowledgeArea($event)">
+						(onDeleteKnowledgeArea)="deleteKnowledgeArea($event)"
+						(onUpdateKnowledgeArea)="updateKnowledgeArea($event[0], $event[1])">
 		</knowledge-area>
 	</div>
 	<div class="form-group">

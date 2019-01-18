@@ -28,8 +28,22 @@
 			padding-top: 20px;
 		}
 		.action-row {
-			padding-top: 0;
+			padding-top: 10px;
 			padding-bottom: 0;
+		}
+
+		.not-active {
+			pointer-events: none;
+			cursor: default;
+		}
+
+		.active {
+			pointer-events: all !important;
+			cursor: pointer;
+		}
+
+		.confirm-button {
+			margin-right: 5px;
 		}
 	}
 }
