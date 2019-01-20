@@ -73,7 +73,7 @@ export class KnowledgeAreaComponent implements OnInit {
 
 	openDialog(index: number): void {
 		const dialogRef = this.dialog.open(ProcessComponent, {
-			width: '250px',
+			width: '600px',
 			data: {}
 		});
 
