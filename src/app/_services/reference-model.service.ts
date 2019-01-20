@@ -19,7 +19,6 @@ export class ReferenceModelService {
 	}
 
     update(referenceModel: ReferenceModel) {
-        return this.http.put(`${config.apiUrl}/reference-models/` + referenceModel.idReferenceModel, referenceModel);
+		return this.http.put(`${config.apiUrl}/reference-models/` + referenceModel.idReferenceModel, referenceModel);
     }
-
 }

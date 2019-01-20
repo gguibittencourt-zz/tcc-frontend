@@ -2,6 +2,10 @@
 	<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 </mat-form-field>
 
+<a [routerLink]="['/reference-model/register']" class="btn btn-sm">
+	<i class="fa fa-plus"></i>
+</a>
+
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
 	<ng-container matColumnDef="name">

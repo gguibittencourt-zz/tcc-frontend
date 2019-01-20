@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService, ReferenceModelService} from '../_services';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {KnowledgeArea, ReferenceModel} from "../_models";
+import {first} from "rxjs/operators";
 
 @Component({templateUrl: './register-reference-model.component.html'})
 export class RegisterReferenceModelComponent implements OnInit {
@@ -23,17 +24,20 @@ export class RegisterReferenceModelComponent implements OnInit {
 
 	ngOnInit() {
 		this.referenceModelForm = this.formBuilder.group({
-			idReferenceModel: ['', Validators.required],
+			idReferenceModel: [],
 			name: ['', Validators.required],
-			knowledgeAreas: []
+			knowledgeAreas: [[]]
 		});
 
 		this.route.params.subscribe(params => {
 			this.idReferenceModel = params['idReferenceModel'];
-			this.referenceModelService.get(this.idReferenceModel).subscribe((data: ReferenceModel) => {
-				this.referenceModelForm.setValue(data);
-				this._knowledgeAreas = data.knowledgeAreas;
-			});
+			if (this.idReferenceModel) {
+				this.referenceModelService.get(this.idReferenceModel).subscribe((data: ReferenceModel) => {
+					this.referenceModelForm.setValue(data);
+					this._knowledgeAreas = data.knowledgeAreas;
+				});
+			}
+
 		});
 	}
 
@@ -48,26 +52,37 @@ export class RegisterReferenceModelComponent implements OnInit {
 	onSubmit() {
 		this.submitted = true;
 
-		// stop here if form is invalid
 		if (this.referenceModelForm.invalid) {
 			return;
 		}
 
 		this.loading = true;
 
-		let action = this.idReferenceModel ? this.referenceModelService.update : this.referenceModelService.register;
-		console.log(this.referenceModelForm.value);
-		// action(this.referenceModelForm.value)
-		// 	.pipe(first())
-		// 	.subscribe(
-		// 		data => {
-		// 			this.alertService.success('Update successful', true);
-		// 			this.router.navigate(['/home']);
-		// 		},
-		// 		error => {
-		// 			this.alertService.error(error.error);
-		// 			this.loading = false;
-		// 		});
+		if (this.idReferenceModel) {
+			this.referenceModelService.update(this.referenceModelForm.value)
+				.pipe(first())
+				.subscribe(
+					data => {
+						this.alertService.success('Update successful', true);
+						this.router.navigate(['/reference-model']);
+					},
+					error => {
+						this.alertService.error(error.error);
+						this.loading = false;
+					});
+		} else {
+			this.referenceModelService.register(this.referenceModelForm.value)
+				.pipe(first())
+				.subscribe(
+					data => {
+						this.alertService.success('Register successful', true);
+						this.router.navigate(['/reference-model']);
+					},
+					error => {
+						this.alertService.error(error.error);
+						this.loading = false;
+					});
+		}
 	}
 
 	addKnowledgeArea(knowledgeArea: KnowledgeArea) {

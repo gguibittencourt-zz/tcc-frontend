@@ -17,7 +17,7 @@
 			<mat-expansion-panel *ngFor="let knowledgeArea of knowledgeAreas; let i = index"
 								 [expanded]="mapCloseAccordion.get(i)">
 				<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-					<input matInput value="{{knowledgeArea.name}}" disabled placeholder="Name"/>
+					<input matInput value="{{knowledgeArea.name}}" disabled placeholder="Knowledge Area"/>
 					<button mat-icon-button type="button" (click)="deleteKnowledgeArea(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons">
@@ -26,31 +26,32 @@
 					</button>
 				</mat-expansion-panel-header>
 
-				<form [formGroup]="knowledgeAreaForm" (ngSubmit)="confirmKnowledgeArea(i, knowledgeArea)">
+				<form [formGroup]="getKnowledgeAreaForm(i)" (ngSubmit)="confirmKnowledgeArea(i)">
 					<mat-panel-title class="padding-top">
 						<mat-form-field>
-							<input matInput formControlName="name" value="{{knowledgeArea.name}}"
+							<input matInput formControlName="name"
 								   (change)="formChange(i)" placeholder="Name"/>
 						</mat-form-field>
-						<div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-							<div *ngIf="f.name.errors.required">Name is required</div>
-						</div>
 					</mat-panel-title>
-					<div class="padding-top">
-						<mat-form-field>
-							<input matInput formControlName="purpose" value="{{knowledgeArea.purpose}}"
-								   (change)="formChange(i)"
-								   placeholder="Purpose"/>
-						</mat-form-field>
-					</div>
+					<mat-form-field class="padding-top">
+						<input matInput formControlName="purpose"
+							   (change)="formChange(i)"
+							   placeholder="Purpose"/>
+					</mat-form-field>
+					<button mat-raised-button (click)="openDialog(i)"
+							class="btn btn-toolbar">
+						Processes
+					</button>
 					<mat-action-row class="action-row">
 						<button mat-raised-button [disabled]="loading" class="btn btn-primary confirm-button">
 							Confirm
 						</button>
-						<a [routerLink]="['/reference-model']" class="btn btn-danger">Cancel</a>
+						<button mat-raised-button [disabled]="loading" (click)="cancelKnowledgeArea(i)"
+								class="btn btn-danger">
+							Cancel
+						</button>
 					</mat-action-row>
 				</form>
-
 			</mat-expansion-panel>
 		</mat-accordion>
 	</div>

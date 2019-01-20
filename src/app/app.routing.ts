@@ -13,6 +13,7 @@ const appRoutes: Routes = [
 	{path: 'user', component: UserComponent},
 	{path: 'company/:idCompany', component: CompanyComponent, canActivate: [AuthGuard]},
 	{path: 'reference-model', component: ListReferenceModelComponent, canActivate: [AuthGuard]},
+	{path: 'reference-model/register', component: RegisterReferenceModelComponent, canActivate: [AuthGuard]},
 	{path: 'reference-model/:idReferenceModel', component: RegisterReferenceModelComponent, canActivate: [AuthGuard]},
 	{path: '**', redirectTo: ''}
 ];

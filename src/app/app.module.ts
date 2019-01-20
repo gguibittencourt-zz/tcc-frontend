@@ -7,7 +7,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
 
-import {AlertComponent} from './_directives/alert/index';
+import {AlertComponent} from './_directives/alert';
 import {AuthGuard} from './_guards';
 import {ErrorInterceptor, JwtInterceptor} from './_helpers';
 import {AlertService, AuthenticationService, CompanyService, ReferenceModelService, UserService} from './_services';
@@ -20,6 +20,7 @@ import {CustomMaterialModule} from "./material/material.module";
 import {CompanyComponent} from "./company";
 import {ListReferenceModelComponent, RegisterReferenceModelComponent} from "./reference-model";
 import {KnowledgeAreaComponent} from "./_directives/knowledge-area";
+import {ProcessComponent} from "./_directives/process";
 
 @NgModule({
 	imports: [
@@ -40,7 +41,8 @@ import {KnowledgeAreaComponent} from "./_directives/knowledge-area";
 		NavbarComponent,
 		ListReferenceModelComponent,
 		RegisterReferenceModelComponent,
-		KnowledgeAreaComponent
+		KnowledgeAreaComponent,
+		ProcessComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -52,6 +54,7 @@ import {KnowledgeAreaComponent} from "./_directives/knowledge-area";
 		CompanyService,
 		ReferenceModelService
 	],
+	entryComponents: [ProcessComponent],
 	bootstrap: [AppComponent]
 })
 
