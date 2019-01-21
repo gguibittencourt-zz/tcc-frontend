@@ -3,6 +3,7 @@ import {KnowledgeArea} from "../../_models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ProcessComponent} from "../process";
 import {MatDialog} from "@angular/material";
+import {Guid} from "guid-typescript";
 
 @Component({
 	selector: 'knowledge-area',
@@ -24,9 +25,11 @@ export class KnowledgeAreaComponent implements OnInit {
 	ngOnInit() {
 		this.knowledgeAreas.forEach((value, index) => {
 			this.knowledgeAreaForms[index] = this.formBuilder.group({
-				idKnowledgeArea: [''],
+				idKnowledgeArea: [],
 				name: ['', Validators.required],
-				purpose: ['', Validators.required]
+				purpose: ['', Validators.required],
+				processes: [[]]
+
 			});
 			this.mapCloseAccordion.set(index, false)
 		});
@@ -36,6 +39,8 @@ export class KnowledgeAreaComponent implements OnInit {
 		if (this.knowledgeAreaForms[index].invalid) {
 			return;
 		}
+
+		console.log(this.knowledgeAreaForms[index].value);
 		this.mapCloseAccordion.set(index, false);
 		this.onUpdateKnowledgeArea.emit([index, this.knowledgeAreaForms[index].value]);
 	}
@@ -61,24 +66,29 @@ export class KnowledgeAreaComponent implements OnInit {
 		let form = this.knowledgeAreaForms[index];
 		if (form == null) {
 			form = this.formBuilder.group({
-				idKnowledgeArea: [''],
+				idKnowledgeArea: [Guid.create().toString()],
 				name: ['', Validators.required],
-				purpose: ['', Validators.required]
+				purpose: ['', Validators.required],
+				processes: [[]]
 			});
 			form.patchValue(this.knowledgeAreas[index]);
+			console.log(form);
 			this.knowledgeAreaForms[index] = form;
 		}
 		return form;
 	}
 
 	openDialog(index: number): void {
+		let knowledgeArea = this.knowledgeAreas[index];
 		const dialogRef = this.dialog.open(ProcessComponent, {
 			width: '600px',
-			data: {}
+			data: knowledgeArea.processes == null ? [] : knowledgeArea.processes,
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
-			console.log('The dialog was closed');
+			if (result) {
+				this.knowledgeAreas[index].processes = result;
+			}
 		});
 	}
 }

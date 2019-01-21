@@ -6,7 +6,11 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {KnowledgeArea, ReferenceModel} from "../_models";
 import {first} from "rxjs/operators";
 
-@Component({templateUrl: './register-reference-model.component.html'})
+@Component({
+	templateUrl: './register-reference-model.component.html',
+	styleUrls: ['register-reference-model.component.scss']
+
+})
 export class RegisterReferenceModelComponent implements OnInit {
 	referenceModelForm: FormGroup;
 	loading = false;
@@ -26,7 +30,7 @@ export class RegisterReferenceModelComponent implements OnInit {
 		this.referenceModelForm = this.formBuilder.group({
 			idReferenceModel: [],
 			name: ['', Validators.required],
-			knowledgeAreas: [[]]
+			knowledgeAreas: [this.knowledgeAreas]
 		});
 
 		this.route.params.subscribe(params => {

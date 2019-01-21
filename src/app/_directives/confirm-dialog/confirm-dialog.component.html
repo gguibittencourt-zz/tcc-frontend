@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Delete Reference Model</h1>
+<div mat-dialog-content>
+	Do you want to delete the reference model: <b>{{data}}</b>?
+</div>
+<div mat-dialog-actions>
+	<button mat-button (click)="onNoClick()">No Thanks</button>
+	<button mat-button [mat-dialog-close]="data">Ok</button>
+</div>

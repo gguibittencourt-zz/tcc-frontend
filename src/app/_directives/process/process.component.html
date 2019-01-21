@@ -1,10 +1,10 @@
-<h1 mat-dialog-title>Hi {{data.name}}</h1>
+<h1 mat-dialog-title>Process Register</h1>
 <div mat-dialog-content>
 	<div class="process">
 		<div class="process-header">
 			<div class="process-header-title">
 				<div class="process-header-title-spacer">Process</div>
-				<button mat-icon-button type="button" (click)="addKnowledgeArea()" class="mat-icon-button">
+				<button mat-icon-button type="button" (click)="addProcess()" class="mat-icon-button">
 			<span class="mat-button-wrapper">
 				<mat-icon class="mat-icon material-icons">
 					<i class="fa fa-plus"></i>
@@ -15,11 +15,10 @@
 		</div>
 		<div class="process-body">
 			<mat-accordion>
-				<mat-expansion-panel *ngFor="let knowledgeArea of knowledgeAreas; let i = index"
-									 [expanded]="mapCloseAccordion.get(i)">
+				<mat-expansion-panel *ngFor="let process of data; let i = index">
 					<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-						<input matInput value="{{knowledgeArea.name}}" disabled placeholder="Knowledge Area"/>
-						<button mat-icon-button type="button" (click)="deleteKnowledgeArea(i)"
+						<input matInput value="{{process.name}}" disabled placeholder="Process"/>
+						<button mat-icon-button type="button" (click)="deleteProcess(i)"
 								class="mat-icon-button active">
 							<mat-icon class="mat-icon material-icons">
 								<i class="fa fa-remove"></i>
@@ -27,7 +26,7 @@
 						</button>
 					</mat-expansion-panel-header>
 
-					<form [formGroup]="getKnowledgeAreaForm(i)" (ngSubmit)="confirmKnowledgeArea(i)">
+					<form [formGroup]="processForms[i]" (ngSubmit)="confirmProcess(i)">
 						<mat-panel-title class="padding-top">
 							<mat-form-field>
 								<input matInput formControlName="name"
@@ -39,16 +38,12 @@
 								   (change)="formChange(i)"
 								   placeholder="Purpose"/>
 						</mat-form-field>
-						<button mat-raised-button (click)="openDialog(i)"
-								class="btn btn-toolbar">
-							Processes
-						</button>
 						<mat-action-row class="action-row">
-							<button mat-raised-button [disabled]="loading" class="btn btn-primary confirm-button">
+							<button mat-raised-button [disabled]="loading" class="btn btn-outline-success confirm-button">
 								Confirm
 							</button>
-							<button mat-raised-button [disabled]="loading" (click)="cancelKnowledgeArea(i)"
-									class="btn btn-danger">
+							<button mat-raised-button [disabled]="loading" (click)="cancelProcess(i)"
+									class="btn btn-outline-danger">
 								Cancel
 							</button>
 						</mat-action-row>
@@ -60,5 +55,5 @@
 </div>
 <div mat-dialog-actions>
 	<button mat-button (click)="onNoClick()">No Thanks</button>
-	<button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
+	<button mat-button [mat-dialog-close]="data">Ok</button>
 </div>

@@ -21,4 +21,8 @@ export class ReferenceModelService {
     update(referenceModel: ReferenceModel) {
 		return this.http.put(`${config.apiUrl}/reference-models/` + referenceModel.idReferenceModel, referenceModel);
     }
+
+	delete(idReferenceModel: number) {
+		return this.http.delete(`${config.apiUrl}/reference-models/` + idReferenceModel);
+	}
 }

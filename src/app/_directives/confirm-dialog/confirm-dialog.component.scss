@@ -1,40 +1,31 @@
-.knowledge-area {
+.process {
 
 	border: 1px solid #00000008;
 	background-color: #f2f2f2;
 	box-shadow: 0 2px 2px #0000003d, 0 0 2px #0000001f;
 
-	.knowledge-area-header {
+	.process-header {
 
-		.knowledge-area-header-title {
+		.process-header-title {
 			align-content: center;
 			align-items: center;
 			display: flex;
 			justify-content: center;
 			padding: 8px 20px;
 
-			.knowledge-area-header-title-spacer {
+			.process-header-title-spacer {
 				flex: 1 1 auto;
 				color: #0000008a;
 			}
 		}
 	}
 
-	.knowledge-area-body {
+	.process-body {
 		background-color: #fafafa;
 		padding: 20px;
 
 		.padding-top {
 			padding-top: 20px;
-		}
-
-		.margin-top {
-			padding-top: 20px;
-		}
-
-		.process-button {
-			padding-bottom: 10px;
-			padding-left: 15px;
 		}
 
 		.action-row {

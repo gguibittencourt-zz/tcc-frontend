@@ -27,27 +27,27 @@
 				</mat-expansion-panel-header>
 
 				<form [formGroup]="getKnowledgeAreaForm(i)" (ngSubmit)="confirmKnowledgeArea(i)">
-					<mat-panel-title class="padding-top">
-						<mat-form-field>
-							<input matInput formControlName="name"
-								   (change)="formChange(i)" placeholder="Name"/>
-						</mat-form-field>
-					</mat-panel-title>
-					<mat-form-field class="padding-top">
+					<mat-form-field class="col-md-12">
+						<input matInput formControlName="name"
+							   (change)="formChange(i)" placeholder="Name"/>
+					</mat-form-field>
+					<mat-form-field class="padding-top col-md-12">
 						<input matInput formControlName="purpose"
 							   (change)="formChange(i)"
 							   placeholder="Purpose"/>
 					</mat-form-field>
-					<button mat-raised-button (click)="openDialog(i)"
-							class="btn btn-toolbar">
-						Processes
-					</button>
+					<div class="process-button">
+						<button mat-raised-button (click)="openDialog(i)"
+								class="btn btn-outline-info ">
+							Processes: {{knowledgeArea.processes ? knowledgeArea.processes.length : 0}}
+						</button>
+					</div>
 					<mat-action-row class="action-row">
-						<button mat-raised-button [disabled]="loading" class="btn btn-primary confirm-button">
+						<button mat-raised-button [disabled]="loading" class="btn btn-outline-success confirm-button">
 							Confirm
 						</button>
 						<button mat-raised-button [disabled]="loading" (click)="cancelKnowledgeArea(i)"
-								class="btn btn-danger">
+								class="btn btn-outline-danger">
 							Cancel
 						</button>
 					</mat-action-row>

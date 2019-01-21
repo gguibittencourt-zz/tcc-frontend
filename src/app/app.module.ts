@@ -21,6 +21,7 @@ import {CompanyComponent} from "./company";
 import {ListReferenceModelComponent, RegisterReferenceModelComponent} from "./reference-model";
 import {KnowledgeAreaComponent} from "./_directives/knowledge-area";
 import {ProcessComponent} from "./_directives/process";
+import {ConfirmDialogComponent} from "./_directives/confirm-dialog";
 
 @NgModule({
 	imports: [
@@ -42,7 +43,8 @@ import {ProcessComponent} from "./_directives/process";
 		ListReferenceModelComponent,
 		RegisterReferenceModelComponent,
 		KnowledgeAreaComponent,
-		ProcessComponent
+		ProcessComponent,
+		ConfirmDialogComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -54,7 +56,7 @@ import {ProcessComponent} from "./_directives/process";
 		CompanyService,
 		ReferenceModelService
 	],
-	entryComponents: [ProcessComponent],
+	entryComponents: [ProcessComponent, ConfirmDialogComponent],
 	bootstrap: [AppComponent]
 })
 
