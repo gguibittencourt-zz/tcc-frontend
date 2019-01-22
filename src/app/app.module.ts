@@ -14,7 +14,7 @@ import {AlertService, AuthenticationService, CompanyService, ReferenceModelServi
 import {HomeComponent} from './home';
 import {LoginComponent} from './login';
 import {UserComponent} from './user';
-import {NavbarComponent} from "./navbar";
+import {NavbarComponent} from "./_directives/navbar";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CustomMaterialModule} from "./material/material.module";
 import {CompanyComponent} from "./company";
@@ -22,6 +22,8 @@ import {ListReferenceModelComponent, RegisterReferenceModelComponent} from "./re
 import {KnowledgeAreaComponent} from "./_directives/knowledge-area";
 import {ProcessComponent} from "./_directives/process";
 import {ConfirmDialogComponent} from "./_directives/confirm-dialog";
+import {MeasurementFrameworkService} from "./_services/measurement-framework.service";
+import {ListMeasurementFrameworkComponent, RegisterMeasurementFrameworkComponent} from "./measurement-framework";
 
 @NgModule({
 	imports: [
@@ -44,7 +46,9 @@ import {ConfirmDialogComponent} from "./_directives/confirm-dialog";
 		RegisterReferenceModelComponent,
 		KnowledgeAreaComponent,
 		ProcessComponent,
-		ConfirmDialogComponent
+		ConfirmDialogComponent,
+		ListMeasurementFrameworkComponent,
+		RegisterMeasurementFrameworkComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -54,7 +58,8 @@ import {ConfirmDialogComponent} from "./_directives/confirm-dialog";
 		AuthenticationService,
 		UserService,
 		CompanyService,
-		ReferenceModelService
+		ReferenceModelService,
+		MeasurementFrameworkService
 	],
 	entryComponents: [ProcessComponent, ConfirmDialogComponent],
 	bootstrap: [AppComponent]

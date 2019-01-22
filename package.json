@@ -31,6 +31,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-typescript": "^7.1.0",
+    "@types/lodash": "^4.14.120",
     "@types/node": "^10.0.4",
     "angular2-template-loader": "^0.6.2",
     "clean-webpack-plugin": "^0.1.16",

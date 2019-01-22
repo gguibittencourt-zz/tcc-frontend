@@ -1,9 +1,9 @@
-<h1 mat-dialog-title>Process Register</h1>
+<h1 mat-dialog-title>Processes Register</h1>
 <div mat-dialog-content>
 	<div class="process">
 		<div class="process-header">
 			<div class="process-header-title">
-				<div class="process-header-title-spacer">Process</div>
+				<div class="process-header-title-spacer">Processes</div>
 				<button mat-icon-button type="button" (click)="addProcess()" class="mat-icon-button">
 			<span class="mat-button-wrapper">
 				<mat-icon class="mat-icon material-icons">
@@ -15,7 +15,7 @@
 		</div>
 		<div class="process-body">
 			<mat-accordion>
-				<mat-expansion-panel *ngFor="let process of data; let i = index">
+				<mat-expansion-panel *ngFor="let process of data; let i = index" [expanded]="mapCloseAccordion.get(i)">
 					<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
 						<input matInput value="{{process.name}}" disabled placeholder="Process"/>
 						<button mat-icon-button type="button" (click)="deleteProcess(i)"
@@ -27,19 +27,18 @@
 					</mat-expansion-panel-header>
 
 					<form [formGroup]="processForms[i]" (ngSubmit)="confirmProcess(i)">
-						<mat-panel-title class="padding-top">
-							<mat-form-field>
-								<input matInput formControlName="name"
-									   (change)="formChange(i)" placeholder="Name"/>
-							</mat-form-field>
-						</mat-panel-title>
-						<mat-form-field class="padding-top">
+						<mat-form-field class="col-md-12">
+							<input matInput formControlName="name"
+								   (change)="formChange(i)" placeholder="Name"/>
+						</mat-form-field>
+						<mat-form-field class="padding-top col-md-12">
 							<input matInput formControlName="purpose"
 								   (change)="formChange(i)"
 								   placeholder="Purpose"/>
 						</mat-form-field>
 						<mat-action-row class="action-row">
-							<button mat-raised-button [disabled]="loading" class="btn btn-outline-success confirm-button">
+							<button mat-raised-button [disabled]="loading"
+									class="btn btn-outline-success confirm-button">
 								Confirm
 							</button>
 							<button mat-raised-button [disabled]="loading" (click)="cancelProcess(i)"

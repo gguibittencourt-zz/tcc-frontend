@@ -37,10 +37,10 @@
 							   placeholder="Purpose"/>
 					</mat-form-field>
 					<div class="process-button">
-						<button mat-raised-button (click)="openDialog(i)"
+						<a mat-raised-button (click)="openDialog(i)"
 								class="btn btn-outline-info ">
 							Processes: {{knowledgeArea.processes ? knowledgeArea.processes.length : 0}}
-						</button>
+						</a>
 					</div>
 					<mat-action-row class="action-row">
 						<button mat-raised-button [disabled]="loading" class="btn btn-outline-success confirm-button">

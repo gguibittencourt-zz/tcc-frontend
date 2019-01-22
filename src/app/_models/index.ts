@@ -3,3 +3,4 @@ export * from './company';
 export * from './process';
 export * from './knowledge-area';
 export * from './reference-model';
+export * from './measurement-framework';

@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ProcessComponent} from "../process";
 import {MatDialog} from "@angular/material";
 import {Guid} from "guid-typescript";
+import {cloneDeep} from "lodash";
 
 @Component({
 	selector: 'knowledge-area',
@@ -40,7 +41,6 @@ export class KnowledgeAreaComponent implements OnInit {
 			return;
 		}
 
-		console.log(this.knowledgeAreaForms[index].value);
 		this.mapCloseAccordion.set(index, false);
 		this.onUpdateKnowledgeArea.emit([index, this.knowledgeAreaForms[index].value]);
 	}
@@ -72,22 +72,24 @@ export class KnowledgeAreaComponent implements OnInit {
 				processes: [[]]
 			});
 			form.patchValue(this.knowledgeAreas[index]);
-			console.log(form);
 			this.knowledgeAreaForms[index] = form;
 		}
 		return form;
 	}
 
 	openDialog(index: number): void {
+		this.mapCloseAccordion.set(index, true);
+
 		let knowledgeArea = this.knowledgeAreas[index];
 		const dialogRef = this.dialog.open(ProcessComponent, {
 			width: '600px',
-			data: knowledgeArea.processes == null ? [] : knowledgeArea.processes,
+			data: knowledgeArea.processes == null ? [] : cloneDeep(knowledgeArea.processes),
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				this.knowledgeAreas[index].processes = result;
+				this.knowledgeAreaForms[index].setValue(this.knowledgeAreas[index]);
 			}
 		});
 	}

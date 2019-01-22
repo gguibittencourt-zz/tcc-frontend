@@ -24,6 +24,7 @@ export class ProcessComponent {
 			name: ['', Validators.required],
 			purpose: ['', Validators.required]
 		});
+		this.mapCloseAccordion.set(0, false);
 
 		this.data.forEach((value, index) => {
 			let form = this.formBuilder.group({
@@ -51,13 +52,14 @@ export class ProcessComponent {
 	}
 
 	onNoClick(): void {
-		this.dialogRef.close();
+		this.dialogRef.close(false);
 	}
 
 	confirmProcess(index: number) {
 		if (this.processForms[index].invalid) {
 			return;
 		}
+		console.log("confirm????");
 		this.mapCloseAccordion.set(index, false);
 		this.data[index] = this.processForms[index].value;
 	}
@@ -65,6 +67,11 @@ export class ProcessComponent {
 	addProcess() {
 		let process: Process = new Process();
 		this.data.push(process);
+		this.processForms[this.data.indexOf(process)] = this.formBuilder.group({
+			idProcess: [Guid.create().toString()],
+			name: ['', Validators.required],
+			purpose: ['', Validators.required]
+		});
 	}
 
 	deleteProcess(index: number) {

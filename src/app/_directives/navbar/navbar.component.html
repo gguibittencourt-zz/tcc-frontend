@@ -3,6 +3,7 @@
 		<mat-toolbar-row>
 			<button mat-button [routerLink]="['/company', getUser.idCompany]">Company</button>
 			<button mat-button *ngIf="getUser.role === 'ADM'" [routerLink]="['/reference-model']">Reference Model</button>
+			<button mat-button *ngIf="getUser.role === 'ADM'" [routerLink]="['/measurement-framework']">Measurement Framework</button>
 			<button mat-button (click)="onLogout()">Logout</button>
 		</mat-toolbar-row>
 	</mat-toolbar>
