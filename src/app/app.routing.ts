@@ -18,7 +18,7 @@ const appRoutes: Routes = [
 	{path: 'reference-model/:idReferenceModel', component: RegisterReferenceModelComponent, canActivate: [AuthGuard]},
 	{path: 'measurement-framework', component: ListMeasurementFrameworkComponent, canActivate: [AuthGuard]},
 	{path: 'measurement-framework/register', component: RegisterMeasurementFrameworkComponent, canActivate: [AuthGuard]},
-	{path: 'measurement-framework/:idReferenceModel', component: RegisterMeasurementFrameworkComponent, canActivate: [AuthGuard]},
+	{path: 'measurement-framework/:idMeasurementFramework', component: RegisterMeasurementFrameworkComponent, canActivate: [AuthGuard]},
 	{path: '**', redirectTo: ''}
 ];
 

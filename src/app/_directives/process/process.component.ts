@@ -59,7 +59,6 @@ export class ProcessComponent {
 		if (this.processForms[index].invalid) {
 			return;
 		}
-		console.log("confirm????");
 		this.mapCloseAccordion.set(index, false);
 		this.data[index] = this.processForms[index].value;
 	}

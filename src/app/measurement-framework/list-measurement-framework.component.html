@@ -16,7 +16,7 @@
 	<ng-container matColumnDef="actions">
 		<th mat-header-cell *matHeaderCellDef> Actions</th>
 		<td mat-cell *matCellDef="let element">
-			<button mat-button [routerLink]="['/measurement-framework', element.idReferenceModel]" class="btn btn-sm">
+			<button mat-button [routerLink]="['/measurement-framework', element.idMeasurementFramework]" class="btn btn-sm">
 				<i class="fa fa-edit"></i>
 			</button>
 			<button mat-button (click)="openConfirmationDialog(element)" class="btn btn-sm">

@@ -5,7 +5,7 @@ import {AlertService, ReferenceModelService} from '../_services';
 import {ReferenceModel} from "../_models";
 import {MatDialog, MatTableDataSource} from "@angular/material";
 import {ConfirmDialogComponent} from "../_directives/confirm-dialog";
-import {ProcessComponent} from "../_directives/process";
+import {DialogData} from "../_models/dialog-data";
 
 @Component({templateUrl: './list-reference-model.component.html'})
 export class ListReferenceModelComponent implements OnInit {
@@ -41,9 +41,10 @@ export class ListReferenceModelComponent implements OnInit {
 	}
 
 	openConfirmationDialog(referenceModel: ReferenceModel) {
+		let data = new DialogData(referenceModel.name, "Delete Reference Model", "Do you want to delete the reference model: ");
 		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
 			disableClose: false,
-			data: referenceModel.name
+			data
 		});
 
 		dialogRef.afterClosed().subscribe(result => {

@@ -10,7 +10,7 @@
 		</div>
 		<mat-form-field class="full-width-input">
 			<mat-select placeholder="Reference model" formControlName="idReferenceModel"
-						[ngClass]="{ 'is-invalid': submitted && f.role.errors }">
+						[ngClass]="{ 'is-invalid': submitted && f.idReferenceModel.errors }">
 				<mat-option *ngFor="let referenceModel of referenceModels" [value]="referenceModel.idReferenceModel">
 					{{referenceModel.name}}
 				</mat-option>

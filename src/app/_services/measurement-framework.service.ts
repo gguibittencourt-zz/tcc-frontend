@@ -7,22 +7,22 @@ export class MeasurementFrameworkService {
     constructor(private http: HttpClient) { }
 
     get(id: number) {
-        return this.http.get(`${config.apiUrl}/measurement-framework/` + id);
+        return this.http.get(`${config.apiUrl}/measurement-frameworks/` + id);
     }
 
     list() {
-		return this.http.get(`${config.apiUrl}/measurement-framework`);
+		return this.http.get(`${config.apiUrl}/measurement-frameworks`);
 	}
 
 	register(measurementFramework: MeasurementFramework) {
-		return this.http.post(`${config.apiUrl}/measurement-framework`, measurementFramework);
+		return this.http.post(`${config.apiUrl}/measurement-frameworks`, measurementFramework);
 	}
 
     update(measurementFramework: MeasurementFramework) {
-		return this.http.put(`${config.apiUrl}/measurement-framework/` + measurementFramework.idMeasurementFramework, measurementFramework);
+		return this.http.put(`${config.apiUrl}/measurement-frameworks/` + measurementFramework.idMeasurementFramework, measurementFramework);
     }
 
 	delete(idMeasurementFramework: number) {
-		return this.http.delete(`${config.apiUrl}/measurement-framework/` + idMeasurementFramework);
+		return this.http.delete(`${config.apiUrl}/measurement-frameworks/` + idMeasurementFramework);
 	}
 }
