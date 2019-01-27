@@ -71,7 +71,8 @@ export class ProcessComponent {
 		this.processForms[this.data.indexOf(process)] = this.formBuilder.group({
 			idProcess: [Guid.create().toString()],
 			name: ['', Validators.required],
-			purpose: ['', Validators.required]
+			purpose: ['', Validators.required],
+			expectedResults: [[]]
 		});
 	}
 

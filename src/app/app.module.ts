@@ -24,6 +24,7 @@ import {ProcessComponent} from "./_directives/process";
 import {ConfirmDialogComponent} from "./_directives/confirm-dialog";
 import {MeasurementFrameworkService} from "./_services/measurement-framework.service";
 import {ListMeasurementFrameworkComponent, RegisterMeasurementFrameworkComponent} from "./measurement-framework";
+import {ExpectedResultComponent} from "./_directives/expected-result";
 
 @NgModule({
 	imports: [
@@ -48,7 +49,8 @@ import {ListMeasurementFrameworkComponent, RegisterMeasurementFrameworkComponent
 		ProcessComponent,
 		ConfirmDialogComponent,
 		ListMeasurementFrameworkComponent,
-		RegisterMeasurementFrameworkComponent
+		RegisterMeasurementFrameworkComponent,
+		ExpectedResultComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
