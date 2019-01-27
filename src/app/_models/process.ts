@@ -1,8 +1,10 @@
-﻿export class Process {
+﻿import {ExpectedResult} from "./expected-result";
+
+export class Process {
     private _idProcess: string;
     private _name: string;
     private _purpose: string;
-
+    private _expectedResults: ExpectedResult[];
 
 	get idProcess(): string {
 		return this._idProcess;
@@ -26,5 +28,13 @@
 
 	set purpose(value: string) {
 		this._purpose = value;
+	}
+
+	get expectedResults(): ExpectedResult[] {
+		return this._expectedResults;
+	}
+
+	set expectedResults(value: ExpectedResult[]) {
+		this._expectedResults = value;
 	}
 }

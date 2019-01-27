@@ -12,7 +12,7 @@ import {
 	MatNativeDateModule,
 	MatSelectModule,
 	MatSidenavModule,
-	MatTableModule,
+	MatTableModule, MatTabsModule,
 	MatToolbarModule,
 } from '@angular/material';
 
@@ -33,7 +33,8 @@ import {
 		MatFormFieldModule,
 		MatExpansionModule,
 		MatDialogModule,
-		MatButtonModule
+		MatButtonModule,
+		MatTabsModule
 	],
 })
 export class CustomMaterialModule {

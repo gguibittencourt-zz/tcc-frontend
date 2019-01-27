@@ -111,6 +111,7 @@ module.exports = {
 	devServer: {
 		port: 3000,
 		contentBase: './src/',
-		historyApiFallback: true
+		historyApiFallback: true,
+		watchContentBase: true
 	}
 };
