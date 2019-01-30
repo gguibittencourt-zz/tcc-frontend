@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {Process} from "../../_models";
+import {ExpectedResult, Process} from "../../_models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Guid} from "guid-typescript";
 

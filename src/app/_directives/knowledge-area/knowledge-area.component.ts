@@ -82,7 +82,7 @@ export class KnowledgeAreaComponent implements OnInit {
 
 		let knowledgeArea = this.knowledgeAreas[index];
 		const dialogRef = this.dialog.open(ProcessComponent, {
-			width: '600px',
+			width: '800px',
 			data: knowledgeArea.processes == null ? [] : cloneDeep(knowledgeArea.processes),
 		});
 

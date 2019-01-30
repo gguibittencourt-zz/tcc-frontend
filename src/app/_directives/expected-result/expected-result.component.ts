@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ExpectedResult} from "../../_models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Guid} from "guid-typescript";
