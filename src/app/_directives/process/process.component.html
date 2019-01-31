@@ -46,7 +46,8 @@
 								<ng-template mat-tab-label>
 									Expected Results
 								</ng-template>
-								<expected-result [expectedResults]="process.expectedResults"></expected-result>
+								<expected-result formArrayName="expectedResults"
+												 [expectedResults]="process.expectedResults"></expected-result>
 							</mat-tab>
 						</mat-tab-group>
 

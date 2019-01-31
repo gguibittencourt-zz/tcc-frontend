@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ExpectedResult} from "../../_models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Guid} from "guid-typescript";
@@ -9,14 +9,16 @@ import {Guid} from "guid-typescript";
 	styleUrls: ['expected-result.component.scss']
 })
 
-export class ExpectedResultComponent {
+export class ExpectedResultComponent implements OnInit {
+	@Input('expectedResults') expectedResults: ExpectedResult[];
 
-	@Input('expectedResults') private _expectedResults: ExpectedResult[];
 	private _expectedResultForms: FormGroup[] = [];
 	private _mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
 
 	constructor(private formBuilder: FormBuilder) {
+	}
 
+	ngOnInit(): void {
 		this.expectedResultForms[0] = this.formBuilder.group({
 			idExpectedResult: [Guid.create().toString()],
 			name: ['', Validators.required],
@@ -43,13 +45,6 @@ export class ExpectedResultComponent {
 
 	get mapCloseAccordion(): Map<number, boolean> {
 		return this._mapCloseAccordion;
-	}
-
-	get expectedResults(): ExpectedResult[] {
-		if (!this._expectedResults) {
-			this._expectedResults = [];
-		}
-		return this._expectedResults;
 	}
 
 	confirmExpectedResult(index: number) {
