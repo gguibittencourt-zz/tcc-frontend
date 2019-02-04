@@ -14,6 +14,7 @@ import {
 	MatSidenavModule,
 	MatTableModule, MatTabsModule,
 	MatToolbarModule,
+	MatStepperModule
 } from '@angular/material';
 
 @NgModule({
@@ -34,7 +35,8 @@ import {
 		MatExpansionModule,
 		MatDialogModule,
 		MatButtonModule,
-		MatTabsModule
+		MatTabsModule,
+		MatStepperModule
 	],
 })
 export class CustomMaterialModule {
