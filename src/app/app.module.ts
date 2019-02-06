@@ -10,7 +10,14 @@ import {routing} from './app.routing';
 import {AlertComponent} from './_directives/alert';
 import {AuthGuard} from './_guards';
 import {ErrorInterceptor, JwtInterceptor} from './_helpers';
-import {AlertService, AuthenticationService, CompanyService, ReferenceModelService, UserService} from './_services';
+import {
+	AlertService,
+	AuthenticationService,
+	CompanyService,
+	MeasurementFrameworkService,
+	ReferenceModelService,
+	UserService
+} from './_services';
 import {HomeComponent} from './home';
 import {LoginComponent} from './login';
 import {UserComponent} from './user';
@@ -22,9 +29,9 @@ import {ListReferenceModelComponent, RegisterReferenceModelComponent} from "./re
 import {KnowledgeAreaComponent} from "./_directives/knowledge-area";
 import {ProcessComponent} from "./_directives/process";
 import {ConfirmDialogComponent} from "./_directives/confirm-dialog";
-import {MeasurementFrameworkService} from "./_services/measurement-framework.service";
 import {ListMeasurementFrameworkComponent, RegisterMeasurementFrameworkComponent} from "./measurement-framework";
 import {ExpectedResultComponent} from "./_directives/expected-result";
+import {TreeNodeComponent} from "./_directives/tree-node";
 
 @NgModule({
 	imports: [
@@ -50,7 +57,8 @@ import {ExpectedResultComponent} from "./_directives/expected-result";
 		ConfirmDialogComponent,
 		ListMeasurementFrameworkComponent,
 		RegisterMeasurementFrameworkComponent,
-		ExpectedResultComponent
+		ExpectedResultComponent,
+		TreeNodeComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

@@ -12,9 +12,11 @@ import {
 	MatNativeDateModule,
 	MatSelectModule,
 	MatSidenavModule,
-	MatTableModule, MatTabsModule,
+	MatTableModule,
+	MatTabsModule,
 	MatToolbarModule,
-	MatStepperModule
+	MatStepperModule,
+	MatTreeModule
 } from '@angular/material';
 
 @NgModule({
@@ -36,7 +38,8 @@ import {
 		MatDialogModule,
 		MatButtonModule,
 		MatTabsModule,
-		MatStepperModule
+		MatStepperModule,
+		MatTreeModule
 	],
 })
 export class CustomMaterialModule {
