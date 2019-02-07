@@ -1,8 +1,11 @@
 ﻿import {Component, Input, OnInit} from '@angular/core';
-import {KnowledgeArea} from "../../_models";
-import {MatTreeNestedDataSource} from "@angular/material";
+import {KnowledgeArea, Question} from "../../_models";
+import {MatDialog, MatTreeNestedDataSource} from "@angular/material";
 import {NestedTreeControl} from "@angular/cdk/tree";
 import {TreeNode} from "../../_models/tree-node";
+import {FormBuilder} from "@angular/forms";
+import {QuestionComponent} from "../question";
+import {cloneDeep} from "lodash";
 
 @Component({
 	selector: 'tree-node',
@@ -12,14 +15,16 @@ import {TreeNode} from "../../_models/tree-node";
 
 export class TreeNodeComponent implements OnInit {
 	@Input('knowledgeAreas') private _knowledgeAreas: KnowledgeArea[];
+	@Input('questions') private _questions: Question[];
 
 	private _treeControl = new NestedTreeControl<TreeNode>(node => node.children);
 	private _dataSource = new MatTreeNestedDataSource<TreeNode>();
 
-	private _hasChild = (_: number, node: TreeNode) => !!node.children && node.children.length > 0;
+	constructor(private formBuilder: FormBuilder, private  dialog: MatDialog) {
+	}
 
 	ngOnInit() {
-		this.dataSource.data = this._knowledgeAreas.map(knowledgeArea => {
+		this.dataSource.data = this.knowledgeAreas.map(knowledgeArea => {
 			let treeNode: TreeNode = new TreeNode();
 			treeNode.idTreeNode = String(knowledgeArea.idKnowledgeArea);
 			treeNode.name = knowledgeArea.name;
@@ -33,35 +38,31 @@ export class TreeNodeComponent implements OnInit {
 		});
 	}
 
+	openDialog(node: TreeNode): void {
+		const dialogRef = this.dialog.open(QuestionComponent, {
+			width: '800px',
+			data: cloneDeep(this.questions),
+		});
+
+		dialogRef.afterClosed().subscribe(result => {
+		});
+	}
+
+	hasChild = (_: number, node: TreeNode) => !!node.children && node.children.length > 0;
+
 	get knowledgeAreas(): KnowledgeArea[] {
 		return this._knowledgeAreas;
 	}
 
-	set knowledgeAreas(value: KnowledgeArea[]) {
-		this._knowledgeAreas = value;
+	get questions(): Question[] {
+		return this._questions;
 	}
 
 	get treeControl(): NestedTreeControl<TreeNode> {
 		return this._treeControl;
 	}
 
-	set treeControl(value: NestedTreeControl<TreeNode>) {
-		this._treeControl = value;
-	}
-
 	get dataSource(): MatTreeNestedDataSource<TreeNode> {
 		return this._dataSource;
-	}
-
-	set dataSource(value: MatTreeNestedDataSource<TreeNode>) {
-		this._dataSource = value;
-	}
-
-	get hasChild(): (_: number, node: TreeNode) => boolean {
-		return this._hasChild;
-	}
-
-	set hasChild(value: (_: number, node: TreeNode) => boolean) {
-		this._hasChild = value;
 	}
 }

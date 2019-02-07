@@ -13,8 +13,7 @@ import {MatSelectChange} from "@angular/material";
 
 })
 export class RegisterMeasurementFrameworkComponent implements OnInit {
-	private _measurementFrameworkFirstForm: FormGroup;
-	private _measurementFrameworkSecondForm: FormGroup;
+	private _measurementFrameworkForm: FormGroup;
 	private _loading = false;
 	private _submitted = false;
 	private _idMeasurementFramework: number = null;
@@ -30,12 +29,12 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		private alertService: AlertService) {
 	}
 
-	ngOnInit() {
+	ngOnInit(): void {
 		this.referenceModelService.list().subscribe((data: ReferenceModel[]) => {
 			this.referenceModels = data;
 		});
 
-		this.measurementFrameworkFirstForm = this.formBuilder.group({
+		this.measurementFrameworkForm = this.formBuilder.group({
 			idMeasurementFramework: [],
 			name: ['', Validators.required],
 			idReferenceModel: [, Validators.required],
@@ -45,14 +44,14 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			this.idMeasurementFramework = params['idMeasurementFramework'];
 			if (this.idMeasurementFramework) {
 				this.measurementFrameworkService.get(this.idMeasurementFramework).subscribe((data: MeasurementFramework) => {
-					this.measurementFrameworkFirstForm.setValue(data);
+					this.measurementFrameworkForm.setValue(data);
 					this.referenceModel = this.getReferenceModel(data.idReferenceModel);
 				});
 			}
 		});
 	}
 
-	changeReferenceModel(event: MatSelectChange) {
+	changeReferenceModel(event: MatSelectChange): void {
 		this.referenceModel = this.getReferenceModel(event.value);
 	}
 
@@ -60,17 +59,17 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		return this.referenceModels.find(value => value.idReferenceModel === idReferenceModel);
 	}
 
-	onSubmit() {
+	onSubmit(): void {
 		this.submitted = true;
 
-		if (this.measurementFrameworkFirstForm.invalid || this.measurementFrameworkSecondForm.invalid) {
+		if (this.measurementFrameworkForm.invalid) {
 			return;
 		}
 
 		this.loading = true;
 
 		if (this.idMeasurementFramework) {
-			this.measurementFrameworkService.update(this.measurementFrameworkFirstForm.value)
+			this.measurementFrameworkService.update(this.measurementFrameworkForm.value)
 				.pipe(first())
 				.subscribe(
 					data => {
@@ -82,7 +81,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 						this.loading = false;
 					});
 		} else {
-			this.measurementFrameworkService.register(this.measurementFrameworkFirstForm.value)
+			this.measurementFrameworkService.register(this.measurementFrameworkForm.value)
 				.pipe(first())
 				.subscribe(
 					data => {
@@ -96,21 +95,16 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		}
 	}
 
-
-	get measurementFrameworkFirstForm(): FormGroup {
-		return this._measurementFrameworkFirstForm;
+	get f() {
+		return this._measurementFrameworkForm.controls;
 	}
 
-	set measurementFrameworkFirstForm(value: FormGroup) {
-		this._measurementFrameworkFirstForm = value;
+	get measurementFrameworkForm(): FormGroup {
+		return this._measurementFrameworkForm;
 	}
 
-	get measurementFrameworkSecondForm(): FormGroup {
-		return this._measurementFrameworkSecondForm;
-	}
-
-	set measurementFrameworkSecondForm(value: FormGroup) {
-		this._measurementFrameworkSecondForm = value;
+	set measurementFrameworkForm(value: FormGroup) {
+		this._measurementFrameworkForm = value;
 	}
 
 	get loading(): boolean {

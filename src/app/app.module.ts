@@ -32,6 +32,7 @@ import {ConfirmDialogComponent} from "./_directives/confirm-dialog";
 import {ListMeasurementFrameworkComponent, RegisterMeasurementFrameworkComponent} from "./measurement-framework";
 import {ExpectedResultComponent} from "./_directives/expected-result";
 import {TreeNodeComponent} from "./_directives/tree-node";
+import {QuestionComponent} from "./_directives/question";
 
 @NgModule({
 	imports: [
@@ -58,7 +59,8 @@ import {TreeNodeComponent} from "./_directives/tree-node";
 		ListMeasurementFrameworkComponent,
 		RegisterMeasurementFrameworkComponent,
 		ExpectedResultComponent,
-		TreeNodeComponent
+		TreeNodeComponent,
+		QuestionComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -71,7 +73,7 @@ import {TreeNodeComponent} from "./_directives/tree-node";
 		ReferenceModelService,
 		MeasurementFrameworkService
 	],
-	entryComponents: [ProcessComponent, ConfirmDialogComponent],
+	entryComponents: [ProcessComponent, ConfirmDialogComponent, QuestionComponent],
 	bootstrap: [AppComponent]
 })
 

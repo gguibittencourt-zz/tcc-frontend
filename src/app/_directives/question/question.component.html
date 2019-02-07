@@ -1,10 +1,10 @@
-<h1 mat-dialog-title>Processes Register</h1>
+<h1 mat-dialog-title>Questions Register</h1>
 <div mat-dialog-content>
-	<div class="process">
-		<div class="process-header">
-			<div class="process-header-title">
-				<div class="process-header-title-spacer">Processes</div>
-				<button mat-icon-button type="button" (click)="addProcess()" class="mat-icon-button">
+	<div class="question">
+		<div class="question-header">
+			<div class="question-header-title">
+				<div class="question-header-title-spacer">Questions</div>
+				<button mat-icon-button type="button" (click)="addQuestion()" class="mat-icon-button">
 			<span class="mat-button-wrapper">
 				<mat-icon class="mat-icon material-icons">
 					<i class="fa fa-plus"></i>
@@ -13,12 +13,12 @@
 				</button>
 			</div>
 		</div>
-		<div class="process-body">
+		<div class="question-body">
 			<mat-accordion>
-				<mat-expansion-panel *ngFor="let process of data; let i = index" [expanded]="mapCloseAccordion.get(i)">
+				<mat-expansion-panel *ngFor="let question of data; let i = index" [expanded]="mapCloseAccordion.get(i)">
 					<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-						<input matInput value="{{process.name}}" disabled placeholder="Process"/>
-						<button mat-icon-button type="button" (click)="deleteProcess(i)"
+						<input matInput value="{{question.name}}" disabled placeholder="Question"/>
+						<button mat-icon-button type="button" (click)="deleteQuestion(i)"
 								class="mat-icon-button active">
 							<mat-icon class="mat-icon material-icons">
 								<i class="fa fa-remove"></i>
@@ -26,28 +26,21 @@
 						</button>
 					</mat-expansion-panel-header>
 
-					<form [formGroup]="processForms[i]" (ngSubmit)="confirmProcess(i)">
+					<form [formGroup]="questionForms[i]" (ngSubmit)="confirmQuestion(i)">
 						<mat-tab-group>
 							<mat-tab>
 								<ng-template mat-tab-label>
-									Process
+									Question
 								</ng-template>
 								<mat-form-field class="col-md-12">
 									<input matInput formControlName="name"
 										   (change)="formChange(i)" placeholder="Name"/>
 								</mat-form-field>
 								<mat-form-field class="padding-top col-md-12">
-									<input matInput formControlName="purpose"
+									<input matInput formControlName="tip"
 										   (change)="formChange(i)"
-										   placeholder="Purpose"/>
+										   placeholder="Tip"/>
 								</mat-form-field>
-							</mat-tab>
-							<mat-tab>
-								<ng-template mat-tab-label>
-									Expected Results
-								</ng-template>
-								<expected-result formArrayName="expectedResults"
-												 [expectedResults]="process.questions"></expected-result>
 							</mat-tab>
 						</mat-tab-group>
 
@@ -56,7 +49,7 @@
 									class="btn btn-outline-success confirm-button">
 								Confirm
 							</button>
-							<button mat-raised-button [disabled]="loading" (click)="cancelProcess(i)"
+							<button mat-raised-button [disabled]="loading" (click)="cancelQuestion(i)"
 									class="btn btn-outline-danger">
 								Cancel
 							</button>
