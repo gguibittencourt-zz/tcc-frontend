@@ -1,11 +1,10 @@
-﻿import {Component, Input, OnInit} from '@angular/core';
-import {KnowledgeArea, Question} from "../../_models";
+﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {KnowledgeArea, MatDialogData, Question, TreeNode} from "../../_models";
 import {MatDialog, MatTreeNestedDataSource} from "@angular/material";
 import {NestedTreeControl} from "@angular/cdk/tree";
-import {TreeNode} from "../../_models/tree-node";
 import {FormBuilder} from "@angular/forms";
 import {QuestionComponent} from "../question";
-import {cloneDeep} from "lodash";
+import {cloneDeep, isEmpty} from "lodash";
 
 @Component({
 	selector: 'tree-node',
@@ -16,6 +15,7 @@ import {cloneDeep} from "lodash";
 export class TreeNodeComponent implements OnInit {
 	@Input('knowledgeAreas') private _knowledgeAreas: KnowledgeArea[];
 	@Input('questions') private _questions: Question[];
+	@Output() onConfirmQuestions: EventEmitter<any> = new EventEmitter();
 
 	private _treeControl = new NestedTreeControl<TreeNode>(node => node.children);
 	private _dataSource = new MatTreeNestedDataSource<TreeNode>();
@@ -39,12 +39,19 @@ export class TreeNodeComponent implements OnInit {
 	}
 
 	openDialog(node: TreeNode): void {
+		let data = new MatDialogData();
+		data.node = node;
+		data.questions = isEmpty(this.questions) ?  [] : cloneDeep(this.questions);
 		const dialogRef = this.dialog.open(QuestionComponent, {
 			width: '800px',
-			data: cloneDeep(this.questions),
+			data: data
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
+			if (result) {
+				this.questions = result;
+				this.onConfirmQuestions.emit(this.questions);
+			}
 		});
 	}
 
@@ -56,6 +63,10 @@ export class TreeNodeComponent implements OnInit {
 
 	get questions(): Question[] {
 		return this._questions;
+	}
+
+	set questions(value: Question[]) {
+		this._questions = value;
 	}
 
 	get treeControl(): NestedTreeControl<TreeNode> {

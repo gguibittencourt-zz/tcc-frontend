@@ -37,7 +37,9 @@
 
 		<form [formGroup]="measurementFrameworkForm">
 			<tree-node *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
-			></tree-node>
+					   [questions]="measurementFramework.questions"
+					   (onConfirmQuestions)="confirmQuestions($event)">
+			</tree-node>
 		</form>
 
 		<div class="form-group">
@@ -51,7 +53,9 @@
 		<div class="form-group">
 			<button mat-button matStepperPrevious>Back</button>
 
-			<button mat-raised-button (click)="onSubmit()" [disabled]="loading" class="btn btn-outline-success save-button">Save</button>
+			<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
+					class="btn btn-outline-success save-button">Save
+			</button>
 			<button mat-raised-button [routerLink]="['/measurement-framework']" class="btn btn-outline-danger">
 				Cancel
 			</button>

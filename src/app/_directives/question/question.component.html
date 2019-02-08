@@ -15,7 +15,7 @@
 		</div>
 		<div class="question-body">
 			<mat-accordion>
-				<mat-expansion-panel *ngFor="let question of data; let i = index" [expanded]="mapCloseAccordion.get(i)">
+				<mat-expansion-panel *ngFor="let question of data.questions; let i = index" [expanded]="mapCloseAccordion.get(i)">
 					<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
 						<input matInput value="{{question.name}}" disabled placeholder="Question"/>
 						<button mat-icon-button type="button" (click)="deleteQuestion(i)"
@@ -62,5 +62,5 @@
 </div>
 <div mat-dialog-actions>
 	<button mat-button (click)="onNoClick()">No Thanks</button>
-	<button mat-button [mat-dialog-close]="data">Ok</button>
+	<button mat-button [mat-dialog-close]="data.questions">Ok</button>
 </div>

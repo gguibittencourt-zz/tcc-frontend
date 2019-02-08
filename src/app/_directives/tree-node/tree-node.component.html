@@ -5,7 +5,7 @@
 			{{node.name}}
 			<a mat-raised-button (click)="openDialog(node)"
 			   class="btn btn-outline-info ">
-				Questions: 0
+				Questions: {{questions ? questions.length : 0}}
 			</a>
 		</li>
 	</mat-tree-node>

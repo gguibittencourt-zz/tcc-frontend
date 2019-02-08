@@ -1,8 +1,8 @@
-import {Component, Inject, Input} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Guid} from "guid-typescript";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {Question} from "../../_models";
+import {MatDialogData, Question} from "../../_models";
 
 @Component({
 	selector: 'question',
@@ -11,31 +11,30 @@ import {Question} from "../../_models";
 })
 
 export class QuestionComponent {
-	@Input('questions') questions: Question[];
-
 	private _questionForms: FormGroup[] = [];
 	private _mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
 
 	constructor(private _dialogRef: MatDialogRef<QuestionComponent>,
-				@Inject(MAT_DIALOG_DATA) public data: Question[],
+				@Inject(MAT_DIALOG_DATA) public data: MatDialogData,
 				private formBuilder: FormBuilder) {
 
 		this.questionForms[0] = this.formBuilder.group({
 			idQuestion: [Guid.create().toString()],
+			idProcess: ['', Validators.required],
 			name: ['', Validators.required],
 			tip: ['', Validators.required],
 		});
 		this.mapCloseAccordion.set(0, false);
 
-		this.data.forEach((value, index) => {
+		this.data.questions.forEach((value, index) => {
 			let form = this.formBuilder.group({
 				idQuestion: ['', Validators.required],
+				idProcess: ['', Validators.required],
 				name: ['', Validators.required],
-				purpose: ['', Validators.required],
-				expectedResults: [[]]
+				tip: ['', Validators.required],
 			});
 
-			form.patchValue(this.data[index]);
+			form.patchValue(this.data.questions[index]);
 			this.questionForms[index] = form;
 			this.mapCloseAccordion.set(index, false);
 		});
@@ -50,21 +49,22 @@ export class QuestionComponent {
 			return;
 		}
 		this.mapCloseAccordion.set(index, false);
-		this.data[index] = this.questionForms[index].value;
+		this.data.questions[index] = this.questionForms[index].value;
 	}
 
 	addQuestion() {
 		let question: Question = new Question();
-		this.data.push(question);
-		this.questionForms[this.data.indexOf(question)] = this.formBuilder.group({
+		this.data.questions.push(question);
+		this.questionForms[this.data.questions.indexOf(question)] = this.formBuilder.group({
 			idQuestion: [Guid.create().toString()],
+			idProcess: [this.data.node.idTreeNode],
 			name: ['', Validators.required],
 			tip: ['', Validators.required],
 		});
 	}
 
 	deleteQuestion(index: number) {
-		this.data.splice(index, 1);
+		this.data.questions.splice(index, 1);
 	}
 
 	formChange(index: number) {

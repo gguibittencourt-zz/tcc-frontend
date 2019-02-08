@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import {AlertService, MeasurementFrameworkService, ReferenceModelService} from '../_services';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MeasurementFramework, ReferenceModel} from "../_models";
+import {MeasurementFramework, Question, ReferenceModel} from "../_models";
 import {first} from "rxjs/operators";
 import {MatSelectChange} from "@angular/material";
 
@@ -17,6 +17,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 	private _loading = false;
 	private _submitted = false;
 	private _idMeasurementFramework: number = null;
+	private _measurementFramework: MeasurementFramework;
 	private _referenceModels: ReferenceModel[] = [];
 	private _referenceModel: ReferenceModel;
 
@@ -30,6 +31,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		this.measurementFramework = new MeasurementFramework();
 		this.referenceModelService.list().subscribe((data: ReferenceModel[]) => {
 			this.referenceModels = data;
 		});
@@ -38,6 +40,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			idMeasurementFramework: [],
 			name: ['', Validators.required],
 			idReferenceModel: [, Validators.required],
+			questions: []
 		});
 
 		this.route.params.subscribe(params => {
@@ -45,6 +48,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			if (this.idMeasurementFramework) {
 				this.measurementFrameworkService.get(this.idMeasurementFramework).subscribe((data: MeasurementFramework) => {
 					this.measurementFrameworkForm.setValue(data);
+					this.measurementFramework = data;
 					this.referenceModel = this.getReferenceModel(data.idReferenceModel);
 				});
 			}
@@ -57,6 +61,11 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 
 	getReferenceModel(idReferenceModel: number): ReferenceModel {
 		return this.referenceModels.find(value => value.idReferenceModel === idReferenceModel);
+	}
+
+	confirmQuestions(questions: Question[]) {
+		this.f["questions"].setValue(questions);
+		this.measurementFramework.questions = questions;
 	}
 
 	onSubmit(): void {
@@ -145,5 +154,13 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 
 	set referenceModel(value: ReferenceModel) {
 		this._referenceModel = value;
+	}
+
+	get measurementFramework(): MeasurementFramework {
+		return this._measurementFramework;
+	}
+
+	set measurementFramework(value: MeasurementFramework) {
+		this._measurementFramework = value;
 	}
 }

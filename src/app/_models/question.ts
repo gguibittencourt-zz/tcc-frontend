@@ -1,5 +1,6 @@
 ﻿export class Question {
 	private _idQuestion: string;
+	private _idProcess: string;
 	private _name: string;
 	private _tip: string;
 
@@ -9,6 +10,14 @@
 
 	set idQuestion(value: string) {
 		this._idQuestion = value;
+	}
+
+	get idProcess(): string {
+		return this._idProcess;
+	}
+
+	set idProcess(value: string) {
+		this._idProcess = value;
 	}
 
 	get name(): string {
