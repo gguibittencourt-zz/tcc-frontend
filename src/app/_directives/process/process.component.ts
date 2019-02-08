@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {ExpectedResult, Process} from "../../_models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -10,7 +10,7 @@ import {Guid} from "guid-typescript";
 	styleUrls: ['process.component.scss']
 })
 
-export class ProcessComponent {
+export class ProcessComponent implements OnInit {
 
 	private _processForms: FormGroup[] = [];
 	private _mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
@@ -18,7 +18,9 @@ export class ProcessComponent {
 	constructor(private _dialogRef: MatDialogRef<ProcessComponent>,
 				@Inject(MAT_DIALOG_DATA) public data: Process[],
 				private formBuilder: FormBuilder) {
+	}
 
+	ngOnInit(): void {
 		this.processForms[0] = this.formBuilder.group({
 			idProcess: [Guid.create().toString()],
 			name: ['', Validators.required],
@@ -67,13 +69,13 @@ export class ProcessComponent {
 
 	addProcess() {
 		let process: Process = new Process();
+		this.data.push(process);
 		this.processForms[this.data.indexOf(process)] = this.formBuilder.group({
 			idProcess: [Guid.create().toString()],
 			name: ['', Validators.required],
 			purpose: ['', Validators.required],
 			expectedResults: [[]]
 		});
-		this.data.push(process);
 	}
 
 	deleteProcess(index: number) {

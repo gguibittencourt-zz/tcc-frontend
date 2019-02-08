@@ -18,7 +18,7 @@ export class ExpectedResultComponent implements OnInit {
 	constructor(private formBuilder: FormBuilder) {
 	}
 
-	ngOnInit() {
+	ngOnInit(): void {
 		this.expectedResultForms[0] = this.formBuilder.group({
 			idExpectedResult: [Guid.create().toString()],
 			name: ['', Validators.required],
