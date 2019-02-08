@@ -6,7 +6,6 @@ export class MatDialogData {
 	private _questions: Question[];
 	private _node: TreeNode;
 
-
 	get questions(): Question[] {
 		return this._questions;
 	}

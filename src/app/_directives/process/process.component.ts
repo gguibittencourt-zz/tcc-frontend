@@ -67,13 +67,13 @@ export class ProcessComponent {
 
 	addProcess() {
 		let process: Process = new Process();
-		this.data.push(process);
 		this.processForms[this.data.indexOf(process)] = this.formBuilder.group({
 			idProcess: [Guid.create().toString()],
 			name: ['', Validators.required],
 			purpose: ['', Validators.required],
 			expectedResults: [[]]
 		});
+		this.data.push(process);
 	}
 
 	deleteProcess(index: number) {

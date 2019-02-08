@@ -21,6 +21,7 @@ export class QuestionComponent {
 		this.questionForms[0] = this.formBuilder.group({
 			idQuestion: [Guid.create().toString()],
 			idProcess: ['', Validators.required],
+			idExpectedResult: ['', Validators.required],
 			name: ['', Validators.required],
 			tip: ['', Validators.required],
 		});
@@ -30,6 +31,7 @@ export class QuestionComponent {
 			let form = this.formBuilder.group({
 				idQuestion: ['', Validators.required],
 				idProcess: ['', Validators.required],
+				idExpectedResult: ['', Validators.required],
 				name: ['', Validators.required],
 				tip: ['', Validators.required],
 			});
@@ -58,6 +60,7 @@ export class QuestionComponent {
 		this.questionForms[this.data.questions.indexOf(question)] = this.formBuilder.group({
 			idQuestion: [Guid.create().toString()],
 			idProcess: [this.data.node.idTreeNode],
+			idExpectedResult: ['', Validators.required],
 			name: ['', Validators.required],
 			tip: ['', Validators.required],
 		});

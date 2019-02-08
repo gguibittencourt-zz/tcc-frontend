@@ -31,6 +31,9 @@ export class Process {
 	}
 
 	get expectedResults(): ExpectedResult[] {
+		if (this._expectedResults == null) {
+			this._expectedResults = [];
+		}
 		return this._expectedResults;
 	}
 

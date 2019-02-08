@@ -15,7 +15,8 @@
 		</div>
 		<div class="question-body">
 			<mat-accordion>
-				<mat-expansion-panel *ngFor="let question of data.questions; let i = index" [expanded]="mapCloseAccordion.get(i)">
+				<mat-expansion-panel *ngFor="let question of data.questions; let i = index"
+									 [expanded]="mapCloseAccordion.get(i)">
 					<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
 						<input matInput value="{{question.name}}" disabled placeholder="Question"/>
 						<button mat-icon-button type="button" (click)="deleteQuestion(i)"
@@ -36,10 +37,21 @@
 									<input matInput formControlName="name"
 										   (change)="formChange(i)" placeholder="Name"/>
 								</mat-form-field>
-								<mat-form-field class="padding-top col-md-12">
+								<mat-form-field class="col-md-12">
 									<input matInput formControlName="tip"
 										   (change)="formChange(i)"
 										   placeholder="Tip"/>
+								</mat-form-field>
+
+								<mat-form-field class="col-md-12">
+									<mat-select placeholder="Expected Result" formControlName="idExpectedResult"
+												[ngClass]="{ 'is-invalid': submitted && f.idExpectedResult.errors }">
+										<mat-option *ngFor="let expectedResult of data.node.expectedResults"
+													[value]="expectedResult.idExpectedResult">
+											{{expectedResult.name}}
+										</mat-option>
+									</mat-select>
+
 								</mat-form-field>
 							</mat-tab>
 						</mat-tab-group>

@@ -18,19 +18,19 @@ export class ExpectedResultComponent implements OnInit {
 	constructor(private formBuilder: FormBuilder) {
 	}
 
-	ngOnInit(): void {
+	ngOnInit() {
 		this.expectedResultForms[0] = this.formBuilder.group({
-			idQuestion: [Guid.create().toString()],
+			idExpectedResult: [Guid.create().toString()],
 			name: ['', Validators.required],
-			tip: ['', Validators.required],
+			description: ['', Validators.required],
 		});
 		this.mapCloseAccordion.set(0, false);
 
 		this.expectedResults.forEach((value, index) => {
 			let form = this.formBuilder.group({
-				idQuestion: ['', Validators.required],
+				idExpectedResult: ['', Validators.required],
 				name: ['', Validators.required],
-				tip: ['', Validators.required],
+				description: ['', Validators.required],
 			});
 
 			form.patchValue(this.expectedResults[index]);
@@ -59,9 +59,9 @@ export class ExpectedResultComponent implements OnInit {
 		let expectedResult: ExpectedResult = new ExpectedResult();
 		this.expectedResults.push(expectedResult);
 		this.expectedResultForms[this.expectedResults.indexOf(expectedResult)] = this.formBuilder.group({
-			idQuestion: [Guid.create().toString()],
+			idExpectedResult: [Guid.create().toString()],
 			name: ['', Validators.required],
-			tip: ['', Validators.required]
+			description: ['', Validators.required]
 		});
 	}
 

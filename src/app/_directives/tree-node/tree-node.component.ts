@@ -32,6 +32,7 @@ export class TreeNodeComponent implements OnInit {
 				let treeNodeChildren: TreeNode = new TreeNode();
 				treeNodeChildren.idTreeNode = process.idProcess;
 				treeNodeChildren.name = process.name;
+				treeNodeChildren.expectedResults = process.expectedResults;
 				return treeNodeChildren;
 			});
 			return treeNode;
