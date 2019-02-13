@@ -1,5 +1,6 @@
 ﻿export class Question {
 	private _idQuestion: string;
+	private _idExpectedResult: string;
 	private _idProcess: string;
 	private _name: string;
 	private _tip: string;
@@ -10,6 +11,14 @@
 
 	set idQuestion(value: string) {
 		this._idQuestion = value;
+	}
+
+	get idExpectedResult(): string {
+		return this._idExpectedResult;
+	}
+
+	set idExpectedResult(value: string) {
+		this._idExpectedResult = value;
 	}
 
 	get idProcess(): string {

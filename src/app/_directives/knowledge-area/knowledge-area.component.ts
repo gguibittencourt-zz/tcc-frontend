@@ -89,7 +89,7 @@ export class KnowledgeAreaComponent implements OnInit {
 		dialogRef.afterClosed().subscribe(result => {
 			if (result) {
 				this.knowledgeAreas[index].processes = result;
-				this.knowledgeAreaForms[index].setValue(this.knowledgeAreas[index]);
+				this.knowledgeAreaForms[index].controls["processes"].setValue(this.knowledgeAreas[index].processes);
 			}
 		});
 	}

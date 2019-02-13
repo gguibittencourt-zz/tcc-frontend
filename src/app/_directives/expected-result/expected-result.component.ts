@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ExpectedResult} from "../../_models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Guid} from "guid-typescript";
@@ -11,6 +11,7 @@ import {Guid} from "guid-typescript";
 
 export class ExpectedResultComponent implements OnInit {
 	@Input('expectedResults') expectedResults: ExpectedResult[];
+	@Output() onConfirmExpectedResults: EventEmitter<any> = new EventEmitter();
 
 	private _expectedResultForms: FormGroup[] = [];
 	private _mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
@@ -53,6 +54,7 @@ export class ExpectedResultComponent implements OnInit {
 		}
 		this.mapCloseAccordion.set(index, false);
 		this.expectedResults[index] = this.expectedResultForms[index].value;
+		this.onConfirmExpectedResults.emit(this.expectedResults);
 	}
 
 	addExpectedResult() {

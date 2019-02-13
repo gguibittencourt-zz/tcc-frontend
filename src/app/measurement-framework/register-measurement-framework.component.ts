@@ -40,7 +40,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			idMeasurementFramework: [],
 			name: ['', Validators.required],
 			idReferenceModel: [, Validators.required],
-			questions: []
+			questions: [[]]
 		});
 
 		this.route.params.subscribe(params => {

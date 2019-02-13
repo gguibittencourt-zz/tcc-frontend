@@ -89,4 +89,9 @@ export class ProcessComponent implements OnInit {
 	cancelProcess(index: number) {
 		this.mapCloseAccordion.set(index, false);
 	}
+
+	confirmExpectedResults(expectedResults: ExpectedResult[], process: Process, index: number) {
+		process.expectedResults = expectedResults;
+		this.processForms[index].controls["expectedResults"].setValue(expectedResults);
+	}
 }
