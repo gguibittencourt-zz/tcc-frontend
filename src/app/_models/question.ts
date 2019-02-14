@@ -4,6 +4,8 @@
 	private _idProcess: string;
 	private _name: string;
 	private _tip: string;
+	private _dependsOnAnyQuestion: boolean;
+	private _idDependentQuestion: string;
 
 	get idQuestion(): string {
 		return this._idQuestion;
@@ -43,5 +45,22 @@
 
 	set tip(value: string) {
 		this._tip = value;
+	}
+
+	get dependsOnAnyQuestion(): boolean {
+		return this._dependsOnAnyQuestion;
+	}
+
+	set dependsOnAnyQuestion(value: boolean) {
+		this._dependsOnAnyQuestion = value;
+	}
+
+
+	get idDependentQuestion(): string {
+		return this._idDependentQuestion;
+	}
+
+	set idDependentQuestion(value: string) {
+		this._idDependentQuestion = value;
 	}
 }

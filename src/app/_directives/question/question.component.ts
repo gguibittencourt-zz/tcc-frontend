@@ -24,6 +24,8 @@ export class QuestionComponent {
 			idExpectedResult: ['', Validators.required],
 			name: ['', Validators.required],
 			tip: ['', Validators.required],
+			dependsOnAnyQuestion: [false],
+			idDependentQuestion: ['']
 		});
 		this.mapCloseAccordion.set(0, false);
 
@@ -34,6 +36,8 @@ export class QuestionComponent {
 				idExpectedResult: ['', Validators.required],
 				name: ['', Validators.required],
 				tip: ['', Validators.required],
+				dependsOnAnyQuestion: [false],
+				idDependentQuestion: ['']
 			});
 
 			form.patchValue(this.data.questions[index]);
@@ -63,6 +67,8 @@ export class QuestionComponent {
 			idExpectedResult: ['', Validators.required],
 			name: ['', Validators.required],
 			tip: ['', Validators.required],
+			dependsOnAnyQuestion: [false],
+			idDependentQuestion: ['']
 		});
 	}
 

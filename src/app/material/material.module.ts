@@ -16,7 +16,7 @@ import {
 	MatTabsModule,
 	MatToolbarModule,
 	MatStepperModule,
-	MatTreeModule
+	MatTreeModule, MatCheckboxModule
 } from '@angular/material';
 
 @NgModule({
@@ -37,6 +37,7 @@ import {
 		MatExpansionModule,
 		MatDialogModule,
 		MatButtonModule,
+		MatCheckboxModule,
 		MatTabsModule,
 		MatStepperModule,
 		MatTreeModule

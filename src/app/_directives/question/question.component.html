@@ -53,6 +53,18 @@
 									</mat-select>
 
 								</mat-form-field>
+								<mat-checkbox class="col-md-12" formControlName="dependsOnAnyQuestion"
+											  labelPosition="before">Depends on any question?
+								</mat-checkbox>
+								<mat-form-field class="col-md-12" *ngIf="dependsOnAnyQuestion(i)">
+									<mat-select placeholder="Dependent Question" formControlName="idDependentQuestion"
+												[ngClass]="{ 'is-invalid': submitted && f.idDependentQuestion.errors }">
+										<mat-option *ngFor="let question of data.questions"
+													[value]="question.idQuestion">
+											{{question.name}}
+										</mat-option>
+									</mat-select>
+								</mat-form-field>
 							</mat-tab>
 						</mat-tab-group>
 
