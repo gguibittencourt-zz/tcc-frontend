@@ -1,10 +1,17 @@
 ﻿<div *ngIf="isLoggedIn$ && isUserIn | async">
 	<mat-toolbar>
-		<mat-toolbar-row>
-			<button mat-button [routerLink]="['/company', getUser.idCompany]">Company</button>
-			<button mat-button *ngIf="getUser.role === 'ADM'" [routerLink]="['/reference-model']">Reference Model</button>
-			<button mat-button *ngIf="getUser.role === 'ADM'" [routerLink]="['/measurement-framework']">Measurement Framework</button>
-			<button mat-button (click)="onLogout()">Logout</button>
-		</mat-toolbar-row>
+		<button mat-icon-button (click)="snav.toggle()"><i class="fa fa-bars"></i></button>
+		<mat-sidenav-container>
+			<mat-sidenav #snav [fixedTopGap]="40" [fixedBottomGap]="620"  [fixedInViewport]="0">
+				<mat-nav-list>
+					<a mat-list-item [routerLink]="['/company', getUser.idCompany]">Company</a>
+					<a mat-list-item *ngIf="getUser.role === 'ADM'" [routerLink]="['/reference-model']">Reference
+						Model</a>
+					<a mat-list-item *ngIf="getUser.role === 'ADM'" [routerLink]="['/measurement-framework']">Measurement
+						Framework</a>
+					<a mat-list-item (click)="onLogout()">Logout</a>
+				</mat-nav-list>
+			</mat-sidenav>
+		</mat-sidenav-container>
 	</mat-toolbar>
 </div>
