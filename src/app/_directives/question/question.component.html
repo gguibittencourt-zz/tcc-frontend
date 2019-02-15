@@ -44,6 +44,16 @@
 								</mat-form-field>
 
 								<mat-form-field class="col-md-12">
+									<mat-select placeholder="Type" formControlName="type"
+												[ngClass]="{ 'is-invalid': submitted && f.type.errors }">
+										<mat-option value="numeric">Numeric</mat-option>
+										<mat-option value="text">Text</mat-option>
+										<mat-option value="scale">Scale</mat-option>
+										<mat-option value="choice">Choice</mat-option>
+									</mat-select>
+								</mat-form-field>
+
+								<mat-form-field class="col-md-12">
 									<mat-select placeholder="Expected Result" formControlName="idExpectedResult"
 												[ngClass]="{ 'is-invalid': submitted && f.idExpectedResult.errors }">
 										<mat-option *ngFor="let expectedResult of data.node.expectedResults"
@@ -51,20 +61,59 @@
 											{{expectedResult.name}}
 										</mat-option>
 									</mat-select>
-
 								</mat-form-field>
-								<mat-checkbox class="col-md-12" formControlName="dependsOnAnyQuestion"
+							</mat-tab>
+							<mat-tab>
+								<ng-template mat-tab-label>
+									Config
+								</ng-template>
+								<mat-form-field *ngIf="isType(i, 'text')" class="col-md-12">
+									<div formGroupName="config">
+										<input matInput formControlName="minCharacters"
+											   (change)="formChange(i)"
+											   type="number"
+											   placeholder="Minimum characters"/>
+									</div>
+								</mat-form-field>
+								<mat-form-field *ngIf="isType(i, 'text')" class="col-md-12">
+									<div formGroupName="config">
+										<input matInput formControlName="maxCharacters"
+											   (change)="formChange(i)"
+											   type="number"
+											   placeholder="Maximum characters"/>
+									</div>
+								</mat-form-field>
+								<mat-form-field *ngIf="isType(i, 'numeric')" class="col-md-12">
+									<div formGroupName="config">
+										<input matInput formControlName="minValue"
+											   (change)="formChange(i)"
+											   type="number"
+											   placeholder="Minimum value"/>
+									</div>
+								</mat-form-field>
+								<mat-form-field *ngIf="isType(i, 'numeric')" class="col-md-12">
+									<div formGroupName="config">
+										<input matInput formControlName="maxValue"
+											   (change)="formChange(i)"
+											   type="number"
+											   placeholder="Maximum value"/>
+									</div>
+								</mat-form-field>
+								<mat-slide-toggle class="col-md-12" formControlName="dependsOnAnyQuestion"
 											  labelPosition="before">Depends on any question?
-								</mat-checkbox>
-								<mat-form-field class="col-md-12" *ngIf="dependsOnAnyQuestion(i)">
+								</mat-slide-toggle>
+								<mat-form-field class="col-md-6" *ngIf="dependsOnAnyQuestion(i)">
 									<mat-select placeholder="Dependent Question" formControlName="idDependentQuestion"
 												[ngClass]="{ 'is-invalid': submitted && f.idDependentQuestion.errors }">
-										<mat-option *ngFor="let question of data.questions"
+										<mat-option *ngFor="let question of getQuestions(i)"
 													[value]="question.idQuestion">
 											{{question.name}}
 										</mat-option>
 									</mat-select>
 								</mat-form-field>
+								<mat-slide-toggle class="col-md-12" formControlName="hasDataSource"
+											  labelPosition="before">Has data source?
+								</mat-slide-toggle>
 							</mat-tab>
 						</mat-tab-group>
 

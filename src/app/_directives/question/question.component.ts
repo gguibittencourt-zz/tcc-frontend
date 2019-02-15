@@ -24,8 +24,16 @@ export class QuestionComponent {
 			idExpectedResult: ['', Validators.required],
 			name: ['', Validators.required],
 			tip: ['', Validators.required],
+			type: ['', Validators.required],
 			dependsOnAnyQuestion: [false],
-			idDependentQuestion: ['']
+			hasDataSource: [false],
+			idDependentQuestion: [''],
+			config: this.formBuilder.group({
+				minCharacters: [],
+				maxCharacters: [],
+				maxValue: [],
+				minValue: []
+			})
 		});
 		this.mapCloseAccordion.set(0, false);
 
@@ -36,8 +44,17 @@ export class QuestionComponent {
 				idExpectedResult: ['', Validators.required],
 				name: ['', Validators.required],
 				tip: ['', Validators.required],
+				type: ['', Validators.required],
 				dependsOnAnyQuestion: [false],
-				idDependentQuestion: ['']
+				hasDataSource: [false],
+				idDependentQuestion: [''],
+				config: this.formBuilder.group({
+					minCharacters: [],
+					maxCharacters: [],
+					maxValue: [],
+					minValue: []
+
+				})
 			});
 
 			form.patchValue(this.data.questions[index]);
@@ -67,12 +84,32 @@ export class QuestionComponent {
 			idExpectedResult: ['', Validators.required],
 			name: ['', Validators.required],
 			tip: ['', Validators.required],
+			type: ['', Validators.required],
 			dependsOnAnyQuestion: [false],
-			idDependentQuestion: ['']
+			hasDataSource: [false],
+			idDependentQuestion: [''],
+			config: this.formBuilder.group({
+				minCharacters: [],
+				maxCharacters: [],
+				maxValue: [],
+				minValue: []
+			})
 		});
 	}
 
-	deleteQuestion(index: number) {
+	dependsOnAnyQuestion(index: number): boolean {
+		return this.questionForms[index].controls["dependsOnAnyQuestion"].value;
+	}
+
+	getQuestions(index: number): Question[] {
+		return this.data.questions.filter(value => this.data.questions.indexOf(value) != index);
+	}
+
+	isType(index: number, type: string): boolean {
+		return this.questionForms[index].controls["type"].value === type;
+	}
+
+	deleteQuestion(index: number): void {
 		this.data.questions.splice(index, 1);
 	}
 

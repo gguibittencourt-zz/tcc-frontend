@@ -4,8 +4,11 @@
 	private _idProcess: string;
 	private _name: string;
 	private _tip: string;
+	private _type: string;
 	private _dependsOnAnyQuestion: boolean;
 	private _idDependentQuestion: string;
+	private _hasDataSource: boolean;
+	private _config: any;
 
 	get idQuestion(): string {
 		return this._idQuestion;
@@ -47,6 +50,14 @@
 		this._tip = value;
 	}
 
+	get type(): string {
+		return this._type;
+	}
+
+	set type(value: string) {
+		this._type = value;
+	}
+
 	get dependsOnAnyQuestion(): boolean {
 		return this._dependsOnAnyQuestion;
 	}
@@ -62,5 +73,22 @@
 
 	set idDependentQuestion(value: string) {
 		this._idDependentQuestion = value;
+
+	}
+
+	get hasDataSource(): boolean {
+		return this._hasDataSource;
+	}
+
+	set hasDataSource(value: boolean) {
+		this._hasDataSource = value;
+	}
+
+	get config(): any {
+		return this._config;
+	}
+
+	set config(value: any) {
+		this._config = value;
 	}
 }
