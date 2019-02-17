@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {first} from 'rxjs/operators';
 
-import {AlertService, UserService} from '../_services';
+import {AlertService, AuthenticationService, UserService} from '../_services';
 import {User} from "../_models";
 
 @Component({templateUrl: 'user.component.html'})
@@ -19,6 +19,7 @@ export class UserComponent implements OnInit {
 		private router: Router,
 		private route: ActivatedRoute,
 		private userService: UserService,
+		private authenticationService: AuthenticationService,
 		private alertService: AlertService) {
 	}
 
@@ -52,17 +53,32 @@ export class UserComponent implements OnInit {
 		}
 
 		this.loading = true;
-		this.userService.register(this.userForm.value)
-			.pipe(first())
-			.subscribe(
-				data => {
-					this.alertService.success('Registration successful', true);
-					this.router.navigate(['/login']);
-				},
-				error => {
-					this.alertService.error(error.error);
-					this.loading = false;
-				});
+		if (this.idUser) {
+			this.userService.update(this.userForm.value)
+				.pipe(first())
+				.subscribe(
+					data => {
+						this.alertService.success('Update successful', true);
+						this.authenticationService.setUser(this.userForm.value);
+						this.router.navigate(['/home']);
+					},
+					error => {
+						this.alertService.error(error.error);
+						this.loading = false;
+					});
+		} else {
+			this.userService.register(this.userForm.value)
+				.pipe(first())
+				.subscribe(
+					data => {
+						this.alertService.success('Registration successful', true);
+						this.router.navigate(['/login']);
+					},
+					error => {
+						this.alertService.error(error.error);
+						this.loading = false;
+					});
+		}
 	}
 
 	get f() {
