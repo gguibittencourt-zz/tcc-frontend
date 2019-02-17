@@ -1,9 +1,10 @@
 ﻿import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {first} from 'rxjs/operators';
 
 import {AlertService, UserService} from '../_services';
+import {User} from "../_models";
 
 @Component({templateUrl: 'user.component.html'})
 export class UserComponent implements OnInit {
@@ -11,10 +12,12 @@ export class UserComponent implements OnInit {
 	loading = false;
 	submitted = false;
 	roles: string[] = [];
+	private _idUser: number;
 
 	constructor(
 		private formBuilder: FormBuilder,
 		private router: Router,
+		private route: ActivatedRoute,
 		private userService: UserService,
 		private alertService: AlertService) {
 	}
@@ -23,22 +26,27 @@ export class UserComponent implements OnInit {
 		this.roles = ['ADM', 'USER'];
 
 		this.userForm = this.formBuilder.group({
+			idUser: [],
+			idCompany: [],
 			name: ['', Validators.required],
 			username: ['', Validators.required],
 			password: ['', [Validators.required, Validators.minLength(6)]],
 			role: ['', [Validators.required, Validators.maxLength(5)]]
 		});
-	}
 
-	// convenience getter for easy access to form fields
-	get f() {
-		return this.userForm.controls;
+		this.route.params.subscribe(params => {
+			this.idUser = params['idUser'];
+			if (this.idUser) {
+				this.userService.get(this.idUser).subscribe((data: User) => {
+					this.userForm.setValue(data);
+				});
+			}
+		});
 	}
 
 	onSubmit() {
 		this.submitted = true;
 
-		// stop here if form is invalid
 		if (this.userForm.invalid) {
 			return;
 		}
@@ -55,5 +63,17 @@ export class UserComponent implements OnInit {
 					this.alertService.error(error.error);
 					this.loading = false;
 				});
+	}
+
+	get f() {
+		return this.userForm.controls;
+	}
+
+	get idUser(): number {
+		return this._idUser;
+	}
+
+	set idUser(value: number) {
+		this._idUser = value;
 	}
 }

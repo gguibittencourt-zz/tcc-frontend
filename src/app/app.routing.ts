@@ -12,6 +12,7 @@ const appRoutes: Routes = [
 	{path: '', component: HomeComponent, canActivate: [AuthGuard]},
 	{path: 'login', component: LoginComponent},
 	{path: 'user', component: UserComponent},
+	{path: 'user/:idUser', component: UserComponent, canActivate:[AuthGuard]},
 	{path: 'company/:idCompany', component: CompanyComponent, canActivate: [AuthGuard]},
 	{path: 'reference-model', component: ListReferenceModelComponent, canActivate: [AuthGuard]},
 	{path: 'reference-model/register', component: RegisterReferenceModelComponent, canActivate: [AuthGuard]},

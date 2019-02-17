@@ -33,6 +33,7 @@ import {ListMeasurementFrameworkComponent, RegisterMeasurementFrameworkComponent
 import {ExpectedResultComponent} from "./_directives/expected-result";
 import {TreeNodeComponent} from "./_directives/tree-node";
 import {QuestionComponent} from "./_directives/question";
+import {LoadingComponent} from "./_directives/loading";
 
 @NgModule({
 	imports: [
@@ -60,7 +61,8 @@ import {QuestionComponent} from "./_directives/question";
 		RegisterMeasurementFrameworkComponent,
 		ExpectedResultComponent,
 		TreeNodeComponent,
-		QuestionComponent
+		QuestionComponent,
+		LoadingComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

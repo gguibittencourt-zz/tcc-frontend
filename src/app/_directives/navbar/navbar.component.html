@@ -1,17 +1,40 @@
 ﻿<div *ngIf="isLoggedIn$ && isUserIn | async">
-	<mat-toolbar>
+	<mat-toolbar class="col-md-12">
 		<button mat-icon-button (click)="snav.toggle()"><i class="fa fa-bars"></i></button>
-		<mat-sidenav-container>
-			<mat-sidenav #snav [fixedTopGap]="40" [fixedBottomGap]="620"  [fixedInViewport]="0">
-				<mat-nav-list>
-					<a mat-list-item [routerLink]="['/company', getUser.idCompany]">Company</a>
-					<a mat-list-item *ngIf="getUser.role === 'ADM'" [routerLink]="['/reference-model']">Reference
-						Model</a>
-					<a mat-list-item *ngIf="getUser.role === 'ADM'" [routerLink]="['/measurement-framework']">Measurement
-						Framework</a>
-					<a mat-list-item (click)="onLogout()">Logout</a>
-				</mat-nav-list>
-			</mat-sidenav>
-		</mat-sidenav-container>
+		<span>Self-Assessment Tool</span>
+		<span class="example-fill-remaining-space"></span>
+		<span>{{getUser.name}}</span>
+		<button mat-icon-button [matMenuTriggerFor]="menu">
+			<i class="fa fa-cog"></i>
+		</button>
+		<mat-menu #menu="matMenu">
+			<button mat-menu-item [routerLink]="['/user', getUser.idUser]">
+				<i class="icon fa fa-user"></i>
+				<span>Edit user</span>
+			</button>
+			<button mat-menu-item (click)="onLogout()">
+				<i class="icon fa fa-sign-out"></i>
+				<span>Logout</span>
+			</button>
+		</mat-menu>
 	</mat-toolbar>
+
+	<mat-sidenav-container>
+		<mat-sidenav #snav [fixedTopGap]="65" [mode]="side" [fixedInViewport]="true">
+			<mat-nav-list>
+				<button mat-menu-item (click)="snav.close()" [routerLink]="['/company', getUser.idCompany]">
+					<i class="icon fa fa-building"></i>
+					<span>Company</span>
+				</button>
+				<button mat-menu-item (click)="snav.close()" *ngIf="getUser.role === 'ADM'"
+						[routerLink]="['/reference-model']">Reference
+					Model
+				</button>
+				<button mat-menu-item (click)="snav.close()" *ngIf="getUser.role === 'ADM'"
+						[routerLink]="['/measurement-framework']">Measurement
+					Framework
+				</button>
+			</mat-nav-list>
+		</mat-sidenav>
+	</mat-sidenav-container>
 </div>
