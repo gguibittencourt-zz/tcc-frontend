@@ -1,4 +1,6 @@
-﻿export class Question {
+﻿import {DependentValue} from "./dependent-value";
+
+export class Question {
 	private _idQuestion: string;
 	private _idExpectedResult: string;
 	private _idProcess: string;
@@ -7,6 +9,7 @@
 	private _type: string;
 	private _dependsOnAnyQuestion: boolean;
 	private _idDependentQuestion: string;
+	private _dependentValue: DependentValue;
 	private _hasDataSource: boolean;
 	private _config: any;
 
@@ -90,5 +93,14 @@
 
 	set config(value: any) {
 		this._config = value;
+	}
+
+
+	get dependentValue(): DependentValue {
+		return this._dependentValue;
+	}
+
+	set dependentValue(value: DependentValue) {
+		this._dependentValue = value;
 	}
 }

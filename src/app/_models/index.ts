@@ -7,4 +7,5 @@ export * from './measurement-framework';
 export * from './expected-result';
 export * from './question';
 export * from './tree-node';
-export * from './mat-dialog-data'
+export * from './mat-dialog-data';
+export * from './dependent-value';

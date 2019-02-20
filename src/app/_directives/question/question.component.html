@@ -49,7 +49,7 @@
 										<mat-option value="numeric">Numeric</mat-option>
 										<mat-option value="text">Text</mat-option>
 										<mat-option value="scale">Scale</mat-option>
-										<mat-option value="choice">Choice</mat-option>
+										<mat-option value="boolean">Boolean</mat-option>
 									</mat-select>
 								</mat-form-field>
 
@@ -102,15 +102,40 @@
 								<mat-slide-toggle class="col-md-12" formControlName="dependsOnAnyQuestion"
 												  labelPosition="before">Depends on any question?
 								</mat-slide-toggle>
-								<mat-form-field class="col-md-6" *ngIf="dependsOnAnyQuestion(i)">
-									<mat-select placeholder="Dependent Question" formControlName="idDependentQuestion"
-												[ngClass]="{ 'is-invalid': submitted && f.idDependentQuestion.errors }">
-										<mat-option *ngFor="let question of getQuestions(i)"
-													[value]="question.idQuestion">
-											{{question.name}}
-										</mat-option>
-									</mat-select>
-								</mat-form-field>
+								<div *ngIf="dependsOnAnyQuestion(i)">
+									<mat-form-field class="col-md-6">
+										<mat-select placeholder="Dependent Question"
+													formControlName="idDependentQuestion"
+													(selectionChange)="doChangeValue($event)"
+													[ngClass]="{ 'is-invalid': submitted && f.idDependentQuestion.errors }">
+											<mat-option *ngFor="let question of getQuestions(i)"
+														[value]="question.idQuestion">
+												{{question.name}}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+									<mat-form-field class="col-md-6">
+										<div formGroupName="dependentValue">
+											<mat-select placeholder="Dependent Value" formControlName="id"
+														[ngClass]="{ 'is-invalid': submitted && f.dependentValue.errors }">
+												<mat-option *ngFor="let dependentValue of dependentValueByQuestion"
+															[value]="dependentValue.id">
+													<span>{{dependentValue.title}}</span>
+													<i *ngIf="dependentValue.id === 'greaterThanEqual'"> &ge;</i>
+													<i *ngIf="dependentValue.id === 'lessThanEqual'"> &le;</i>
+												</mat-option>
+											</mat-select>
+										</div>
+									</mat-form-field>
+									<mat-form-field class="col-md-6 col-md" *ngIf="hasInputValue(i)">
+										<div formGroupName="dependentValue">
+											<input matInput formControlName="value"
+												   (change)="formChange(i)"
+												   type="number"
+												   placeholder="Value"/>
+										</div>
+									</mat-form-field>
+								</div>
 								<mat-slide-toggle class="col-md-12" formControlName="hasDataSource"
 												  labelPosition="before">Has data source?
 								</mat-slide-toggle>
