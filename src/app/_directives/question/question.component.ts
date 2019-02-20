@@ -2,7 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Guid} from "guid-typescript";
 import {MAT_DIALOG_DATA, MatDialogRef, MatSelectChange} from "@angular/material";
-import {MatDialogData, Question, DependentValue} from "../../_models";
+import {DependentValue, MatDialogData, Question} from "../../_models";
 
 @Component({
 	selector: 'question',
@@ -140,14 +140,20 @@ export class QuestionComponent {
 					this.newDependentValue("lessThanEqual", "Less Than Equal", 0),
 				];
 			} else {
-
+				this.dependentValueByQuestion = [
+					this.newDependentValue("contains", "Contains", ""),
+					this.newDependentValue("equal", "Equal", ""),
+				];
 			}
+		} else {
+			this.dependentValueByQuestion = [];
 		}
 	}
 
 	hasInputValue(index: number) {
 		let value = this.questionForms[index].controls["dependentValue"].value;
-		return value != null && (value.id === "lessThanEqual" || value.id === "greaterThanEqual");
+		return value != null && (value.id === "lessThanEqual" || value.id === "greaterThanEqual"
+			|| value.id === "equal" || value.id === "contains");
 	}
 
 	private newDependentValue(id: string, title: string, value: any): DependentValue {
