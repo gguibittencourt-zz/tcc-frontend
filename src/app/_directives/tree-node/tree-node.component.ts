@@ -42,7 +42,7 @@ export class TreeNodeComponent implements OnInit {
 	openDialog(node: TreeNode): void {
 		let data = new MatDialogData();
 		data.node = node;
-		data.questions = isEmpty(this.questions) ?  [] : cloneDeep(this.questions);
+		data.questions = isEmpty(this.questions) ?  [] : cloneDeep(this.getQuestionsByProcess(node.idTreeNode));
 		const dialogRef = this.dialog.open(QuestionComponent, {
 			width: '800px',
 			data: data
@@ -54,6 +54,10 @@ export class TreeNodeComponent implements OnInit {
 				this.onConfirmQuestions.emit(this.questions);
 			}
 		});
+	}
+
+	getQuestionsByProcess(idProcess: string) {
+		return this.questions.filter(value => value.idProcess === idProcess);
 	}
 
 	hasChild = (_: number, node: TreeNode) => !!node.children && node.children.length > 0;

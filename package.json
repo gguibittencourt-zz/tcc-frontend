@@ -1,5 +1,5 @@
 {
-  "name": "angular-6-login",
+  "name": "tcc-frontend",
   "version": "1.0.0",
   "scripts": {
     "build": "webpack --mode production",
@@ -54,5 +54,17 @@
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.14"
-  }
+  },
+  "main": "webpack.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gguibittencourt/tcc-frontend.git"
+  },
+  "author": "Guilherme Bittencourt da Silva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gguibittencourt/tcc-frontend/issues"
+  },
+  "homepage": "https://github.com/gguibittencourt/tcc-frontend#readme",
+  "description": ""
 }

@@ -3,9 +3,9 @@
 		<li class="mat-tree-node">
 			<button mat-icon-button disabled></button>
 			{{node.name}}
-			<a mat-raised-button (click)="openDialog(node)"
-			   class="btn btn-outline-info ">
-				Questions: {{questions ? questions.length : 0}}
+			<a mat-flat-button (click)="openDialog(node)"
+			   class="btn btn-outline-info btn-sm">
+				Questions: {{questions ? getQuestionsByProcess(node.idTreeNode).length : 0}}
 			</a>
 		</li>
 	</mat-tree-node>
