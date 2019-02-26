@@ -44,7 +44,8 @@ export class TreeNodeComponent implements OnInit {
 		data.node = node;
 		data.questions = isEmpty(this.questions) ?  [] : cloneDeep(this.getQuestionsByProcess(node.idTreeNode));
 		const dialogRef = this.dialog.open(QuestionComponent, {
-			width: '800px',
+			height: '600px',
+			width: '1000px',
 			data: data
 		});
 

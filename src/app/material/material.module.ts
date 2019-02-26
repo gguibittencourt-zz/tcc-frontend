@@ -17,7 +17,7 @@ import {
 	MatToolbarModule,
 	MatMenuModule,
 	MatStepperModule,
-	MatTreeModule, MatCheckboxModule, MatSlideToggleModule, MatProgressSpinnerModule
+	MatTreeModule, MatCheckboxModule, MatSlideToggleModule, MatProgressSpinnerModule, MatPaginatorModule
 } from '@angular/material';
 
 @NgModule({
@@ -44,7 +44,8 @@ import {
 		MatMenuModule,
 		MatProgressSpinnerModule,
 		MatStepperModule,
-		MatTreeModule
+		MatTreeModule,
+		MatPaginatorModule
 	],
 })
 export class CustomMaterialModule {

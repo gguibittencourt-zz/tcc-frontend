@@ -1,19 +1,24 @@
-﻿import {Component, OnInit} from '@angular/core';
+﻿import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {AlertService, ReferenceModelService} from '../_services';
 import {ReferenceModel} from "../_models";
-import {MatDialog, MatTableDataSource} from "@angular/material";
+import {MatDialog, MatPaginator, MatTableDataSource} from "@angular/material";
 import {ConfirmDialogComponent} from "../_directives/confirm-dialog";
 import {DialogData} from "../_models/dialog-data";
 
-@Component({templateUrl: './list-reference-model.component.html'})
+@Component({
+	templateUrl: './list-reference-model.component.html',
+	styleUrls: ['./list-reference-model.component.scss']
+})
 export class ListReferenceModelComponent implements OnInit {
 
 	loading = false;
 	referenceModels: Array<ReferenceModel> = [];
 	displayedColumns: string[] = ['name', 'actions'];
 	dataSource = new MatTableDataSource();
+
+	@ViewChild(MatPaginator) paginator: MatPaginator;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -37,6 +42,7 @@ export class ListReferenceModelComponent implements OnInit {
 			this.referenceModels = data as Array<ReferenceModel>;
 			this.dataSource = new MatTableDataSource(this.referenceModels);
 			this.loading = false;
+			this.dataSource.paginator = this.paginator;
 		});
 	}
 
@@ -48,7 +54,7 @@ export class ListReferenceModelComponent implements OnInit {
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
-			if(result) {
+			if (result) {
 				this.delete(referenceModel);
 			}
 		});

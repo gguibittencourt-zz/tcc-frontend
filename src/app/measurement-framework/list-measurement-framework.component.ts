@@ -1,19 +1,24 @@
-﻿import {Component, OnInit} from '@angular/core';
+﻿import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {AlertService, MeasurementFrameworkService} from '../_services';
 import {MeasurementFramework} from "../_models";
-import {MatDialog, MatTableDataSource} from "@angular/material";
+import {MatDialog, MatPaginator, MatTableDataSource} from "@angular/material";
 import {ConfirmDialogComponent} from "../_directives/confirm-dialog";
 import {DialogData} from "../_models/dialog-data";
 
-@Component({templateUrl: './list-measurement-framework.component.html'})
+@Component({
+	templateUrl: './list-measurement-framework.component.html',
+	styleUrls: ['./list-measurement-framework.component.scss']
+})
 export class ListMeasurementFrameworkComponent implements OnInit {
 
 	loading = false;
 	measurementFrameworks: Array<MeasurementFramework> = [];
 	displayedColumns: string[] = ['name', 'actions'];
 	dataSource = new MatTableDataSource();
+
+	@ViewChild(MatPaginator) paginator: MatPaginator;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -37,6 +42,7 @@ export class ListMeasurementFrameworkComponent implements OnInit {
 			this.measurementFrameworks = data as Array<MeasurementFramework>;
 			this.dataSource = new MatTableDataSource(this.measurementFrameworks);
 			this.loading = false;
+			this.dataSource.paginator = this.paginator;
 		});
 	}
 
@@ -48,7 +54,7 @@ export class ListMeasurementFrameworkComponent implements OnInit {
 		});
 
 		dialogRef.afterClosed().subscribe(result => {
-			if(result) {
+			if (result) {
 				this.delete(measurementFramework);
 			}
 		});

@@ -150,10 +150,24 @@ export class QuestionComponent {
 		}
 	}
 
-	hasInputValue(index: number) {
+	hasInputValueNumeric(index: number) {
 		let value = this.questionForms[index].controls["dependentValue"].value;
-		return value != null && (value.id === "lessThanEqual" || value.id === "greaterThanEqual"
-			|| value.id === "equal" || value.id === "contains");
+		return value != null && (value.id === "lessThanEqual" || value.id === "greaterThanEqual");
+	}
+
+	hasInputValueText(index: number) {
+		let value = this.questionForms[index].controls["dependentValue"].value;
+		return value != null && (value.id === "equal" || value.id === "contains");
+	}
+
+	getMinLength(index: number) {
+		let value = this.questionForms[index].controls["config"].value;
+		return value.minCharacters;
+	}
+
+	getMaxLength(index: number) {
+		let value = this.questionForms[index].controls["config"].value;
+		return value.maxCharacters;
 	}
 
 	private newDependentValue(id: string, title: string, value: any): DependentValue {

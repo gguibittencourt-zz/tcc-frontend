@@ -100,7 +100,6 @@
 									</div>
 								</mat-form-field>
 								<mat-slide-toggle class="col-md-12" formControlName="dependsOnAnyQuestion"
-												  [disabled]="getQuestions(i).length"
 												  labelPosition="before">Depends on any question?
 								</mat-slide-toggle>
 								<div *ngIf="dependsOnAnyQuestion(i)">
@@ -128,11 +127,21 @@
 											</mat-select>
 										</div>
 									</mat-form-field>
-									<mat-form-field class="col-md-6 col-md" *ngIf="hasInputValue(i)">
+									<mat-form-field class="col-md-6 col-md" *ngIf="hasInputValueNumeric(i)">
 										<div formGroupName="dependentValue">
 											<input matInput formControlName="value"
 												   (change)="formChange(i)"
 												   type="number"
+												   placeholder="Value"/>
+										</div>
+									</mat-form-field>
+									<mat-form-field class="col-md-6 col-md" *ngIf="hasInputValueText(i)">
+										<div formGroupName="dependentValue">
+											<input matInput formControlName="value"
+												   (change)="formChange(i)"
+												   [minlength]="getMinLength(i)"
+												   [maxlength]=""
+												   type="text"
 												   placeholder="Value"/>
 										</div>
 									</mat-form-field>
