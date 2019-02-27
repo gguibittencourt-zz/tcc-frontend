@@ -1,49 +1,57 @@
-.process {
+.dialog-process {
 
-	border: 1px solid #00000008;
-	background-color: #f2f2f2;
-	box-shadow: 0 2px 2px #0000003d, 0 0 2px #0000001f;
+	height: 470px;
 
-	.process-header {
+	.process {
 
-		.process-header-title {
-			align-content: center;
-			align-items: center;
-			display: flex;
-			justify-content: center;
-			padding: 8px 20px;
+		border: 1px solid #00000008;
+		background-color: #f2f2f2;
+		box-shadow: 0 2px 2px #0000003d, 0 0 2px #0000001f;
+		min-height: 470px;
 
-			.process-header-title-spacer {
-				flex: 1 1 auto;
-				color: #0000008a;
+		.process-header {
+
+			.process-header-title {
+				align-content: center;
+				align-items: center;
+				display: flex;
+				justify-content: center;
+				padding: 8px 20px;
+
+				.process-header-title-spacer {
+					flex: 1 1 auto;
+					color: #0000008a;
+				}
 			}
 		}
-	}
 
-	.process-body {
-		background-color: #fafafa;
-		padding: 20px;
+		.process-body {
+			background-color: #fafafa;
+			padding: 20px;
+			min-height: 410px;
 
-		.padding-top {
-			padding-top: 20px;
-		}
-		.action-row {
-			padding-top: 10px;
-			padding-bottom: 0;
-		}
+			.padding-top {
+				padding-top: 20px;
+			}
 
-		.not-active {
-			pointer-events: none;
-			cursor: default;
-		}
+			.action-row {
+				padding-top: 10px;
+				padding-bottom: 0;
+			}
 
-		.active {
-			pointer-events: all !important;
-			cursor: pointer;
-		}
+			.not-active {
+				pointer-events: none;
+				cursor: default;
+			}
 
-		.confirm-button {
-			margin-right: 5px;
+			.active {
+				pointer-events: all !important;
+				cursor: pointer;
+			}
+
+			.confirm-button {
+				margin-right: 5px;
+			}
 		}
 	}
 }
