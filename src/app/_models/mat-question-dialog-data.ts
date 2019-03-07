@@ -1,7 +1,7 @@
 ﻿import {Question} from "./question";
 import {TreeNode} from "./tree-node";
 
-export class MatDialogData {
+export class MatQuestionDialogData {
 
 	private _questions: Question[];
 	private _node: TreeNode;

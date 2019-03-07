@@ -4,7 +4,7 @@ export class TreeNode {
     private _idTreeNode: string;
     private _name: string;
     private _children?: TreeNode[];
-    private _expectedResults: ExpectedResult[];
+    private _expectedResults?: ExpectedResult[];
 
 	get idTreeNode(): string {
 		return this._idTreeNode;

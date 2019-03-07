@@ -31,9 +31,10 @@ import {ProcessComponent} from "./_directives/process";
 import {ConfirmDialogComponent} from "./_directives/confirm-dialog";
 import {ListMeasurementFrameworkComponent, RegisterMeasurementFrameworkComponent} from "./measurement-framework";
 import {ExpectedResultComponent} from "./_directives/expected-result";
-import {TreeNodeComponent} from "./_directives/tree-node";
+import {TreeNodeQuestionsComponent} from "./_directives/tree-node-questions";
 import {QuestionComponent} from "./_directives/question";
 import {LoadingComponent} from "./_directives/loading";
+import {TreeNodeMetricsComponent} from "./_directives/tree-node-metrics";
 
 @NgModule({
 	imports: [
@@ -60,9 +61,10 @@ import {LoadingComponent} from "./_directives/loading";
 		ListMeasurementFrameworkComponent,
 		RegisterMeasurementFrameworkComponent,
 		ExpectedResultComponent,
-		TreeNodeComponent,
+		TreeNodeQuestionsComponent,
+		TreeNodeMetricsComponent,
 		QuestionComponent,
-		LoadingComponent
+		LoadingComponent,
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

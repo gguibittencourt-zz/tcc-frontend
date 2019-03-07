@@ -2,7 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Guid} from "guid-typescript";
 import {MAT_DIALOG_DATA, MatDialogRef, MatSelectChange} from "@angular/material";
-import {DependentValue, MatDialogData, Question} from "../../_models";
+import {DependentValue, MatQuestionDialogData, Question} from "../../_models";
 
 @Component({
 	selector: 'question',
@@ -16,7 +16,7 @@ export class QuestionComponent {
 	private _dependentValueByQuestion: any[] = [];
 
 	constructor(private _dialogRef: MatDialogRef<QuestionComponent>,
-				@Inject(MAT_DIALOG_DATA) public data: MatDialogData,
+				@Inject(MAT_DIALOG_DATA) public data: MatQuestionDialogData,
 				private formBuilder: FormBuilder) {
 
 		this.questionForms[0] = this.formBuilder.group({

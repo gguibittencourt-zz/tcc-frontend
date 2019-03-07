@@ -36,10 +36,24 @@
 		<ng-template matStepLabel>Fill out questions</ng-template>
 
 		<form [formGroup]="measurementFrameworkForm">
-			<tree-node *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
-					   [questions]="measurementFramework.questions"
-					   (onConfirmQuestions)="confirmQuestions($event)">
-			</tree-node>
+			<tree-node-questions *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
+								 [questions]="measurementFramework.questions"
+								 (onConfirmQuestions)="confirmQuestions($event)">
+			</tree-node-questions>
+		</form>
+
+		<div class="form-group">
+			<button mat-button matStepperPrevious>Back</button>
+			<button mat-button matStepperNext>Next</button>
+		</div>
+	</mat-step>
+	<mat-step [stepControl]="measurementFrameworkForm">
+		<ng-template matStepLabel>Fill out metrics</ng-template>
+
+		<form [formGroup]="measurementFrameworkForm">
+			<tree-node-metrics *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
+							   (onConfirmQuestions)="confirmQuestions($event)">
+			</tree-node-metrics>
 		</form>
 
 		<div class="form-group">
