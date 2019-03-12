@@ -5,6 +5,7 @@ export class TreeNode {
     private _name: string;
     private _children?: TreeNode[];
     private _expectedResults?: ExpectedResult[];
+    private _percentage?: number;
 
 	get idTreeNode(): string {
 		return this._idTreeNode;
@@ -36,5 +37,13 @@ export class TreeNode {
 
 	set expectedResults(value: ExpectedResult[]) {
 		this._expectedResults = value;
+	}
+
+	get percentage(): number {
+		return this._percentage;
+	}
+
+	set percentage(value: number) {
+		this._percentage = value;
 	}
 }

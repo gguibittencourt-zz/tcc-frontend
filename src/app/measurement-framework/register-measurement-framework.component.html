@@ -52,7 +52,8 @@
 
 		<form [formGroup]="measurementFrameworkForm">
 			<tree-node-metrics *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
-							   (onConfirmQuestions)="confirmQuestions($event)">
+							   [goals]="measurementFramework.goals"
+							   (onConfirmGoals)="confirmGoals($event)">
 			</tree-node-metrics>
 		</form>
 

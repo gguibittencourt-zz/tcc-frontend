@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import {AlertService, MeasurementFrameworkService, ReferenceModelService} from '../_services';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {MeasurementFramework, Question, ReferenceModel} from "../_models";
+import {Goal, MeasurementFramework, Question, ReferenceModel} from "../_models";
 import {first} from "rxjs/operators";
 import {MatSelectChange} from "@angular/material";
 
@@ -40,7 +40,8 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			idMeasurementFramework: [],
 			name: ['', Validators.required],
 			idReferenceModel: [, Validators.required],
-			questions: [[]]
+			questions: [[]],
+			goals: [[]],
 		});
 
 		this.route.params.subscribe(params => {
@@ -66,6 +67,11 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 	confirmQuestions(questions: Question[]) {
 		this.f["questions"].setValue(questions);
 		this.measurementFramework.questions = questions;
+	}
+
+	confirmGoals(goals: Goal[]) {
+		this.f["goals"].setValue(goals);
+		this.measurementFramework.goals = goals;
 	}
 
 	onSubmit(): void {

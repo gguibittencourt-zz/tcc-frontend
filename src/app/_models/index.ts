@@ -9,3 +9,4 @@ export * from './question';
 export * from './tree-node';
 export * from './mat-question-dialog-data';
 export * from './dependent-value';
+export * from './goal';
