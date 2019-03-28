@@ -3,21 +3,26 @@ import {CommonModule} from '@angular/common';
 import {
 	MatButtonModule,
 	MatCardModule,
+	MatCheckboxModule,
 	MatDialogModule,
 	MatExpansionModule,
 	MatFormFieldModule,
 	MatIconModule,
 	MatInputModule,
 	MatListModule,
+	MatMenuModule,
 	MatNativeDateModule,
+	MatPaginatorModule,
+	MatProgressSpinnerModule,
+	MatRadioModule,
 	MatSelectModule,
-	MatSidenavModule,
+	MatSidenavModule, MatSliderModule,
+	MatSlideToggleModule,
+	MatStepperModule,
 	MatTableModule,
 	MatTabsModule,
 	MatToolbarModule,
-	MatMenuModule,
-	MatStepperModule,
-	MatTreeModule, MatCheckboxModule, MatSlideToggleModule, MatProgressSpinnerModule, MatPaginatorModule
+	MatTreeModule
 } from '@angular/material';
 
 @NgModule({
@@ -45,7 +50,9 @@ import {
 		MatProgressSpinnerModule,
 		MatStepperModule,
 		MatTreeModule,
-		MatPaginatorModule
+		MatPaginatorModule,
+		MatRadioModule,
+		MatSliderModule
 	],
 })
 export class CustomMaterialModule {

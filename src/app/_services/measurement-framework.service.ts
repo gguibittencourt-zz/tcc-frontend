@@ -6,9 +6,13 @@ import {MeasurementFramework} from '../_models';
 export class MeasurementFrameworkService {
     constructor(private http: HttpClient) { }
 
-    get(id: number) {
-        return this.http.get(`${config.apiUrl}/measurement-frameworks/` + id);
-    }
+	get(id: number) {
+		return this.http.get(`${config.apiUrl}/measurement-frameworks/` + id);
+	}
+
+	getByList(idMeasurementFrameworks: number[]) {
+		return this.http.get(`${config.apiUrl}/measurement-frameworks/list/` + idMeasurementFrameworks);
+	}
 
     list() {
 		return this.http.get(`${config.apiUrl}/measurement-frameworks`);

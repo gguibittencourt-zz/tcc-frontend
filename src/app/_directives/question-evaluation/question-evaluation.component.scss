@@ -1,0 +1,25 @@
+.example-section {
+	display: flex;
+	align-content: center;
+	align-items: center;
+	height: 60px;
+}
+
+.mat-slider-horizontal {
+	width: 300px;
+}
+
+.mat-slider-vertical {
+	height: 300px;
+}
+
+.example-radio-group {
+	display: flex;
+	flex-direction: column;
+	margin: 15px 0;
+}
+
+.example-radio-button {
+	margin: 5px;
+}
+

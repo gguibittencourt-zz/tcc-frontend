@@ -10,3 +10,6 @@ export * from './tree-node';
 export * from './mat-question-dialog-data';
 export * from './dependent-value';
 export * from './goal';
+export * from './evaluation';
+export * from './dialog-data';
+export * from './result';

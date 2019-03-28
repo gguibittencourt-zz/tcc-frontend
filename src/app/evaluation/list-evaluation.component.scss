@@ -1,0 +1,15 @@
+table {
+	width: 100%;
+
+	.column {
+		width: 80%;
+	}
+
+	.column-action {
+		padding-left: 70px !important;
+	}
+}
+
+.mat-paginator {
+	display: inline !important;
+}

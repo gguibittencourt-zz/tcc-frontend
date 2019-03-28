@@ -54,10 +54,10 @@
 								</mat-form-field>
 
 								<mat-form-field class="col-md-12">
-									<mat-select placeholder="Expected Result" formControlName="idReference"
-												[ngClass]="{ 'is-invalid': submitted && f.idReference.errors }">
+									<mat-select placeholder="Expected Result" formControlName="idExpectedResult"
+												[ngClass]="{ 'is-invalid': submitted && f.idExpectedResult.errors }">
 										<mat-option *ngFor="let expectedResult of data.node.expectedResults"
-													[value]="expectedResult.idReference">
+													[value]="expectedResult.idExpectedResult">
 											{{expectedResult.name}}
 										</mat-option>
 									</mat-select>

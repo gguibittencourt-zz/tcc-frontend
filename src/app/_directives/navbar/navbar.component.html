@@ -35,6 +35,9 @@
 					Framework
 				</button>
 				<button mat-menu-item (click)="snav.close()" *ngIf="getUser.role === 'ADM'"
+						[routerLink]="['/evaluation']">Evaluation
+				</button>
+				<button mat-menu-item (click)="snav.close()" *ngIf="getUser.role === 'ADM'"
 						[routerLink]="['/data-source']">
 					<i class="icon fa fa-database"></i>
 					<span>Data Source</span>

@@ -3,7 +3,7 @@
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"lib": [
-			"es2015",
+			"es2016",
 			"dom"
 		],
 		"module": "commonjs",
@@ -11,6 +11,6 @@
 		"noImplicitAny": true,
 		"sourceMap": true,
 		"suppressImplicitAnyIndexErrors": true,
-		"target": "es5"
+		"target": "es6"
 	}
 }

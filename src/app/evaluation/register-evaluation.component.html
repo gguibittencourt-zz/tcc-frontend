@@ -1,0 +1,63 @@
+﻿<h2>Evaluation</h2>
+
+<mat-horizontal-stepper [linear]="true" #stepper>
+	<mat-step [stepControl]="evaluationForm">
+		<form [formGroup]="evaluationForm">
+			<ng-template matStepLabel>Fill out name and measurement framework</ng-template>
+			<div class="form-group">
+				<mat-form-field class="full-width-input">
+					<mat-select placeholder="Measurement Framework" formControlName="idMeasurementFramework"
+								(selectionChange)="changeMeasurementFramework($event)"
+								[ngClass]="{ 'is-invalid': submitted && f.idMeasurementFramework.errors }">
+						<mat-option *ngFor="let measurementFramework of measurementFrameworks"
+									[value]="measurementFramework.idMeasurementFramework">
+							{{measurementFramework.name}}
+						</mat-option>
+					</mat-select>
+
+				</mat-form-field>
+				<div *ngIf="submitted && f.idMeasurementFramework.errors" class="invalid-feedback">
+					<div *ngIf="f.idMeasurementFramework.errors.required">Measurement Framework is required</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<button mat-button matStepperNext>Next</button>
+			</div>
+		</form>
+	</mat-step>
+	<mat-step [stepControl]="evaluationForm">
+		<form [formGroup]="evaluationForm">
+			<ng-template matStepLabel>Fill out questions</ng-template>
+			<div class="form-group" *ngIf="measurementFramework && referenceModel">
+				<mat-card *ngFor="let knowledgeArea of referenceModel.knowledgeAreas">
+					<mat-card-title>
+						<h4>{{knowledgeArea.name}}</h4>
+					</mat-card-title>
+					<mat-card-content>
+						<question-evaluation [questions]="getQuestionsByKnowledgeArea(knowledgeArea)"
+											 [results]="results">
+						</question-evaluation>
+					</mat-card-content>
+				</mat-card>
+			</div>
+			<div class="form-group">
+				<button mat-button matStepperPrevious>Back</button>
+				<button mat-button matStepperNext>Next</button>
+			</div>
+		</form>
+	</mat-step>
+	<mat-step [stepControl]="evaluationForm">
+		<ng-template matStepLabel>Save</ng-template>
+
+		<div class="form-group">
+			<button mat-button matStepperPrevious>Back</button>
+
+			<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
+					class="btn btn-outline-success save-button">Save
+			</button>
+			<button mat-raised-button [routerLink]="['/evaluation']" class="btn btn-outline-danger">
+				Cancel
+			</button>
+		</div>
+	</mat-step>
+</mat-horizontal-stepper>
