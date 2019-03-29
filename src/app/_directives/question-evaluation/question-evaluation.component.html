@@ -34,10 +34,11 @@
 		</div>
 		<div *ngIf="question.type === 'numeric'">
 			<mat-form-field>
-				<input matInput type="text" [min]="question.config.minValue"
+				<input matInput type="number" [min]="question.config.minValue"
 					   [max]="question.config.maxValue"
 					   formControlName="value"
 					   placeholder="Value"/>
+				<!--TODO fazer min e max value-->
 			</mat-form-field>
 		</div>
 		<div *ngIf="question.type === 'text'">
@@ -47,6 +48,6 @@
 					   [maxlength]="question.config.maxCharacters"/>
 			</mat-form-field>
 		</div>
-		<pre>{{question.config | json}}</pre>
+		<pre>{{questionEvaluationForms[i].value | json}}</pre>
 	</form>
 </div>

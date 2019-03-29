@@ -29,16 +29,18 @@
 		<form [formGroup]="evaluationForm">
 			<ng-template matStepLabel>Fill out questions</ng-template>
 			<div class="form-group" *ngIf="measurementFramework && referenceModel">
-				<mat-card *ngFor="let knowledgeArea of referenceModel.knowledgeAreas">
-					<mat-card-title>
-						<h4>{{knowledgeArea.name}}</h4>
-					</mat-card-title>
-					<mat-card-content>
-						<question-evaluation [questions]="getQuestionsByKnowledgeArea(knowledgeArea)"
-											 [results]="results">
-						</question-evaluation>
-					</mat-card-content>
-				</mat-card>
+				<div *ngFor="let knowledgeArea of referenceModel.knowledgeAreas">
+					<mat-card *ngIf="hasQuestions(knowledgeArea)">
+						<mat-card-title>
+							<h4>{{knowledgeArea.name}}</h4>
+						</mat-card-title>
+						<mat-card-content>
+							<question-evaluation [questions]="getQuestionsByKnowledgeArea(knowledgeArea)"
+												 [results]="results">
+							</question-evaluation>
+						</mat-card-content>
+					</mat-card>
+				</div>
 			</div>
 			<div class="form-group">
 				<button mat-button matStepperPrevious>Back</button>

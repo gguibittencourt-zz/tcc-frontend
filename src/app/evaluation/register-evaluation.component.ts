@@ -1,9 +1,15 @@
 ﻿import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {AlertService, EvaluationService, MeasurementFrameworkService, ReferenceModelService} from '../_services';
+import {
+	AlertService, AuthenticationService,
+	EvaluationService,
+	MeasurementFrameworkService,
+	ReferenceModelService,
+	UserService
+} from '../_services';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Evaluation, KnowledgeArea, MeasurementFramework, Question, ReferenceModel, Result} from "../_models";
+import {Evaluation, KnowledgeArea, MeasurementFramework, Question, ReferenceModel, Result, User} from "../_models";
 import {first} from "rxjs/operators";
 import {MatSelectChange} from "@angular/material";
 
@@ -30,7 +36,8 @@ export class RegisterEvaluationComponent implements OnInit {
 		private evaluationService: EvaluationService,
 		private measurementFrameworkService: MeasurementFrameworkService,
 		private referenceModelService: ReferenceModelService,
-		private alertService: AlertService) {
+		private alertService: AlertService,
+		private authenticationService: AuthenticationService) {
 	}
 
 	ngOnInit(): void {
@@ -42,7 +49,7 @@ export class RegisterEvaluationComponent implements OnInit {
 		this.evaluationForm = this.formBuilder.group({
 			idEvaluation: [],
 			status: [''],
-			idUser: [],
+			idUser: [this.getUser.idUser],
 			idMeasurementFramework: [, Validators.required],
 			date: [],
 		});
@@ -57,6 +64,12 @@ export class RegisterEvaluationComponent implements OnInit {
 			}
 		});
 	}
+	get getUser() : User {
+		let user = null;
+		this.authenticationService.isUserIn.subscribe(currentUser =>  user = currentUser);
+		return user;
+	}
+
 
 	changeMeasurementFramework(event: MatSelectChange): void {
 		this.measurementFramework = this.getMeasurementFramework(event.value);
@@ -69,19 +82,29 @@ export class RegisterEvaluationComponent implements OnInit {
 
 	getReferenceModel(idReferenceModel: number) {
 		this.referenceModelService.get(idReferenceModel).subscribe(value => {
-			this.referenceModel = value as ReferenceModel
+			this.referenceModel = value as ReferenceModel;
+			this.referenceModel.knowledgeAreas.forEach(knowledgeArea => {
+				this.createResults(knowledgeArea);
+			});
 		});
 	}
 
-	getQuestionsByKnowledgeArea(knowledgeArea: KnowledgeArea) {
-		let questions: Question[] = knowledgeArea.processes.map(process => {
-			return this.measurementFramework.questions.filter(question => question.idProcess == process.idProcess);
-		}).reduce((a, b) => a.concat(b), []);
+	private createResults(knowledgeArea: KnowledgeArea) {
+		let questions = this.getQuestionsByKnowledgeArea(knowledgeArea);
 		if (questions.length) {
 			let results: Result[] = questions.map(question => new Result(knowledgeArea.idKnowledgeArea, question.idProcess, question.idQuestion));
 			this.results.push(...results);
 		}
-		return questions;
+	}
+
+	hasQuestions(knowledgeArea: KnowledgeArea): boolean {
+		return knowledgeArea.processes.some(process => this.measurementFramework.questions.some(question => process.idProcess === question.idProcess));
+	}
+
+	getQuestionsByKnowledgeArea(knowledgeArea: KnowledgeArea) {
+		return knowledgeArea.processes.map(process => {
+			return this.measurementFramework.questions.filter(question => question.idProcess == process.idProcess);
+		}).reduce((a, b) => a.concat(b), []);
 	}
 
 	getResultByIdQuestion(idQuestion: string) {

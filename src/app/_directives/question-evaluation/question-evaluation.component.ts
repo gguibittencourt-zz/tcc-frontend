@@ -27,36 +27,15 @@ export class QuestionEvaluationComponent implements OnInit {
 		});
 
 		this.results.forEach((value, index) => {
-			let form = this.formBuilder.group({
-				idResult: [''],
-				idKnowledgeArea: [],
-				idProcess: [''],
-				idQuestion: [''],
-				value: []
+			let result = this.results[index];
+			this.questionEvaluationForms[index] = this.formBuilder.group({
+				idResult: [result.idResult],
+				idKnowledgeArea: [result.idKnowledgeArea],
+				idProcess: [result.idProcess],
+				idQuestion: [result.idQuestion],
+				value: [result.value]
 			});
-
-			form.patchValue(this.results[index]);
-			this.questionEvaluationForms[index] = form;
 		});
-	}
-
-	formatLabel(value: number | null) {
-		if (!value) {
-			return "0";
-		}
-		if (value == 1) {
-			return "\n 1: Strongly Disagree";
-		}
-		if (value == 2) {
-			return "\n 2: Disagree";
-		}
-		if (value == 3) {
-			return "\n 3: No Opinion";
-		}
-		if (value == 4) {
-			return "\n 4: Agree";
-		}
-		return "\n 5: Strongly Agree";
 	}
 
 	get questions(): Question[] {
