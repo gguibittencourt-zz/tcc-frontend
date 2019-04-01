@@ -11,7 +11,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 export class QuestionEvaluationComponent implements OnInit {
 	@Input('questions') private _questions: Question[];
 	@Input('results') private _results: Result[];
-	@Output() onConfirmQuestion: EventEmitter<any> = new EventEmitter();
+	@Output() onConfirmResult: EventEmitter<any> = new EventEmitter();
 	private _questionEvaluationForms: FormGroup[] = [];
 
 	constructor(private formBuilder: FormBuilder) {
@@ -36,6 +36,13 @@ export class QuestionEvaluationComponent implements OnInit {
 				value: [result.value]
 			});
 		});
+	}
+
+	confirmResult(index: number) {
+		let value: Result = this.questionEvaluationForms[index].value;
+		if (value.value) {
+			this.onConfirmResult.emit(value);
+		}
 	}
 
 	get questions(): Question[] {

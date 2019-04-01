@@ -52,6 +52,7 @@ export class RegisterEvaluationComponent implements OnInit {
 			idUser: [this.getUser.idUser],
 			idMeasurementFramework: [, Validators.required],
 			date: [],
+			results: []
 		});
 
 		this.route.params.subscribe(params => {
@@ -69,7 +70,6 @@ export class RegisterEvaluationComponent implements OnInit {
 		this.authenticationService.isUserIn.subscribe(currentUser =>  user = currentUser);
 		return user;
 	}
-
 
 	changeMeasurementFramework(event: MatSelectChange): void {
 		this.measurementFramework = this.getMeasurementFramework(event.value);
@@ -111,12 +111,23 @@ export class RegisterEvaluationComponent implements OnInit {
 		return this.results.find(value => value.idQuestion === idQuestion);
 	}
 
+	confirmResult(result: Result) {
+		this.results.find(value => value.idResult === result.idResult).value = result.value;
+	}
+
+	finishForm(): void {
+		console.log(this.results);
+		this.evaluationForm.get("results").setValue(this.results);
+	}
+
 	onSubmit(): void {
 		this.submitted = true;
 
 		if (this.evaluationForm.invalid) {
 			return;
 		}
+
+		console.log(this.evaluationForm.value);
 
 		this.loading = true;
 

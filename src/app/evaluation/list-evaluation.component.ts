@@ -75,7 +75,7 @@ export class ListEvaluationComponent implements OnInit {
 	}
 
 	listMeasurementFrameworks(evaluations: Evaluation[]): void {
-		let idMeasurementFrameworks = evaluations.map(value => value.idMeasurementFramework);
+		let idMeasurementFrameworks = [...new Set(evaluations.map(value => value.idMeasurementFramework))];
 		if (idMeasurementFrameworks.length) {
 			this.measurementFrameworkService.getByList(idMeasurementFrameworks).subscribe(value => {
 				this.measurementFrameworks = value as Array<MeasurementFramework>;

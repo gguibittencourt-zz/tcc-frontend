@@ -11,7 +11,7 @@ export class MeasurementFrameworkService {
 	}
 
 	getByList(idMeasurementFrameworks: number[]) {
-		return this.http.get(`${config.apiUrl}/measurement-frameworks/list/` + idMeasurementFrameworks);
+		return this.http.post(`${config.apiUrl}/measurement-frameworks/list`, idMeasurementFrameworks);
 	}
 
     list() {

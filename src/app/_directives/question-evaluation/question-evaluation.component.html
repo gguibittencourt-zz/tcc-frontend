@@ -2,7 +2,7 @@
 	<span>{{question.name}}</span>
 	<form [formGroup]="questionEvaluationForms[i]">
 		<div *ngIf="question.type === 'boolean'">
-			<mat-radio-group formControlName="value">
+			<mat-radio-group formControlName="value" (change)="confirmResult(i)">
 				<mat-radio-button value="true" class="padding-right">
 					True
 				</mat-radio-button>
@@ -13,6 +13,7 @@
 		</div>
 		<div *ngIf="question.type === 'scale'">
 			<mat-radio-group formControlName="value"
+							 (change)="confirmResult(i)"
 							 aria-labelledby="example-radio-group-label"
 							 class="example-radio-group">
 				<mat-radio-button class="example-radio-button" value="1">
@@ -36,6 +37,7 @@
 			<mat-form-field>
 				<input matInput type="number" [min]="question.config.minValue"
 					   [max]="question.config.maxValue"
+					   (blur)="confirmResult(i)"
 					   formControlName="value"
 					   placeholder="Value"/>
 				<!--TODO fazer min e max value-->
@@ -43,11 +45,10 @@
 		</div>
 		<div *ngIf="question.type === 'text'">
 			<mat-form-field>
-				<input matInput type="text" formControlName="value"
+				<input matInput type="text" formControlName="value" (blur)="confirmResult(i)"
 					   placeholder="Value" [minlength]="question.config.minCharacters"
 					   [maxlength]="question.config.maxCharacters"/>
 			</mat-form-field>
 		</div>
-		<pre>{{questionEvaluationForms[i].value | json}}</pre>
 	</form>
 </div>
