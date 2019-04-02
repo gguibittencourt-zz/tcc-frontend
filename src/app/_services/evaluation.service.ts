@@ -14,12 +14,12 @@ export class EvaluationService {
 		return this.http.get(`${config.apiUrl}/evaluations`);
 	}
 
-	register(evalutaion: Evaluation) {
-		return this.http.post(`${config.apiUrl}/evaluations`, evalutaion);
+	register(evaluation: Evaluation) {
+		return this.http.post(`${config.apiUrl}/evaluations`, evaluation);
 	}
 
-    update(evalutaion: Evaluation) {
-		return this.http.put(`${config.apiUrl}/evaluations/` + evalutaion.idEvaluation, evalutaion);
+    update(evaluation: Evaluation) {
+		return this.http.put(`${config.apiUrl}/evaluations/` + evaluation.idEvaluation, evaluation);
     }
 
 	delete(idEvaluation: number) {

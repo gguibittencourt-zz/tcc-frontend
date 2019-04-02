@@ -59,20 +59,23 @@ export class RegisterEvaluationComponent implements OnInit {
 			this.idEvaluation = params['idEvaluation'];
 			if (this.idEvaluation) {
 				this.evaluationService.get(this.idEvaluation).subscribe((data: Evaluation) => {
-					this.evaluationForm.setValue(data);
+					this.evaluationForm.patchValue(data);
 					this.evaluation = data;
+					this.results = this.evaluation.results;
+					this.changeMeasurementFramework(this.evaluation.idMeasurementFramework);
 				});
 			}
 		});
 	}
-	get getUser() : User {
+
+	get getUser(): User {
 		let user = null;
-		this.authenticationService.isUserIn.subscribe(currentUser =>  user = currentUser);
+		this.authenticationService.isUserIn.subscribe(currentUser => user = currentUser);
 		return user;
 	}
 
-	changeMeasurementFramework(event: MatSelectChange): void {
-		this.measurementFramework = this.getMeasurementFramework(event.value);
+	changeMeasurementFramework(idMeasurementFramework: number): void {
+		this.measurementFramework = this.getMeasurementFramework(idMeasurementFramework);
 		this.getReferenceModel(this.measurementFramework.idReferenceModel);
 	}
 
@@ -92,9 +95,14 @@ export class RegisterEvaluationComponent implements OnInit {
 	private createResults(knowledgeArea: KnowledgeArea) {
 		let questions = this.getQuestionsByKnowledgeArea(knowledgeArea);
 		if (questions.length) {
-			let results: Result[] = questions.map(question => new Result(knowledgeArea.idKnowledgeArea, question.idProcess, question.idQuestion));
+			let results: Result[] = questions.filter(value => !this.existResult(knowledgeArea.idKnowledgeArea, value.idProcess, value.idQuestion))
+				.map(question => new Result(knowledgeArea.idKnowledgeArea, question.idProcess, question.idQuestion));
 			this.results.push(...results);
 		}
+	}
+
+	private existResult(idKnowledgeArea: number, idProcess: string, idQuestion: string): boolean {
+		return this.results.some(value => value.idKnowledgeArea == idKnowledgeArea && value.idProcess == idProcess && value.idQuestion == idQuestion);
 	}
 
 	hasQuestions(knowledgeArea: KnowledgeArea): boolean {
@@ -127,8 +135,6 @@ export class RegisterEvaluationComponent implements OnInit {
 			return;
 		}
 
-		console.log(this.evaluationForm.value);
-
 		this.loading = true;
 
 		if (this.idEvaluation) {
@@ -156,6 +162,10 @@ export class RegisterEvaluationComponent implements OnInit {
 						this.loading = false;
 					});
 		}
+	}
+
+	finish(): void {
+
 	}
 
 	get f() {
