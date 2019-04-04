@@ -1,9 +1,12 @@
-﻿export class Evaluation {
+﻿import {Result} from "./result";
+
+export class Evaluation {
 	private _idEvaluation: number;
 	private _status: string;
 	private _date: Date;
 	private _idUser: number;
 	private _idMeasurementFramework: number;
+	private _results: Result[];
 
 	get idEvaluation(): number {
 		return this._idEvaluation;
@@ -43,5 +46,13 @@
 
 	set idMeasurementFramework(value: number) {
 		this._idMeasurementFramework = value;
+	}
+
+	get results(): Result[] {
+		return this._results;
+	}
+
+	set results(value: Result[]) {
+		this._results = value;
 	}
 }
