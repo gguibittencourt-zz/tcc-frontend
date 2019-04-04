@@ -83,6 +83,10 @@ export class ListEvaluationComponent implements OnInit {
 		}
 	}
 
+	formatDate(date: any): Date {
+		return new Date(date.date.year,date.date.month, date.date.day, date.time.hour, date.time.minute, date.time.second);
+	}
+
 
 	get loading(): boolean {
 		return this._loading;
