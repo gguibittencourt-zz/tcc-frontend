@@ -70,6 +70,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 	}
 
 	confirmGoals(goals: Goal[]) {
+		//TODO verificar
 		this.f["goals"].setValue(goals);
 		this.measurementFramework.goals = goals;
 	}

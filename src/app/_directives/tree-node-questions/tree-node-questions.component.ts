@@ -4,7 +4,7 @@ import {MatDialog, MatTreeNestedDataSource} from "@angular/material";
 import {NestedTreeControl} from "@angular/cdk/tree";
 import {FormBuilder} from "@angular/forms";
 import {QuestionComponent} from "../question";
-import {cloneDeep, isEmpty} from "lodash";
+import {cloneDeep, isEmpty, uniqWith, isEqual} from "lodash";
 
 @Component({
 	selector: 'tree-node-questions',
@@ -42,7 +42,7 @@ export class TreeNodeQuestionsComponent implements OnInit {
 	openDialog(node: TreeNode): void {
 		let data = new MatQuestionDialogData();
 		data.node = node;
-		data.questions = isEmpty(this.questions) ?  [] : cloneDeep(this.getQuestionsByProcess(node.idTreeNode));
+		data.questions = isEmpty(this.questions) ? [] : cloneDeep(this.getQuestionsByProcess(node.idTreeNode));
 		const dialogRef = this.dialog.open(QuestionComponent, {
 			height: '600px',
 			width: '1000px',
@@ -51,7 +51,8 @@ export class TreeNodeQuestionsComponent implements OnInit {
 
 		dialogRef.afterClosed().subscribe(result => {
 			if (result) {
-				this.questions = result;
+				this.questions.push(...result);
+				this.questions = uniqWith(this.questions, isEqual);
 				this.onConfirmQuestions.emit(this.questions);
 			}
 		});
@@ -68,6 +69,9 @@ export class TreeNodeQuestionsComponent implements OnInit {
 	}
 
 	get questions(): Question[] {
+		if (!this._questions) {
+			this._questions = [];
+		}
 		return this._questions;
 	}
 

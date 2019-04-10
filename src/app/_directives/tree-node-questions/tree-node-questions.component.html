@@ -5,7 +5,7 @@
 			{{node.name}}
 			<a mat-flat-button (click)="openDialog(node)"
 			   class="btn btn-outline-info btn-sm">
-				Questions: {{questions ? getQuestionsByProcess(node.idTreeNode).length : 0}}
+				Questions: {{getQuestionsByProcess(node.idTreeNode).length}}
 			</a>
 		</li>
 	</mat-tree-node>
