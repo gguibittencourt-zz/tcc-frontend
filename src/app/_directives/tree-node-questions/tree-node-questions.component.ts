@@ -79,6 +79,9 @@ export class TreeNodeQuestionsComponent implements OnInit {
 	}
 
 	get questions(): Question[] {
+		if (this._questions) {
+			this._questions = [];
+		}
 		return this._questions;
 	}
 
