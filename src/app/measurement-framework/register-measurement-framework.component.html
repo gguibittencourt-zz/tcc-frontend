@@ -36,6 +36,7 @@
 		<ng-template matStepLabel>Fill out questions</ng-template>
 
 		<form [formGroup]="measurementFrameworkForm">
+			<pre>{{measurementFramework.questions | json}}</pre>
 			<tree-node-questions *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
 								 [questions]="measurementFramework.questions"
 								 (onConfirmQuestions)="confirmQuestions($event)">
