@@ -49,9 +49,20 @@ export class TreeNodeQuestionsComponent implements OnInit {
 			data: data
 		});
 
-		dialogRef.afterClosed().subscribe(result => {
+		dialogRef.afterClosed().subscribe((result: Question[]) => {
 			if (result) {
-				this.questions = result;
+				let idQuestions: string[] = this.questions.map((question: Question) => question.idQuestion);
+				result.forEach(value => {
+					if (!idQuestions.includes(value.idQuestion)) {
+						this.questions.push(value);
+					} else {
+						let actualQuestion = this.questions.find((question: Question) => question.idQuestion === value.idQuestion);
+						if (actualQuestion !== value) {
+							this.questions.splice(this.questions.indexOf(actualQuestion), 1);
+							this.questions.push(value);
+						}
+					}
+				});
 				this.onConfirmQuestions.emit(this.questions);
 			}
 		});
