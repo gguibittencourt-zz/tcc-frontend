@@ -124,7 +124,6 @@ export class RegisterEvaluationComponent implements OnInit {
 	}
 
 	finishForm(): void {
-		console.log(this.results);
 		this.evaluationForm.get("results").setValue(this.results);
 	}
 

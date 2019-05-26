@@ -56,16 +56,15 @@
 
 		<div class="form-group">
 			<button mat-button matStepperPrevious>Back</button>
-
-			<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
-					class="btn btn-outline-success save-button">Save
-			</button>
-			<button mat-raised-button (click)="finish()" [disabled]="loading"
-					class="btn btn-outline-success save-button">Save and Finish
-			</button>
 			<button mat-raised-button [routerLink]="['/evaluation']" class="btn btn-outline-danger">
 				Cancel
 			</button>
+			<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
+					class="btn btn-outline-success save-button">Save
+			</button>
+			<!--<button mat-raised-button (click)="finish()" [disabled]="loading"-->
+					<!--class="btn btn-outline-success save-button">Save and Finish-->
+			<!--</button>-->
 		</div>
 	</mat-step>
 </mat-horizontal-stepper>

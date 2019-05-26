@@ -42,7 +42,7 @@ export class TreeNodeQuestionsComponent implements OnInit {
 	openDialog(node: TreeNode): void {
 		let data = new MatQuestionDialogData();
 		data.node = node;
-		data.questions = isEmpty(this.questions) ?  [] : cloneDeep(this.getQuestionsByProcess(node.idTreeNode));
+		data.questions = isEmpty(this.questions) ? [] : cloneDeep(this.getQuestionsByProcess(node.idTreeNode));
 		const dialogRef = this.dialog.open(QuestionComponent, {
 			height: '600px',
 			width: '1000px',

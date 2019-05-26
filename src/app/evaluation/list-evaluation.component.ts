@@ -49,7 +49,7 @@ export class ListEvaluationComponent implements OnInit {
 	}
 
 	openConfirmationDialog(evaluation: Evaluation) {
-		let data: DialogData = new DialogData(this.getMeasurementFrameworkName(evaluation.idMeasurementFramework), "Delete Measurement Framework", "Do you want to delete the measurement framework:");
+		let data: DialogData = new DialogData(this.getMeasurementFrameworkName(evaluation.idMeasurementFramework), "Delete Evaluation", "Do you want to delete the evaluation:");
 		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
 			disableClose: false,
 			data: data
@@ -87,6 +87,9 @@ export class ListEvaluationComponent implements OnInit {
 		return new Date(date.date.year,date.date.month, date.date.day, date.time.hour, date.time.minute, date.time.second);
 	}
 
+	formatStatus(status: string) {
+		return status === 'in_progress' ? 'In Progress' : 'Finalized';
+	}
 
 	get loading(): boolean {
 		return this._loading;
