@@ -3,17 +3,17 @@
 <mat-horizontal-stepper [linear]="true" #stepper>
 	<mat-step [stepControl]="measurementFrameworkForm">
 		<form [formGroup]="measurementFrameworkForm">
-			<ng-template matStepLabel>Fill out name and reference model</ng-template>
+			<ng-template matStepLabel>Preencha o nome e o modelo de referência</ng-template>
 			<div class="form-group">
 				<mat-form-field class="full-width-input">
-					<input matInput formControlName="name" class="form-control" placeholder="Name"
+					<input matInput formControlName="name" class="form-control" placeholder="Nome"
 						   [ngClass]="{ 'is-invalid': submitted && f.name.errors }"/>
 				</mat-form-field>
 				<div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-					<div *ngIf="f.name.errors.required">Name is required</div>
+					<div *ngIf="f.name.errors.required">Nome é obrigatório</div>
 				</div>
 				<mat-form-field class="full-width-input">
-					<mat-select placeholder="Reference model" formControlName="idReferenceModel"
+					<mat-select placeholder="Modelo de referência" formControlName="idReferenceModel"
 								(selectionChange)="changeReferenceModel($event)"
 								[ngClass]="{ 'is-invalid': submitted && f.idReferenceModel.errors }">
 						<mat-option *ngFor="let referenceModel of referenceModels"
@@ -24,19 +24,21 @@
 
 				</mat-form-field>
 				<div *ngIf="submitted && f.idReferenceModel.errors" class="invalid-feedback">
-					<div *ngIf="f.idReferenceModel.errors.required">Reference Model is required</div>
+					<div *ngIf="f.idReferenceModel.errors.required">Modelo de referência é obrigatório</div>
 				</div>
 			</div>
 			<div class="form-group">
-				<button mat-button matStepperNext>Next</button>
+				<button mat-raised-button [routerLink]="['/measurement-framework']" class="btn btn-outline-danger">
+					Cancelar
+				</button>
+				<button mat-button matStepperNext>Próximo</button>
 			</div>
 		</form>
 	</mat-step>
 	<mat-step [stepControl]="measurementFrameworkForm">
-		<ng-template matStepLabel>Fill out questions</ng-template>
+		<ng-template matStepLabel>Preencha as questões</ng-template>
 
 		<form [formGroup]="measurementFrameworkForm">
-			<pre>{{measurementFramework.questions | json}}</pre>
 			<tree-node-questions *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
 								 [questions]="measurementFramework.questions"
 								 (onConfirmQuestions)="confirmQuestions($event)">
@@ -44,12 +46,12 @@
 		</form>
 
 		<div class="form-group">
-			<button mat-button matStepperPrevious>Back</button>
-			<button mat-button matStepperNext>Next</button>
+			<button mat-button matStepperPrevious>Voltar</button>
+			<button mat-button matStepperNext>Próximo</button>
 		</div>
 	</mat-step>
 	<mat-step [stepControl]="measurementFrameworkForm">
-		<ng-template matStepLabel>Fill out metrics</ng-template>
+		<ng-template matStepLabel>Preencha as métricas</ng-template>
 
 		<form [formGroup]="measurementFrameworkForm">
 			<tree-node-metrics *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
@@ -59,22 +61,10 @@
 		</form>
 
 		<div class="form-group">
-			<button mat-button matStepperPrevious>Back</button>
-			<button mat-button matStepperNext>Next</button>
-		</div>
-	</mat-step>
-	<mat-step [stepControl]="measurementFrameworkForm">
-		<ng-template matStepLabel>Save</ng-template>
-
-		<div class="form-group">
-			<button mat-button matStepperPrevious>Back</button>
-			<button mat-raised-button [routerLink]="['/measurement-framework']" class="btn btn-outline-danger">
-				Cancel
-			</button>
+			<button mat-button matStepperPrevious>Voltar</button>
 			<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
-					class="btn btn-outline-success save-button">Save
+					class="btn btn-outline-success save-button">Salvar
 			</button>
-
 		</div>
 	</mat-step>
 </mat-horizontal-stepper>

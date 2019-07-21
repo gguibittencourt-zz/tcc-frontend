@@ -1,14 +1,13 @@
-<h1 mat-dialog-title>Processes Register</h1>
+<h1 mat-dialog-title>Registro de Processos</h1>
 <div mat-dialog-content class="dialog-process">
 	<div class="process">
 		<div class="process-header">
 			<div class="process-header-title">
-				<div class="process-header-title-spacer">Processes</div>
-				<button mat-icon-button type="button" (click)="addProcess()" class="mat-icon-button">
+				<div class="process-header-title-spacer">Processos</div>
+				<button mat-stroked-button type="button" (click)="addProcess()" class="mat-stroked-button">
 			<span class="mat-button-wrapper">
-				<mat-icon class="mat-icon material-icons">
-					<i class="fa fa-plus"></i>
-				</mat-icon>
+				Adicionar
+				<i class="fa fa-plus"></i>
 			</span>
 				</button>
 			</div>
@@ -17,7 +16,7 @@
 			<mat-accordion>
 				<mat-expansion-panel *ngFor="let process of data; let i = index" [expanded]="mapCloseAccordion.get(i)">
 					<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-						<input matInput value="{{process.name}}" disabled placeholder="Process"/>
+						<input matInput value="{{process.name}}" disabled placeholder="Processo"/>
 						<button mat-icon-button type="button" (click)="deleteProcess(i)"
 								class="mat-icon-button active">
 							<mat-icon class="mat-icon material-icons">
@@ -26,49 +25,60 @@
 						</button>
 					</mat-expansion-panel-header>
 
-					<form [formGroup]="processForms[i]" (ngSubmit)="confirmProcess(i)">
-						<mat-tab-group>
-							<mat-tab>
-								<ng-template mat-tab-label>
-									Process
-								</ng-template>
-								<mat-form-field class="col-md-12">
-									<input matInput formControlName="name"
-										   (change)="formChange(i)" placeholder="Name"/>
-								</mat-form-field>
-								<mat-form-field class="padding-top col-md-12">
-									<input matInput formControlName="purpose"
-										   (change)="formChange(i)"
-										   placeholder="Purpose"/>
-								</mat-form-field>
-							</mat-tab>
-							<mat-tab>
-								<ng-template mat-tab-label>
-									Expected Results
-								</ng-template>
+					<mat-horizontal-stepper [linear]="true" #stepper>
+						<mat-step [stepControl]="processForms[i]">
+							<form [formGroup]="processForms[i]">
+								<ng-template matStepLabel>Preencha o nome e o objetivo do processo</ng-template>
+								<div class="form-group">
+									<mat-form-field class="col-md-12">
+										<input matInput formControlName="name"
+											   (change)="formChange(i)" placeholder="Nome"/>
+									</mat-form-field>
+									<div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+										<div *ngIf="f.name.errors.required">Nome é obrigatório</div>
+									</div>
+									<mat-form-field class="padding-top col-md-12">
+										<input matInput formControlName="purpose"
+											   (change)="formChange(i)"
+											   placeholder="Objetivo"/>
+									</mat-form-field>
+									<div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+										<div *ngIf="f.name.errors.required">Objetivo é obrigatório</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<button mat-raised-button [disabled]="loading" (click)="cancelProcess(i)"
+											class="btn btn-outline-danger">
+										Cancelar
+									</button>
+									<button mat-raised-button class="mat-raised-button btn btn-outline-secondary" matStepperNext>Próximo</button>
+								</div>
+							</form>
+						</mat-step>
+						<mat-step [stepControl]="processForms[i]">
+							<ng-template matStepLabel>Preencha os resultados esperados</ng-template>
+
+							<form [formGroup]="processForms[i]" class="padding-bottom">
 								<expected-result formArrayName="expectedResults"
 												 [expectedResults]="process.expectedResults"
-												 (onConfirmExpectedResults)="confirmExpectedResults($event, process, i)"></expected-result>
-							</mat-tab>
-						</mat-tab-group>
+												 (onConfirmExpectedResults)="confirmExpectedResults($event, process, i)">
+								</expected-result>
+							</form>
 
-						<mat-action-row class="action-row">
-							<button mat-raised-button [disabled]="loading"
-									class="btn btn-outline-success confirm-button">
-								Confirm
-							</button>
-							<button mat-raised-button [disabled]="loading" (click)="cancelProcess(i)"
-									class="btn btn-outline-danger">
-								Cancel
-							</button>
-						</mat-action-row>
-					</form>
+							<div class="form-group">
+								<button mat-raised-button class="mat-raised-button btn btn-outline-secondary" matStepperPrevious>Voltar</button>
+								<button mat-raised-button (click)="confirmProcess(i)" [disabled]="loading || !isPossibleConfirm"
+										class="btn btn-outline-success save-button">Salvar
+								</button>
+							</div>
+						</mat-step>
+					</mat-horizontal-stepper>
 				</mat-expansion-panel>
 			</mat-accordion>
 		</div>
 	</div>
 </div>
 <div mat-dialog-actions>
-	<button mat-button (click)="onNoClick()">No Thanks</button>
-	<button mat-button [mat-dialog-close]="data">Ok</button>
+	<button mat-button (click)="onNoClick()">Cancelar</button>
+	<button mat-button [mat-dialog-close]="data" [disabled]="!isPossibleConfirm">Salvar</button>
 </div>

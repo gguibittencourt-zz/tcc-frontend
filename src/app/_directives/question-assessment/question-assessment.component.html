@@ -1,13 +1,13 @@
 ﻿<div *ngFor="let question of questions; let i = index">
 	<span>{{question.name}}</span>
-	<form [formGroup]="questionEvaluationForms[i]">
+	<form [formGroup]="questionAssessmentForms[i]">
 		<div *ngIf="question.type === 'boolean'">
 			<mat-radio-group formControlName="value" (change)="confirmResult(i)">
 				<mat-radio-button value="true" class="padding-right">
-					True
+					Verdadeiro
 				</mat-radio-button>
 				<mat-radio-button value="false">
-					False
+					Falso
 				</mat-radio-button>
 			</mat-radio-group>
 		</div>
@@ -39,14 +39,14 @@
 					   [max]="question.config.maxValue"
 					   (blur)="confirmResult(i)"
 					   formControlName="value"
-					   placeholder="Value"/>
+					   placeholder="Valor"/>
 				<!--TODO fazer min e max value-->
 			</mat-form-field>
 		</div>
 		<div *ngIf="question.type === 'text'">
 			<mat-form-field>
 				<input matInput type="text" formControlName="value" (blur)="confirmResult(i)"
-					   placeholder="Value" [minlength]="question.config.minCharacters"
+					   placeholder="Valor" [minlength]="question.config.minCharacters"
 					   [maxlength]="question.config.maxCharacters"/>
 			</mat-form-field>
 		</div>

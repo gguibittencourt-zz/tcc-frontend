@@ -51,7 +51,6 @@ export class CompanyComponent implements OnInit {
 
 		this.loading = true;
 		this.companyService.update(this.companyForm.value)
-			.pipe(first())
 			.subscribe(
 				data => {
 					this.alertService.success('Update successful', true);

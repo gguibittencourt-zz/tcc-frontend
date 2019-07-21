@@ -13,13 +13,13 @@ import {MatSelectChange} from "@angular/material";
 
 })
 export class RegisterMeasurementFrameworkComponent implements OnInit {
-	private _measurementFrameworkForm: FormGroup;
-	private _loading = false;
-	private _submitted = false;
-	private _idMeasurementFramework: number = null;
-	private _measurementFramework: MeasurementFramework;
-	private _referenceModels: ReferenceModel[] = [];
-	private _referenceModel: ReferenceModel;
+	measurementFrameworkForm: FormGroup;
+	loading = false;
+	submitted = false;
+	idMeasurementFramework: number = null;
+	measurementFramework: MeasurementFramework;
+	referenceModels: ReferenceModel[] = [];
+	referenceModel: ReferenceModel;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -28,6 +28,10 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		private measurementFrameworkService: MeasurementFrameworkService,
 		private referenceModelService: ReferenceModelService,
 		private alertService: AlertService) {
+	}
+
+	get f() {
+		return this.measurementFrameworkForm.controls;
 	}
 
 	ngOnInit(): void {
@@ -85,10 +89,9 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 
 		if (this.idMeasurementFramework) {
 			this.measurementFrameworkService.update(this.measurementFrameworkForm.value)
-				.pipe(first())
 				.subscribe(
 					data => {
-						this.alertService.success('Update successful', true);
+						this.alertService.success('Atualizado com sucesso', true);
 						this.router.navigate(['/measurement-framework']);
 					},
 					error => {
@@ -97,10 +100,9 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 					});
 		} else {
 			this.measurementFrameworkService.register(this.measurementFrameworkForm.value)
-				.pipe(first())
 				.subscribe(
 					data => {
-						this.alertService.success('Register successful', true);
+						this.alertService.success('Cadastrado com sucesso', true);
 						this.router.navigate(['/measurement-framework']);
 					},
 					error => {
@@ -108,65 +110,5 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 						this.loading = false;
 					});
 		}
-	}
-
-	get f() {
-		return this._measurementFrameworkForm.controls;
-	}
-
-	get measurementFrameworkForm(): FormGroup {
-		return this._measurementFrameworkForm;
-	}
-
-	set measurementFrameworkForm(value: FormGroup) {
-		this._measurementFrameworkForm = value;
-	}
-
-	get loading(): boolean {
-		return this._loading;
-	}
-
-	set loading(value: boolean) {
-		this._loading = value;
-	}
-
-	get submitted(): boolean {
-		return this._submitted;
-	}
-
-	set submitted(value: boolean) {
-		this._submitted = value;
-	}
-
-	get idMeasurementFramework(): number {
-		return this._idMeasurementFramework;
-	}
-
-	set idMeasurementFramework(value: number) {
-		this._idMeasurementFramework = value;
-	}
-
-	get referenceModels(): ReferenceModel[] {
-		return this._referenceModels;
-	}
-
-	set referenceModels(value: ReferenceModel[]) {
-		this._referenceModels = value;
-	}
-
-	get referenceModel(): ReferenceModel {
-		return this._referenceModel;
-	}
-
-	set referenceModel(value: ReferenceModel) {
-		this._referenceModel = value;
-	}
-
-	get measurementFramework(): MeasurementFramework {
-		return this._measurementFramework;
-	}
-
-	set measurementFramework(value: MeasurementFramework) {
-		this._measurementFramework = value;
 	}
 }

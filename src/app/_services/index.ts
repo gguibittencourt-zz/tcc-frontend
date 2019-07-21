@@ -4,4 +4,4 @@ export * from './user.service';
 export * from './company.service';
 export * from './reference-model.service';
 export * from './measurement-framework.service';
-export * from './evaluation.service';
+export * from './assessment.service';

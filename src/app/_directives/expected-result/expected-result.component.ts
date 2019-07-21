@@ -13,8 +13,10 @@ export class ExpectedResultComponent implements OnInit {
 	@Input('expectedResults') expectedResults: ExpectedResult[];
 	@Output() onConfirmExpectedResults: EventEmitter<any> = new EventEmitter();
 
-	private _expectedResultForms: FormGroup[] = [];
-	private _mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
+	expectedResultForms: FormGroup[] = [];
+	mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
+	submitted: boolean = false;
+	private _isPossibleConfirm = true;
 
 	constructor(private formBuilder: FormBuilder) {
 	}
@@ -40,31 +42,33 @@ export class ExpectedResultComponent implements OnInit {
 		});
 	}
 
-	get expectedResultForms(): FormGroup[] {
-		return this._expectedResultForms;
-	}
-
-	get mapCloseAccordion(): Map<number, boolean> {
-		return this._mapCloseAccordion;
+	get isPossibleConfirm(): boolean {
+		return this._isPossibleConfirm;
 	}
 
 	confirmExpectedResult(index: number) {
+		this.submitted = true;
+
 		if (this.expectedResultForms[index].invalid) {
 			return;
 		}
+		this._isPossibleConfirm = true;
 		this.mapCloseAccordion.set(index, false);
 		this.expectedResults[index] = this.expectedResultForms[index].value;
 		this.onConfirmExpectedResults.emit(this.expectedResults);
 	}
 
 	addExpectedResult() {
-		let expectedResult: ExpectedResult = new ExpectedResult();
-		this.expectedResults.push(expectedResult);
-		this.expectedResultForms[this.expectedResults.indexOf(expectedResult)] = this.formBuilder.group({
-			idExpectedResult: [Guid.create().toString()],
-			name: ['', Validators.required],
-			description: ['', Validators.required]
-		});
+		if (this.allValidForms()) {
+			this._isPossibleConfirm = false;
+			let expectedResult: ExpectedResult = new ExpectedResult();
+			this.expectedResults.push(expectedResult);
+			this.expectedResultForms[this.expectedResults.indexOf(expectedResult)] = this.formBuilder.group({
+				idExpectedResult: [Guid.create().toString()],
+				name: ['', Validators.required],
+				description: ['', Validators.required]
+			});
+		}
 	}
 
 	deleteExpectedResult(index: number) {
@@ -77,5 +81,13 @@ export class ExpectedResultComponent implements OnInit {
 
 	cancelExpectedResult(index: number) {
 		this.mapCloseAccordion.set(index, false);
+	}
+
+	getControlsByForm(form: FormGroup) {
+		return form.controls;
+	}
+
+	allValidForms(): boolean {
+		return this.expectedResultForms.every(form => form.valid);
 	}
 }

@@ -3,6 +3,9 @@
 	{{data.text}} <b>{{data.name}}</b>?
 </div>
 <div mat-dialog-actions>
-	<button mat-button (click)="onNoClick()">No Thanks</button>
-	<button mat-button [mat-dialog-close]="data">Ok</button>
+	<button mat-button (click)="onNoClick()">Cancelar</button>
+	<button mat-raised-button [disabled]="loading"
+			class="btn btn-outline-danger confirm-button" [mat-dialog-close]="data">
+		Excluir
+	</button>
 </div>

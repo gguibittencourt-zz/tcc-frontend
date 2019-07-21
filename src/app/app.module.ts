@@ -35,9 +35,9 @@ import {TreeNodeQuestionsComponent} from "./_directives/tree-node-questions";
 import {QuestionComponent} from "./_directives/question";
 import {LoadingComponent} from "./_directives/loading";
 import {TreeNodeMetricsComponent} from "./_directives/tree-node-metrics";
-import {ListEvaluationComponent, RegisterEvaluationComponent} from "./evaluation";
-import {EvaluationService} from "./_services/evaluation.service";
-import {QuestionEvaluationComponent} from "./_directives/question-evaluation";
+import {ListAssessmentComponent, RegisterAssessmentComponent} from "./assessment";
+import {AssessmentService} from "./_services";
+import {QuestionAssessmentComponent} from "./_directives/question-assessment";
 
 @NgModule({
 	imports: [
@@ -68,9 +68,9 @@ import {QuestionEvaluationComponent} from "./_directives/question-evaluation";
 		TreeNodeMetricsComponent,
 		QuestionComponent,
 		LoadingComponent,
-		ListEvaluationComponent,
-		RegisterEvaluationComponent,
-		QuestionEvaluationComponent
+		ListAssessmentComponent,
+		RegisterAssessmentComponent,
+		QuestionAssessmentComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -82,7 +82,7 @@ import {QuestionEvaluationComponent} from "./_directives/question-evaluation";
 		CompanyService,
 		ReferenceModelService,
 		MeasurementFrameworkService,
-		EvaluationService
+		AssessmentService
 	],
 	entryComponents: [ProcessComponent, ConfirmDialogComponent, QuestionComponent],
 	bootstrap: [AppComponent]

@@ -17,13 +17,13 @@ export class HomeComponent implements OnInit {
     }
 
     deleteUser(id: number) {
-        this.userService.delete(id).pipe(first()).subscribe(() => { 
+        this.userService.delete(id).subscribe(() => {
             this.loadAllUsers() 
         });
     }
 
     private loadAllUsers() {
-        this.userService.getAll().pipe(first()).subscribe(users => { 
+        this.userService.getAll().subscribe(users => {
             this.users = users; 
         });
     }

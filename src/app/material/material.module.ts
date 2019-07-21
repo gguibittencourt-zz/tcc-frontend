@@ -2,6 +2,7 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from '@angular/common';
 import {
 	MatButtonModule,
+	MatTooltipModule,
 	MatCardModule,
 	MatCheckboxModule,
 	MatDialogModule,
@@ -29,6 +30,7 @@ import {
 	exports: [
 		CommonModule,
 		MatButtonModule,
+		MatTooltipModule,
 		MatToolbarModule,
 		MatNativeDateModule,
 		MatIconModule,

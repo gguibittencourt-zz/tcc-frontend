@@ -19,6 +19,7 @@ export class KnowledgeAreaComponent implements OnInit {
 	@Output() onUpdateKnowledgeArea: EventEmitter<any> = new EventEmitter();
 	private knowledgeAreaForms: FormGroup[] = [];
 	private mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
+	private _isPossibleConfirm: boolean = false;
 
 	constructor(private formBuilder: FormBuilder, private  dialog: MatDialog) {
 	}
@@ -36,22 +37,35 @@ export class KnowledgeAreaComponent implements OnInit {
 		});
 	}
 
+	get isPossibleConfirm(): boolean {
+		return this._isPossibleConfirm;
+	}
+
 	confirmKnowledgeArea(index: number) {
 		if (this.knowledgeAreaForms[index].invalid) {
 			return;
 		}
 
+		this._isPossibleConfirm = true;
 		this.mapCloseAccordion.set(index, false);
 		this.onUpdateKnowledgeArea.emit([index, this.knowledgeAreaForms[index].value]);
 	}
 
 	addKnowledgeArea() {
-		let knowledgeArea: KnowledgeArea = new KnowledgeArea();
-		this.onAddKnowledgeArea.emit(knowledgeArea);
+		if (this.allValidForms()) {
+			this._isPossibleConfirm = false;
+			let knowledgeArea: KnowledgeArea = new KnowledgeArea();
+			this.onAddKnowledgeArea.emit(knowledgeArea);
+		}
+	}
+
+	allValidForms(): boolean {
+		return this.knowledgeAreaForms.every(form => form.valid);
 	}
 
 	deleteKnowledgeArea(index: number) {
 		this.onDeleteKnowledgeArea.emit(index);
+		this.knowledgeAreaForms.splice(index, 1);
 	}
 
 	formChange(index: number) {
@@ -82,8 +96,9 @@ export class KnowledgeAreaComponent implements OnInit {
 
 		let knowledgeArea = this.knowledgeAreas[index];
 		const dialogRef = this.dialog.open(ProcessComponent, {
-			height: '600px',
-			width: '1000px',
+			height: '95%',
+			width: '95%',
+			maxWidth: '95%',
 			data: knowledgeArea.processes == null ? [] : cloneDeep(knowledgeArea.processes),
 		});
 

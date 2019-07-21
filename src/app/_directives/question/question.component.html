@@ -1,14 +1,13 @@
-<h1 mat-dialog-title>Questions Register</h1>
+<h1 mat-dialog-title>Registro de Questões</h1>
 <div mat-dialog-content class="dialog-question">
 	<div class="question">
 		<div class="question-header">
 			<div class="question-header-title">
-				<div class="question-header-title-spacer">Questions</div>
-				<button mat-icon-button type="button" (click)="addQuestion()" class="mat-icon-button">
+				<div class="question-header-title-spacer">Questões</div>
+				<button mat-stroked-button type="button" (click)="addQuestion()" class="mat-stroked-button">
 			<span class="mat-button-wrapper">
-				<mat-icon class="mat-icon material-icons">
-					<i class="fa fa-plus"></i>
-				</mat-icon>
+				Adicionar
+				<i class="fa fa-plus"></i>
 			</span>
 				</button>
 			</div>
@@ -18,7 +17,7 @@
 				<mat-expansion-panel *ngFor="let question of data.questions; let i = index"
 									 [expanded]="mapCloseAccordion.get(i)">
 					<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-						<input matInput value="{{question.name}}" disabled placeholder="Question"/>
+						<input matInput value="{{question.name}}" disabled placeholder="Questão {{i + 1}}"/>
 						<button mat-icon-button type="button" (click)="deleteQuestion(i)"
 								class="mat-icon-button active">
 							<mat-icon class="mat-icon material-icons">
@@ -31,30 +30,14 @@
 						<mat-tab-group>
 							<mat-tab>
 								<ng-template mat-tab-label>
-									Question
+									Questão
 								</ng-template>
 								<mat-form-field class="col-md-12">
 									<input matInput formControlName="name"
-										   (change)="formChange(i)" placeholder="Name"/>
+										   (change)="formChange(i)" placeholder="Nome"/>
 								</mat-form-field>
 								<mat-form-field class="col-md-12">
-									<input matInput formControlName="tip"
-										   (change)="formChange(i)"
-										   placeholder="Tip"/>
-								</mat-form-field>
-
-								<mat-form-field class="col-md-12">
-									<mat-select placeholder="Type" formControlName="type"
-												[ngClass]="{ 'is-invalid': submitted && f.type.errors }">
-										<mat-option value="numeric">Numeric</mat-option>
-										<mat-option value="text">Text</mat-option>
-										<mat-option value="scale">Scale</mat-option>
-										<mat-option value="boolean">Boolean</mat-option>
-									</mat-select>
-								</mat-form-field>
-
-								<mat-form-field class="col-md-12">
-									<mat-select placeholder="Expected Result" formControlName="idExpectedResult"
+									<mat-select placeholder="Resultado Esperado" formControlName="idExpectedResult"
 												[ngClass]="{ 'is-invalid': submitted && f.idExpectedResult.errors }">
 										<mat-option *ngFor="let expectedResult of data.node.expectedResults"
 													[value]="expectedResult.idExpectedResult">
@@ -62,49 +45,68 @@
 										</mat-option>
 									</mat-select>
 								</mat-form-field>
+								<mat-form-field class="col-md-12">
+									<input matInput formControlName="tip"
+										   (change)="formChange(i)"
+										   placeholder="Dica"/>
+								</mat-form-field>
+
+								<mat-form-field class="col-md-12">
+									<mat-select placeholder="Tipo" formControlName="type"
+												[ngClass]="{ 'is-invalid': submitted && f.type.errors }">
+										<mat-option value="numeric">Numérico</mat-option>
+										<mat-option value="text">Texto</mat-option>
+										<mat-option value="scale">Escala</mat-option>
+										<mat-option value="boolean">Verdadeiro/Falso</mat-option>
+									</mat-select>
+								</mat-form-field>
 							</mat-tab>
 							<mat-tab>
 								<ng-template mat-tab-label>
-									Config
+									Configuração
 								</ng-template>
-								<mat-form-field *ngIf="isType(i, 'text')" class="col-md-12">
-									<div formGroupName="config">
-										<input matInput formControlName="minCharacters"
-											   (change)="formChange(i)"
-											   type="number"
-											   placeholder="Minimum characters"/>
-									</div>
-								</mat-form-field>
-								<mat-form-field *ngIf="isType(i, 'text')" class="col-md-12">
-									<div formGroupName="config">
-										<input matInput formControlName="maxCharacters"
-											   (change)="formChange(i)"
-											   type="number"
-											   placeholder="Maximum characters"/>
-									</div>
-								</mat-form-field>
-								<mat-form-field *ngIf="isType(i, 'numeric')" class="col-md-12">
-									<div formGroupName="config">
-										<input matInput formControlName="minValue"
-											   (change)="formChange(i)"
-											   type="number"
-											   placeholder="Minimum value"/>
-									</div>
-								</mat-form-field>
-								<mat-form-field *ngIf="isType(i, 'numeric')" class="col-md-12">
-									<div formGroupName="config">
-										<input matInput formControlName="maxValue"
-											   (change)="formChange(i)"
-											   type="number"
-											   placeholder="Maximum value"/>
-									</div>
-								</mat-form-field>
+								<div class="display-flex">
+									<mat-form-field *ngIf="isType(i, 'text')" class="col-md-6">
+										<div formGroupName="config">
+											<input matInput formControlName="minCharacters"
+												   (change)="formChange(i)"
+												   type="number"
+												   placeholder="Caractéres Mínimos"/>
+										</div>
+									</mat-form-field>
+									<mat-form-field *ngIf="isType(i, 'text')" class="col-md-6">
+										<div formGroupName="config">
+											<input matInput formControlName="maxCharacters"
+												   (change)="formChange(i)"
+												   type="number"
+												   placeholder="Caractéres Máximos"/>
+										</div>
+									</mat-form-field>
+								</div>
+								<div class="display-flex">
+									<mat-form-field *ngIf="isType(i, 'numeric')" class="col-md-6">
+										<div formGroupName="config">
+											<input matInput formControlName="minValue"
+												   (change)="formChange(i)"
+												   type="number"
+												   placeholder="Valor Mínimo"/>
+										</div>
+									</mat-form-field>
+									<mat-form-field *ngIf="isType(i, 'numeric')" class="col-md-6">
+										<div formGroupName="config">
+											<input matInput formControlName="maxValue"
+												   (change)="formChange(i)"
+												   type="number"
+												   placeholder="Valor Máximo"/>
+										</div>
+									</mat-form-field>
+								</div>
 								<mat-slide-toggle class="col-md-12" formControlName="dependsOnAnyQuestion"
-												  labelPosition="before">Depends on any question?
+												  labelPosition="before">Depende de alguma questão?
 								</mat-slide-toggle>
-								<div *ngIf="dependsOnAnyQuestion(i)">
+								<div *ngIf="dependsOnAnyQuestion(i)" class="display-flex">
 									<mat-form-field class="col-md-6">
-										<mat-select placeholder="Dependent Question"
+										<mat-select placeholder="Questão dependente"
 													formControlName="idDependentQuestion"
 													(selectionChange)="doChangeValue($event)"
 													[ngClass]="{ 'is-invalid': submitted && f.idDependentQuestion.errors }">
@@ -116,7 +118,7 @@
 									</mat-form-field>
 									<mat-form-field class="col-md-6">
 										<div formGroupName="dependentValue">
-											<mat-select placeholder="Dependent Value" formControlName="id"
+											<mat-select placeholder="Valor dependente" formControlName="id"
 														[ngClass]="{ 'is-invalid': submitted && f.dependentValue.errors }">
 												<mat-option *ngFor="let dependentValue of dependentValueByQuestion"
 															[value]="dependentValue.id">
@@ -132,7 +134,7 @@
 											<input matInput formControlName="value"
 												   (change)="formChange(i)"
 												   type="number"
-												   placeholder="Value"/>
+												   placeholder="Valor"/>
 										</div>
 									</mat-form-field>
 									<mat-form-field class="col-md-6 col-md" *ngIf="hasInputValueText(i)">
@@ -142,24 +144,24 @@
 												   [minlength]="getMinLength(i)"
 												   [maxlength]=""
 												   type="text"
-												   placeholder="Value"/>
+												   placeholder="Valor"/>
 										</div>
 									</mat-form-field>
 								</div>
 								<mat-slide-toggle class="col-md-12" formControlName="hasDataSource"
-												  labelPosition="before">Has data source?
+												  labelPosition="before">Possui fonte de dados?
 								</mat-slide-toggle>
 							</mat-tab>
 						</mat-tab-group>
 
 						<mat-action-row class="action-row">
-							<button mat-raised-button [disabled]="loading"
-									class="btn btn-outline-success confirm-button">
-								Confirm
-							</button>
 							<button mat-raised-button [disabled]="loading" (click)="cancelQuestion(i)"
 									class="btn btn-outline-danger">
-								Cancel
+								Cancelar
+							</button>
+							<button mat-raised-button [disabled]="loading"
+									class="btn btn-outline-success confirm-button">
+								Confirmar
 							</button>
 						</mat-action-row>
 					</form>
@@ -169,6 +171,6 @@
 	</div>
 </div>
 <div mat-dialog-actions>
-	<button mat-button (click)="onNoClick()">No Thanks</button>
-	<button mat-button [mat-dialog-close]="data.questions">Ok</button>
+	<button mat-button (click)="onNoClick()">Cancelar</button>
+	<button mat-button [mat-dialog-close]="data.questions" [disabled]="!isPossibleConfirm">Salvar</button>
 </div>

@@ -2,7 +2,7 @@
 
 	<div class="expected-result-header">
 		<div class="expected-result-header-title">
-			<div class="expected-result-header-title-spacer">Expected Results</div>
+			<div class="expected-result-header-title-spacer">Resultados Esperados</div>
 			<button mat-icon-button type="button" (click)="addExpectedResult()" class="mat-icon-button">
 			<span class="mat-button-wrapper">
 				<mat-icon class="mat-icon material-icons">
@@ -17,7 +17,7 @@
 			<mat-expansion-panel *ngFor="let expectedResult of expectedResults; let i = index"
 								 [expanded]="mapCloseAccordion.get(i)">
 				<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-					<input matInput value="{{expectedResult.name}}" disabled placeholder="Expected Result"/>
+					<input matInput value="{{expectedResult.name}}" disabled placeholder="Resultado Esperado"/>
 					<button mat-icon-button type="button" (click)="deleteExpectedResult(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons">
@@ -29,20 +29,31 @@
 				<form [formGroup]="expectedResultForms[i]" (ngSubmit)="confirmExpectedResult(i)">
 					<mat-form-field class="col-md-12">
 						<input matInput formControlName="name"
-							   (change)="formChange(i)" placeholder="Name"/>
+							   (change)="formChange(i)" placeholder="Nome"/>
 					</mat-form-field>
-					<mat-form-field class="padding-top col-md-12">
+					<div *ngIf="submitted && getControlsByForm(expectedResultForms[i]).name.errors?.required"
+						 class="invalid-feedback"
+						 [ngClass]="{ 'error-message': submitted && getControlsByForm(expectedResultForms[i])?.name?.errors?.required}">
+						Nome é obrigatório
+					</div>
+					<mat-form-field class="col-md-12">
 						<input matInput formControlName="description"
 							   (change)="formChange(i)"
-							   placeholder="Description"/>
+							   placeholder="Descrição"/>
 					</mat-form-field>
+					<div *ngIf="submitted && getControlsByForm(expectedResultForms[i]).description.errors?.required"
+						 class="invalid-feedback"
+						 [ngClass]="{ 'error-message': submitted && getControlsByForm(expectedResultForms[i]).description.errors?.required}">
+						Descrição é obrigatória
+					</div>
 					<mat-action-row class="action-row">
-						<button mat-raised-button [disabled]="loading" class="btn btn-outline-success confirm-button">
-							Confirm
-						</button>
 						<button mat-raised-button [disabled]="loading" (click)="cancelExpectedResult(i)"
 								class="btn btn-outline-danger">
-							Cancel
+							Cancelar
+						</button>
+						<button mat-raised-button [disabled]="loading || !isPossibleConfirm"
+								class="btn btn-outline-success confirm-button">
+							Confirmar
 						</button>
 					</mat-action-row>
 				</form>

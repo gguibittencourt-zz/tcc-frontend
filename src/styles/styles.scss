@@ -31,3 +31,28 @@ mat-card {
 .full-width-input {
 	width: 100%;
 }
+
+.mat-dialog-content {
+	max-height: 74vh !important;
+}
+
+mat-expansion-panel-header {
+	height: 40px !important;
+}
+
+.mat-horizontal-content-container {
+	padding: 0 24px 0 24px !important;
+}
+
+.mat-expansion-panel-body {
+	padding: 0 24px;
+}
+
+.display-block {
+	display: block;
+}
+
+.error-message {
+	display: block;
+	padding-left: 15px;
+}

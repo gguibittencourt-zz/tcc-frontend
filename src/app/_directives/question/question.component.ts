@@ -11,68 +11,26 @@ import {DependentValue, MatQuestionDialogData, Question} from "../../_models";
 })
 
 export class QuestionComponent {
-	private _questionForms: FormGroup[] = [];
-	private _mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
-	private _dependentValueByQuestion: any[] = [];
+	questionForms: FormGroup[] = [];
+	mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
+	dependentValueByQuestion: any[] = [];
+	private _isPossibleConfirm: boolean = true;
 
-	constructor(private _dialogRef: MatDialogRef<QuestionComponent>,
+	constructor(private dialogRef: MatDialogRef<QuestionComponent>,
 				@Inject(MAT_DIALOG_DATA) public data: MatQuestionDialogData,
 				private formBuilder: FormBuilder) {
 
-		this.questionForms[0] = this.formBuilder.group({
-			idQuestion: [Guid.create().toString()],
-			idProcess: ['', Validators.required],
-			idExpectedResult: ['', Validators.required],
-			name: ['', Validators.required],
-			tip: ['', Validators.required],
-			type: ['', Validators.required],
-			dependsOnAnyQuestion: [false],
-			hasDataSource: [false],
-			idDependentQuestion: [''],
-			dependentValue: this.formBuilder.group({
-				id: [],
-				title: [],
-				value: []
-			}),
-			config: this.formBuilder.group({
-				minCharacters: [],
-				maxCharacters: [],
-				maxValue: [],
-				minValue: []
-			})
-		});
-		this.mapCloseAccordion.set(0, false);
-
 		this.data.questions.forEach((value, index) => {
-			let form = this.formBuilder.group({
-				idQuestion: ['', Validators.required],
-				idProcess: ['', Validators.required],
-				idExpectedResult: ['', Validators.required],
-				name: ['', Validators.required],
-				tip: ['', Validators.required],
-				type: ['', Validators.required],
-				dependsOnAnyQuestion: [false],
-				hasDataSource: [false],
-				idDependentQuestion: [''],
-				dependentValue: this.formBuilder.group({
-					id: [],
-					title: [],
-					value: []
-				}),
-				config: this.formBuilder.group({
-					minCharacters: [],
-					maxCharacters: [],
-					maxValue: [],
-					minValue: []
-
-				})
-			});
-
+			let form = this.createForm();
 			form.patchValue(this.data.questions[index]);
 			this.questionForms[index] = form;
 			this.mapCloseAccordion.set(index, false);
 			this.createDependentValues(value.idDependentQuestion);
 		});
+	}
+
+	get isPossibleConfirm(): boolean {
+		return this._isPossibleConfirm;
 	}
 
 	onNoClick(): void {
@@ -83,35 +41,21 @@ export class QuestionComponent {
 		if (this.questionForms[index].invalid) {
 			return;
 		}
+
+		this._isPossibleConfirm = true;
 		this.mapCloseAccordion.set(index, false);
 		this.data.questions[index] = this.questionForms[index].value;
 	}
 
 	addQuestion() {
-		let question: Question = new Question();
-		this.data.questions.push(question);
-		this.questionForms[this.data.questions.indexOf(question)] = this.formBuilder.group({
-			idQuestion: [Guid.create().toString()],
-			idProcess: [this.data.node.idTreeNode],
-			idExpectedResult: ['', Validators.required],
-			name: ['', Validators.required],
-			tip: ['', Validators.required],
-			type: ['', Validators.required],
-			dependsOnAnyQuestion: [false],
-			hasDataSource: [false],
-			idDependentQuestion: [''],
-			dependentValue: this.formBuilder.group({
-				id: [],
-				title: [],
-				value: []
-			}),
-			config: this.formBuilder.group({
-				minCharacters: [],
-				maxCharacters: [],
-				maxValue: [],
-				minValue: []
-			})
-		});
+		if (this.allValidForms()) {
+			this._isPossibleConfirm = false;
+			let question: Question = new Question();
+			this.data.questions.push(question);
+			const index: number = this.data.questions.indexOf(question);
+			this.mapCloseAccordion.set(index, false);
+			this.questionForms[index] = this.createForm(Guid.create().toString(), this.data.node.idTreeNode);
+		}
 	}
 
 	doChangeValue(event: MatSelectChange) {
@@ -123,8 +67,8 @@ export class QuestionComponent {
 		if (question) {
 			if (question.type === "boolean") {
 				this.dependentValueByQuestion = [
-					this.newDependentValue("true", "Yes", true),
-					this.newDependentValue("false", "No", false)
+					this.newDependentValue("true", "Verdadeiro", true),
+					this.newDependentValue("false", "Falso", false)
 				];
 			} else if (question.type === "scale") {
 				this.dependentValueByQuestion = [
@@ -136,13 +80,13 @@ export class QuestionComponent {
 				];
 			} else if (question.type === "numeric") {
 				this.dependentValueByQuestion = [
-					this.newDependentValue("greaterThanEqual", "Greater Than Equal", 0),
-					this.newDependentValue("lessThanEqual", "Less Than Equal", 0),
+					this.newDependentValue("greaterThanEqual", "Maior e igual", 0),
+					this.newDependentValue("lessThanEqual", "Menor e igual", 0),
 				];
 			} else {
 				this.dependentValueByQuestion = [
-					this.newDependentValue("contains", "Contains", ""),
-					this.newDependentValue("equal", "Equal", ""),
+					this.newDependentValue("contains", "Contém", ""),
+					this.newDependentValue("equal", "Igual", ""),
 				];
 			}
 		} else {
@@ -170,10 +114,6 @@ export class QuestionComponent {
 		return value.maxCharacters;
 	}
 
-	private newDependentValue(id: string, title: string, value: any): DependentValue {
-		return new DependentValue(id, title, value);
-	}
-
 	getQuestion(idQuestion: string): Question {
 		return this.data.questions.find(value => value.idQuestion === idQuestion);
 	}
@@ -192,6 +132,7 @@ export class QuestionComponent {
 
 	deleteQuestion(index: number): void {
 		this.data.questions.splice(index, 1);
+		this.questionForms.splice(index, 1);
 	}
 
 	formChange(index: number) {
@@ -202,23 +143,37 @@ export class QuestionComponent {
 		this.mapCloseAccordion.set(index, false);
 	}
 
-	get questionForms(): FormGroup[] {
-		return this._questionForms;
+	allValidForms(): boolean {
+		return this.questionForms.every(form => form.valid);
 	}
 
-	get mapCloseAccordion(): Map<number, boolean> {
-		return this._mapCloseAccordion;
+	private createForm(idQuestion: string = '', idProcess: string = ''): FormGroup {
+		return this.formBuilder.group({
+			idQuestion: [idQuestion, Validators.required],
+			idProcess: [idProcess, Validators.required],
+			idExpectedResult: ['', Validators.required],
+			name: ['', Validators.required],
+			tip: ['', Validators.maxLength(255)],
+			type: ['', Validators.required],
+			dependsOnAnyQuestion: [false],
+			hasDataSource: [false],
+			idDependentQuestion: [''],
+			dependentValue: this.formBuilder.group({
+				id: [],
+				title: [],
+				value: []
+			}),
+			config: this.formBuilder.group({
+				minCharacters: [],
+				maxCharacters: [],
+				maxValue: [],
+				minValue: []
+
+			})
+		});
 	}
 
-	get dialogRef(): MatDialogRef<QuestionComponent> {
-		return this._dialogRef;
-	}
-
-	get dependentValueByQuestion(): any[] {
-		return this._dependentValueByQuestion;
-	}
-
-	set dependentValueByQuestion(value: any[]) {
-		this._dependentValueByQuestion = value;
+	private newDependentValue(id: string, title: string, value: any): DependentValue {
+		return new DependentValue(id, title, value);
 	}
 }

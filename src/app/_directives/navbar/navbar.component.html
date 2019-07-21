@@ -10,7 +10,7 @@
 		<mat-menu #menu="matMenu">
 			<button mat-menu-item [routerLink]="['/user', getUser.idUser]">
 				<i class="icon fa fa-user"></i>
-				<span>Edit user</span>
+				<span>Editar usuário</span>
 			</button>
 			<button mat-menu-item (click)="onLogout()">
 				<i class="icon fa fa-sign-out"></i>
@@ -24,23 +24,22 @@
 			<mat-nav-list>
 				<button mat-menu-item (click)="snav.close()" [routerLink]="['/company', getUser.idCompany]">
 					<i class="icon fa fa-building"></i>
-					<span>Company</span>
+					<span>Organização</span>
 				</button>
 				<button mat-menu-item (click)="snav.close()" *ngIf="getUser.role === 'ADM'"
-						[routerLink]="['/reference-model']">Reference
-					Model
+						[routerLink]="['/reference-model']">Modelo de Referência
 				</button>
 				<button mat-menu-item (click)="snav.close()" *ngIf="getUser.role === 'ADM'"
 						[routerLink]="['/measurement-framework']">Measurement
 					Framework
 				</button>
 				<button mat-menu-item (click)="snav.close()" *ngIf="getUser.role === 'ADM'"
-						[routerLink]="['/evaluation']">Evaluation
+						[routerLink]="['/assessment']">Avaliação
 				</button>
 				<button mat-menu-item (click)="snav.close()" *ngIf="getUser.role === 'ADM'"
 						[routerLink]="['/data-source']">
 					<i class="icon fa fa-database"></i>
-					<span>Data Source</span>
+					<span>Fonte de Dados</span>
 				</button>
 			</mat-nav-list>
 		</mat-sidenav>

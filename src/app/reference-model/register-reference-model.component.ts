@@ -15,8 +15,8 @@ export class RegisterReferenceModelComponent implements OnInit {
 	referenceModelForm: FormGroup;
 	loading = false;
 	submitted = false;
+	idReferenceModel: number = null;
 	private _knowledgeAreas: KnowledgeArea[] = [];
-	private idReferenceModel: number = null;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -64,10 +64,9 @@ export class RegisterReferenceModelComponent implements OnInit {
 
 		if (this.idReferenceModel) {
 			this.referenceModelService.update(this.referenceModelForm.value)
-				.pipe(first())
 				.subscribe(
 					data => {
-						this.alertService.success('Update successful', true);
+						this.alertService.success('Atualizado com sucesso', true);
 						this.router.navigate(['/reference-model']);
 					},
 					error => {
@@ -76,10 +75,9 @@ export class RegisterReferenceModelComponent implements OnInit {
 					});
 		} else {
 			this.referenceModelService.register(this.referenceModelForm.value)
-				.pipe(first())
 				.subscribe(
 					data => {
-						this.alertService.success('Register successful', true);
+						this.alertService.success('Cadastro com sucesso', true);
 						this.router.navigate(['/reference-model']);
 					},
 					error => {

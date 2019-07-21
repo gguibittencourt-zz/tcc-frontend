@@ -2,12 +2,11 @@
 
 	<div class="knowledge-area-header">
 		<div class="knowledge-area-header-title">
-			<div class="knowledge-area-header-title-spacer">Knowledge Areas</div>
-			<button mat-icon-button type="button" (click)="addKnowledgeArea()" class="mat-icon-button">
+			<div class="knowledge-area-header-title-spacer">Áreas de Processo</div>
+			<button mat-stroked-button type="button" (click)="addKnowledgeArea()" class="mat-stroked-button">
 			<span class="mat-button-wrapper">
-				<mat-icon class="mat-icon material-icons">
-					<i class="fa fa-plus"></i>
-				</mat-icon>
+				Adicionar
+				<i class="fa fa-plus"></i>
 			</span>
 			</button>
 		</div>
@@ -17,7 +16,7 @@
 			<mat-expansion-panel *ngFor="let knowledgeArea of knowledgeAreas; let i = index"
 								 [expanded]="mapCloseAccordion.get(i)">
 				<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-					<input matInput value="{{knowledgeArea.name}}" disabled placeholder="Knowledge Area"/>
+					<input matInput value="{{knowledgeArea.name}}" disabled placeholder="Área de Processo"/>
 					<button mat-icon-button type="button" (click)="deleteKnowledgeArea(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons">
@@ -29,26 +28,26 @@
 				<form [formGroup]="getKnowledgeAreaForm(i)" (ngSubmit)="confirmKnowledgeArea(i)">
 					<mat-form-field class="col-md-12">
 						<input matInput formControlName="name"
-							   (change)="formChange(i)" placeholder="Name"/>
+							   (change)="formChange(i)" placeholder="Nome"/>
 					</mat-form-field>
 					<mat-form-field class="padding-top col-md-12">
 						<input matInput formControlName="purpose"
 							   (change)="formChange(i)"
-							   placeholder="Purpose"/>
+							   placeholder="Objetivo"/>
 					</mat-form-field>
 					<div class="process-button">
 						<a mat-raised-button (click)="openDialog(i)"
 								class="btn btn-outline-info ">
-							Processes: {{knowledgeArea.processes ? knowledgeArea.processes.length : 0}}
+							Processos: {{knowledgeArea.processes ? knowledgeArea.processes.length : 0}}
 						</a>
 					</div>
 					<mat-action-row class="action-row">
-						<button mat-raised-button [disabled]="loading" class="btn btn-outline-success confirm-button">
-							Confirm
-						</button>
 						<button mat-raised-button [disabled]="loading" (click)="cancelKnowledgeArea(i)"
 								class="btn btn-outline-danger">
-							Cancel
+							Cancelar
+						</button>
+						<button mat-raised-button [disabled]="loading || !allValidForms()" class="btn btn-outline-success confirm-button">
+							Confirmar
 						</button>
 					</mat-action-row>
 				</form>

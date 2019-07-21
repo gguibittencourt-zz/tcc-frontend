@@ -12,10 +12,11 @@ import {Guid} from "guid-typescript";
 
 export class ProcessComponent implements OnInit {
 
-	private _processForms: FormGroup[] = [];
-	private _mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
+	processForms: FormGroup[] = [];
+	mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
+	private _isPossibleConfirm: boolean = true;
 
-	constructor(private _dialogRef: MatDialogRef<ProcessComponent>,
+	constructor(private dialogRef: MatDialogRef<ProcessComponent>,
 				@Inject(MAT_DIALOG_DATA) public data: Process[],
 				private formBuilder: FormBuilder) {
 	}
@@ -43,16 +44,8 @@ export class ProcessComponent implements OnInit {
 		});
 	}
 
-	get processForms(): FormGroup[] {
-		return this._processForms;
-	}
-
-	get mapCloseAccordion(): Map<number, boolean> {
-		return this._mapCloseAccordion;
-	}
-
-	get dialogRef(): MatDialogRef<ProcessComponent> {
-		return this._dialogRef;
+	get isPossibleConfirm(): boolean {
+		return this._isPossibleConfirm;
 	}
 
 	onNoClick(): void {
@@ -63,23 +56,28 @@ export class ProcessComponent implements OnInit {
 		if (this.processForms[index].invalid) {
 			return;
 		}
+		this._isPossibleConfirm = true;
 		this.mapCloseAccordion.set(index, false);
 		this.data[index] = this.processForms[index].value;
 	}
 
 	addProcess() {
-		let process: Process = new Process();
-		this.data.push(process);
-		this.processForms[this.data.indexOf(process)] = this.formBuilder.group({
-			idProcess: [Guid.create().toString()],
-			name: ['', Validators.required],
-			purpose: ['', Validators.required],
-			expectedResults: [[]]
-		});
+		if (this.allValidForms()) {
+			this._isPossibleConfirm = false;
+			let process: Process = new Process();
+			this.data.push(process);
+			this.processForms[this.data.indexOf(process)] = this.formBuilder.group({
+				idProcess: [Guid.create().toString()],
+				name: ['', Validators.required],
+				purpose: ['', Validators.required],
+				expectedResults: [[]]
+			});
+		}
 	}
 
 	deleteProcess(index: number) {
 		this.data.splice(index, 1);
+		this.processForms.splice(index, 1);
 	}
 
 	formChange(index: number) {
@@ -93,5 +91,9 @@ export class ProcessComponent implements OnInit {
 	confirmExpectedResults(expectedResults: ExpectedResult[], process: Process, index: number) {
 		process.expectedResults = expectedResults;
 		this.processForms[index].controls["expectedResults"].setValue(expectedResults);
+	}
+
+	allValidForms(): boolean {
+		return this.processForms.every(form => form.valid);
 	}
 }
