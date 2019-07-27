@@ -20,8 +20,8 @@
 					<input matInput value="{{expectedResult.name}}" disabled placeholder="Resultado Esperado"/>
 					<button mat-icon-button type="button" (click)="deleteExpectedResult(i)"
 							class="mat-icon-button active">
-						<mat-icon class="mat-icon material-icons">
-							<i class="fa fa-remove"></i>
+						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
+							<i class="fa fa-trash"></i>
 						</mat-icon>
 					</button>
 				</mat-expansion-panel-header>
@@ -51,7 +51,7 @@
 								class="btn btn-outline-danger">
 							Cancelar
 						</button>
-						<button mat-raised-button [disabled]="loading || !isPossibleConfirm"
+						<button mat-raised-button [disabled]="loading"
 								class="btn btn-outline-success confirm-button">
 							Confirmar
 						</button>

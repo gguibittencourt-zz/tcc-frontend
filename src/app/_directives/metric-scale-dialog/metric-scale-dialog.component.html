@@ -1,0 +1,28 @@
+<h1 mat-dialog-title><input matInput [ngModel]="data.name" placeholder="Métrica" disabled/></h1>
+<div mat-dialog-content>
+	<form [formGroup]="metricScaleForm">
+		<mat-form-field class="col-md-12">
+			<input matInput formControlName="name" placeholder="Nome"/>
+		</mat-form-field>
+		<div class="invalid-feedback error-message-metric">
+			<span *ngIf="submitted && f.name?.errors?.required">Nome é obrigatório</span>
+		</div>
+		<mat-form-field class="col-md-12">
+			<mat-select placeholder="Valor" multiple formControlName="values" [compareWith]="comparer">
+				<mat-option *ngFor="let metric of data.valueMetrics" [value]="metric">
+					{{metric.name}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<div class="invalid-feedback error-message-metric">
+			<span *ngIf="submitted && valuesEmpty()">Valor é obrigatório</span>
+		</div>
+	</form>
+</div>
+<div mat-dialog-actions>
+	<button mat-button (click)="onNoClick()">Cancelar</button>
+	<button mat-raised-button [disabled]="loading"
+			class="btn btn-outline-success confirm-button" (click)="confirmMetric()">
+		Confirmar
+	</button>
+</div>

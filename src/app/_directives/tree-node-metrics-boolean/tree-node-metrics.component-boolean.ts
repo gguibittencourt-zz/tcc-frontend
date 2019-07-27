@@ -1,22 +1,22 @@
 ﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Goal, KnowledgeArea, TreeNode} from "../../_models";
+import {GoalBoolean, KnowledgeArea, TreeNode} from "../../_models";
 import {MatDialog, MatTreeNestedDataSource} from "@angular/material";
 import {NestedTreeControl} from "@angular/cdk/tree";
 import {FormBuilder} from "@angular/forms";
 
 @Component({
-	selector: 'tree-node-metrics',
-	templateUrl: 'tree-node-metrics.component.html',
-	styleUrls: ['tree-node-metrics.component.scss']
+	selector: 'tree-node-metrics-boolean',
+	templateUrl: 'tree-node-metrics.component-boolean.html',
+	styleUrls: ['tree-node-metrics.component-boolean.scss']
 })
 
-export class TreeNodeMetricsComponent implements OnInit {
-	@Input('knowledgeAreas') private _knowledgeAreas: KnowledgeArea[];
-	@Input('goals') private _goals: Goal[];
+export class TreeNodeMetricsComponentBoolean implements OnInit {
+	@Input('knowledgeAreas') knowledgeAreas: KnowledgeArea[];
+	@Input('goals') goals: GoalBoolean[];
 	@Output() onConfirmGoals: EventEmitter<any> = new EventEmitter();
 
-	private _treeControl = new NestedTreeControl<TreeNode>(node => node.children);
-	private _dataSource = new MatTreeNestedDataSource<TreeNode>();
+	treeControl = new NestedTreeControl<TreeNode>(node => node.children);
+	dataSource = new MatTreeNestedDataSource<TreeNode>();
 
 	constructor(private formBuilder: FormBuilder, private  dialog: MatDialog) {
 	}
@@ -26,17 +26,17 @@ export class TreeNodeMetricsComponent implements OnInit {
 			let treeNode: TreeNode = new TreeNode();
 			treeNode.idTreeNode = String(knowledgeArea.idKnowledgeArea);
 			treeNode.name = knowledgeArea.name;
-			let goal: Goal = this.goals.find(goal => goal.idReference == String(knowledgeArea.idKnowledgeArea));
+			let goal: GoalBoolean = this.goals ? this.goals.find(goal => goal.idReference == String(knowledgeArea.idKnowledgeArea)) : null;
 			if (goal) {
 				treeNode.percentage = goal.percentage;
 			} else {
 				treeNode.percentage = Number((100.0 / this.knowledgeAreas.length).toFixed(2));
 			}
 			treeNode.children = knowledgeArea.processes.map(process => {
-				let treeNodeChildren: TreeNode = new TreeNode();
+				const treeNodeChildren: TreeNode = new TreeNode();
 				treeNodeChildren.idTreeNode = process.idProcess;
 				treeNodeChildren.name = process.name;
-				let goal: Goal = this.goals.find(goal => goal.idReference == process.idProcess);
+				const goal: GoalBoolean = this.goals ? this.goals.find(goal => goal.idReference == process.idProcess) : null;
 				if (goal) {
 					treeNodeChildren.percentage = goal.percentage;
 				} else {
@@ -46,7 +46,7 @@ export class TreeNodeMetricsComponent implements OnInit {
 					let expectedTreeNode: TreeNode = new TreeNode();
 					expectedTreeNode.idTreeNode = expectedResult.idExpectedResult;
 					expectedTreeNode.name = expectedResult.name;
-					let goal: Goal = this.goals.find(goal => goal.idReference == expectedResult.idExpectedResult);
+					let goal: GoalBoolean = this.goals ? this.goals.find(goal => goal.idReference == expectedResult.idExpectedResult): null;
 					if (goal) {
 						expectedTreeNode.percentage = goal.percentage;
 					} else {
@@ -67,7 +67,7 @@ export class TreeNodeMetricsComponent implements OnInit {
 			this.goals.splice(indexActualGoal, 1);
 			actualGoal.percentage = percentage as number;
 		} else {
-			actualGoal = new Goal();
+			actualGoal = new GoalBoolean();
 			actualGoal.idReference = node.idTreeNode;
 			actualGoal.percentage = percentage as number;
 		}
@@ -76,20 +76,4 @@ export class TreeNodeMetricsComponent implements OnInit {
 	}
 
 	hasChild = (_: number, node: TreeNode) => !!node.children && node.children.length > 0;
-
-	get knowledgeAreas(): KnowledgeArea[] {
-		return this._knowledgeAreas;
-	}
-
-	get treeControl(): NestedTreeControl<TreeNode> {
-		return this._treeControl;
-	}
-
-	get dataSource(): MatTreeNestedDataSource<TreeNode> {
-		return this._dataSource;
-	}
-
-	get goals(): Goal[] {
-		return this._goals;
-	}
 }

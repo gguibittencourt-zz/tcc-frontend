@@ -1,5 +1,5 @@
 ﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {KnowledgeArea, MatQuestionDialogData, Question, TreeNode} from "../../_models";
+import {KnowledgeArea, MatQuestionDialogData, Question, TreeNode, TypeQuestion} from "../../_models";
 import {MatDialog, MatTreeNestedDataSource} from "@angular/material";
 import {NestedTreeControl} from "@angular/cdk/tree";
 import {FormBuilder} from "@angular/forms";
@@ -13,12 +13,13 @@ import {cloneDeep, isEmpty} from "lodash";
 })
 
 export class TreeNodeQuestionsComponent implements OnInit {
-	@Input('knowledgeAreas') private _knowledgeAreas: KnowledgeArea[];
-	@Input('questions') private _questions: Question[];
+	@Input('knowledgeAreas') knowledgeAreas: KnowledgeArea[];
+	@Input('questions') questions: Question[] = [];
+	@Input('type') type: TypeQuestion;
 	@Output() onConfirmQuestions: EventEmitter<any> = new EventEmitter();
 
-	private _treeControl = new NestedTreeControl<TreeNode>(node => node.children);
-	private _dataSource = new MatTreeNestedDataSource<TreeNode>();
+	treeControl = new NestedTreeControl<TreeNode>(node => node.children);
+	dataSource = new MatTreeNestedDataSource<TreeNode>();
 
 	constructor(private formBuilder: FormBuilder, private  dialog: MatDialog) {
 	}
@@ -42,6 +43,7 @@ export class TreeNodeQuestionsComponent implements OnInit {
 	openDialog(node: TreeNode): void {
 		let data = new MatQuestionDialogData();
 		data.node = node;
+		data.type = this.type;
 		data.questions = isEmpty(this.questions) ? [] : cloneDeep(this.getQuestionsByProcess(node.idTreeNode));
 		const dialogRef = this.dialog.open(QuestionComponent, {
 			height: '95%',
@@ -52,6 +54,9 @@ export class TreeNodeQuestionsComponent implements OnInit {
 
 		dialogRef.afterClosed().subscribe((result: Question[]) => {
 			if (result) {
+				if (this.questions == null) {
+					this.questions = [];
+				}
 				let idQuestions: string[] = this.questions.map((question: Question) => question.idQuestion);
 				result.forEach(value => {
 					if (!idQuestions.includes(value.idQuestion)) {
@@ -70,28 +75,8 @@ export class TreeNodeQuestionsComponent implements OnInit {
 	}
 
 	getQuestionsByProcess(idProcess: string) {
-		return this.questions.filter(value => value.idProcess === idProcess);
+		return this.questions ? this.questions.filter(value => value.idProcess === idProcess): [];
 	}
 
 	hasChild = (_: number, node: TreeNode) => !!node.children && node.children.length > 0;
-
-	get knowledgeAreas(): KnowledgeArea[] {
-		return this._knowledgeAreas;
-	}
-
-	get questions(): Question[] {
-		return this._questions;
-	}
-
-	set questions(value: Question[]) {
-		this._questions = value;
-	}
-
-	get treeControl(): NestedTreeControl<TreeNode> {
-		return this._treeControl;
-	}
-
-	get dataSource(): MatTreeNestedDataSource<TreeNode> {
-		return this._dataSource;
-	}
 }

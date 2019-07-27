@@ -49,7 +49,7 @@ export class ListReferenceModelComponent implements OnInit {
 	openConfirmationDialog(referenceModel: ReferenceModel) {
 		let data = new DialogData(referenceModel.name, "Delete Reference Model", "Do you want to delete the reference model: ");
 		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-			disableClose: false,
+			disableClose: true,
 			data
 		});
 

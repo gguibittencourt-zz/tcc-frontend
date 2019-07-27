@@ -49,7 +49,7 @@ export class ListMeasurementFrameworkComponent implements OnInit {
 	openConfirmationDialog(measurementFramework: MeasurementFramework) {
 		let data: DialogData = new DialogData(measurementFramework.name, "Delete Measurement Framework", "Do you want to delete the measurement framework:");
 		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-			disableClose: false,
+			disableClose: true,
 			data: data
 		});
 

@@ -72,11 +72,11 @@ export class QuestionComponent {
 				];
 			} else if (question.type === "scale") {
 				this.dependentValueByQuestion = [
-					this.newDependentValue("1", "1", 1),
-					this.newDependentValue("2", "2", 2),
-					this.newDependentValue("3", "3", 3),
-					this.newDependentValue("4", "4", 4),
-					this.newDependentValue("5", "5", 5),
+					this.newDependentValue("1", "Não ainda", 1),
+					this.newDependentValue("2", "Não implementado", 2),
+					this.newDependentValue("3", "Parcialmente implementado", 3),
+					this.newDependentValue("4", "Largamente implementado", 4),
+					this.newDependentValue("5", "Totalmente implementado", 5),
 				];
 			} else if (question.type === "numeric") {
 				this.dependentValueByQuestion = [
@@ -154,7 +154,7 @@ export class QuestionComponent {
 			idExpectedResult: ['', Validators.required],
 			name: ['', Validators.required],
 			tip: ['', Validators.maxLength(255)],
-			type: ['', Validators.required],
+			type: [this.data.type, Validators.required],
 			dependsOnAnyQuestion: [false],
 			hasDataSource: [false],
 			idDependentQuestion: [''],

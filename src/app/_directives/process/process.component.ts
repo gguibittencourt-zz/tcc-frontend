@@ -22,14 +22,6 @@ export class ProcessComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.processForms[0] = this.formBuilder.group({
-			idProcess: [Guid.create().toString()],
-			name: ['', Validators.required],
-			purpose: ['', Validators.required],
-			expectedResults: [[]]
-		});
-		this.mapCloseAccordion.set(0, false);
-
 		this.data.forEach((value, index) => {
 			let form = this.formBuilder.group({
 				idProcess: ['', Validators.required],

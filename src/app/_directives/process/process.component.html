@@ -19,8 +19,8 @@
 						<input matInput value="{{process.name}}" disabled placeholder="Processo"/>
 						<button mat-icon-button type="button" (click)="deleteProcess(i)"
 								class="mat-icon-button active">
-							<mat-icon class="mat-icon material-icons">
-								<i class="fa fa-remove"></i>
+							<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
+								<i class="fa fa-trash"></i>
 							</mat-icon>
 						</button>
 					</mat-expansion-panel-header>
@@ -28,7 +28,7 @@
 					<mat-horizontal-stepper [linear]="true" #stepper>
 						<mat-step [stepControl]="processForms[i]">
 							<form [formGroup]="processForms[i]">
-								<ng-template matStepLabel>Preencha o nome e o objetivo do processo</ng-template>
+								<ng-template matStepLabel>Preencha o nome e o objetivo</ng-template>
 								<div class="form-group">
 									<mat-form-field class="col-md-12">
 										<input matInput formControlName="name"
@@ -67,7 +67,7 @@
 
 							<div class="form-group">
 								<button mat-raised-button class="mat-raised-button btn btn-outline-secondary" matStepperPrevious>Voltar</button>
-								<button mat-raised-button (click)="confirmProcess(i)" [disabled]="loading || !isPossibleConfirm"
+								<button mat-raised-button (click)="confirmProcess(i)" [disabled]="loading"
 										class="btn btn-outline-success save-button">Salvar
 								</button>
 							</div>

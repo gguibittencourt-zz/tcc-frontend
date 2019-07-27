@@ -22,13 +22,6 @@ export class ExpectedResultComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.expectedResultForms[0] = this.formBuilder.group({
-			idExpectedResult: [Guid.create().toString()],
-			name: ['', Validators.required],
-			description: ['', Validators.required],
-		});
-		this.mapCloseAccordion.set(0, false);
-
 		this.expectedResults.forEach((value, index) => {
 			let form = this.formBuilder.group({
 				idExpectedResult: ['', Validators.required],

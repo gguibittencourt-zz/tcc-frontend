@@ -20,8 +20,8 @@
 						<input matInput value="{{question.name}}" disabled placeholder="Questão {{i + 1}}"/>
 						<button mat-icon-button type="button" (click)="deleteQuestion(i)"
 								class="mat-icon-button active">
-							<mat-icon class="mat-icon material-icons">
-								<i class="fa fa-remove"></i>
+							<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
+								<i class="fa fa-trash"></i>
 							</mat-icon>
 						</button>
 					</mat-expansion-panel-header>
@@ -52,7 +52,7 @@
 								</mat-form-field>
 
 								<mat-form-field class="col-md-12">
-									<mat-select placeholder="Tipo" formControlName="type"
+									<mat-select placeholder="Tipo" formControlName="type" disabled
 												[ngClass]="{ 'is-invalid': submitted && f.type.errors }">
 										<mat-option value="numeric">Numérico</mat-option>
 										<mat-option value="text">Texto</mat-option>

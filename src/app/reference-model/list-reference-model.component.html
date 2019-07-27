@@ -23,8 +23,8 @@
 			<button mat-button [routerLink]="['/reference-model', element.idReferenceModel]" class="btn btn-sm">
 				<i class="fa fa-edit"></i>
 			</button>
-			<button mat-button (click)="openConfirmationDialog(element)" class="btn btn-sm">
-				<i class="fa fa-remove"></i>
+			<button mat-button (click)="openConfirmationDialog(element)" class="btn btn-sm" matTooltip="Excluir">
+				<i class="fa fa-trash"></i>
 			</button>
 			<button mat-button disabled class="btn btn-sm">
 				<i class="fa fa-clone"></i>

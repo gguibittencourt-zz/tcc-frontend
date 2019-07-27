@@ -3,8 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import {AlertService, MeasurementFrameworkService, ReferenceModelService} from '../_services';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Goal, MeasurementFramework, Question, ReferenceModel} from "../_models";
-import {first} from "rxjs/operators";
+import {GoalBoolean, GoalScale, MeasurementFramework, Question, ReferenceModel, TypeQuestion} from "../_models";
 import {MatSelectChange} from "@angular/material";
 
 @Component({
@@ -20,6 +19,8 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 	measurementFramework: MeasurementFramework;
 	referenceModels: ReferenceModel[] = [];
 	referenceModel: ReferenceModel;
+	types: TypeQuestion[] = [];
+	type: string;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -40,10 +41,16 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			this.referenceModels = data;
 		});
 
+		this.types = [
+			{idTypeQuestion: 'boolean', name: 'Booleano'},
+			{idTypeQuestion: 'scale', name: 'Escala'}
+		];
+
 		this.measurementFrameworkForm = this.formBuilder.group({
 			idMeasurementFramework: [],
 			name: ['', Validators.required],
 			idReferenceModel: [, Validators.required],
+			type: ['', Validators.required],
 			questions: [[]],
 			goals: [[]],
 		});
@@ -55,6 +62,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 					this.measurementFrameworkForm.setValue(data);
 					this.measurementFramework = data;
 					this.referenceModel = this.getReferenceModel(data.idReferenceModel);
+					this.type = this.types.find(value => value.idTypeQuestion  == data.type).idTypeQuestion;
 				});
 			}
 		});
@@ -68,12 +76,16 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		return this.referenceModels.find(value => value.idReferenceModel === idReferenceModel);
 	}
 
+	changeTypeQuestion(event: MatSelectChange): void {
+		this.type = event.value;
+	}
+
 	confirmQuestions(questions: Question[]) {
 		this.f["questions"].setValue(questions);
 		this.measurementFramework.questions = questions;
 	}
 
-	confirmGoals(goals: Goal[]) {
+	confirmGoals(goals: GoalBoolean[] | GoalScale[]) {
 		this.f["goals"].setValue(goals);
 		this.measurementFramework.goals = goals;
 	}

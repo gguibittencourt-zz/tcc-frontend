@@ -1,6 +1,6 @@
 import {Guid} from "guid-typescript";
 
-export class Goal {
+export class GoalBoolean {
 
 	idGoal: string;
 	idReference: string;

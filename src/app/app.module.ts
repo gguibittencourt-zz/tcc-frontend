@@ -1,6 +1,6 @@
 ﻿import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 
@@ -12,6 +12,7 @@ import {AuthGuard} from './_guards';
 import {ErrorInterceptor, JwtInterceptor} from './_helpers';
 import {
 	AlertService,
+	AssessmentService,
 	AuthenticationService,
 	CompanyService,
 	MeasurementFrameworkService,
@@ -29,19 +30,21 @@ import {ListReferenceModelComponent, RegisterReferenceModelComponent} from "./re
 import {KnowledgeAreaComponent} from "./_directives/knowledge-area";
 import {ProcessComponent} from "./_directives/process";
 import {ConfirmDialogComponent} from "./_directives/confirm-dialog";
+import {MetricScaleDialogComponent} from "./_directives/metric-scale-dialog";
 import {ListMeasurementFrameworkComponent, RegisterMeasurementFrameworkComponent} from "./measurement-framework";
 import {ExpectedResultComponent} from "./_directives/expected-result";
 import {TreeNodeQuestionsComponent} from "./_directives/tree-node-questions";
 import {QuestionComponent} from "./_directives/question";
 import {LoadingComponent} from "./_directives/loading";
-import {TreeNodeMetricsComponent} from "./_directives/tree-node-metrics";
+import {TreeNodeMetricsComponentBoolean} from "./_directives/tree-node-metrics-boolean";
+import {TreeNodeMetricsComponentScale} from "./_directives/tree-node-metrics-scale";
 import {ListAssessmentComponent, RegisterAssessmentComponent} from "./assessment";
-import {AssessmentService} from "./_services";
 import {QuestionAssessmentComponent} from "./_directives/question-assessment";
 
 @NgModule({
 	imports: [
 		BrowserModule,
+		FormsModule,
 		ReactiveFormsModule,
 		HttpClientModule,
 		routing,
@@ -61,11 +64,13 @@ import {QuestionAssessmentComponent} from "./_directives/question-assessment";
 		KnowledgeAreaComponent,
 		ProcessComponent,
 		ConfirmDialogComponent,
+		MetricScaleDialogComponent,
 		ListMeasurementFrameworkComponent,
 		RegisterMeasurementFrameworkComponent,
 		ExpectedResultComponent,
 		TreeNodeQuestionsComponent,
-		TreeNodeMetricsComponent,
+		TreeNodeMetricsComponentBoolean,
+		TreeNodeMetricsComponentScale,
 		QuestionComponent,
 		LoadingComponent,
 		ListAssessmentComponent,
@@ -84,7 +89,7 @@ import {QuestionAssessmentComponent} from "./_directives/question-assessment";
 		MeasurementFrameworkService,
 		AssessmentService
 	],
-	entryComponents: [ProcessComponent, ConfirmDialogComponent, QuestionComponent],
+	entryComponents: [ProcessComponent, ConfirmDialogComponent, QuestionComponent, MetricScaleDialogComponent],
 	bootstrap: [AppComponent]
 })
 

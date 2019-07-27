@@ -26,6 +26,18 @@
 				<div *ngIf="submitted && f.idReferenceModel.errors" class="invalid-feedback">
 					<div *ngIf="f.idReferenceModel.errors.required">Modelo de referência é obrigatório</div>
 				</div>
+				<mat-form-field class="full-width-input">
+					<mat-select placeholder="Tipo de questão" formControlName="type"
+								(selectionChange)="changeTypeQuestion($event)"
+								[ngClass]="{ 'is-invalid': submitted && f.type.errors }">
+						<mat-option *ngFor="let type of types" [value]="type.idTypeQuestion">
+							{{type.name}}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<div *ngIf="submitted && f.type.errors" class="invalid-feedback">
+					<div *ngIf="f.type.errors.required">Tipo de questão é obrigatório</div>
+				</div>
 			</div>
 			<div class="form-group">
 				<button mat-raised-button [routerLink]="['/measurement-framework']" class="btn btn-outline-danger">
@@ -41,6 +53,7 @@
 		<form [formGroup]="measurementFrameworkForm">
 			<tree-node-questions *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
 								 [questions]="measurementFramework.questions"
+								 [type]="type"
 								 (onConfirmQuestions)="confirmQuestions($event)">
 			</tree-node-questions>
 		</form>
@@ -54,10 +67,19 @@
 		<ng-template matStepLabel>Preencha as métricas</ng-template>
 
 		<form [formGroup]="measurementFrameworkForm">
-			<tree-node-metrics *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
-							   [goals]="measurementFramework.goals"
-							   (onConfirmGoals)="confirmGoals($event)">
-			</tree-node-metrics>
+			<div *ngIf="type == 'boolean'">
+				<tree-node-metrics-boolean *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
+										   [goals]="measurementFramework.goals"
+										   (onConfirmGoals)="confirmGoals($event)">
+				</tree-node-metrics-boolean>
+			</div>
+			<div *ngIf="type == 'scale'">
+				<tree-node-metrics-scale *ngIf="referenceModel"
+										 [knowledgeAreas]="referenceModel.knowledgeAreas"
+										 [goals]="measurementFramework.goals"
+										 (onConfirmGoals)="confirmGoals($event)">
+				</tree-node-metrics-scale>
+			</div>
 		</form>
 
 		<div class="form-group">
