@@ -7,12 +7,12 @@ import {MetricScaleDialogComponent} from "../metric-scale-dialog";
 import {flatMap, isEmpty, isNil} from "lodash";
 
 @Component({
-	selector: 'tree-node-metrics-scale',
-	templateUrl: 'tree-node-metrics.component-scale.html',
-	styleUrls: ['tree-node-metrics.component-scale.scss']
+	selector: 'tree-node-metrics-scale-nominal',
+	templateUrl: 'tree-node-metrics.component-scale-nominal.html',
+	styleUrls: ['tree-node-metrics.component-scale-nominal.scss']
 })
 
-export class TreeNodeMetricsComponentScale implements OnInit {
+export class TreeNodeMetricsComponentScaleNominal implements OnInit {
 	@Input('knowledgeAreas') knowledgeAreas: KnowledgeArea[];
 	@Input('goals') goals: GoalScale[];
 	@Output() onConfirmGoals: EventEmitter<any> = new EventEmitter();

@@ -43,7 +43,8 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 
 		this.types = [
 			{idTypeQuestion: 'boolean', name: 'Booleano'},
-			{idTypeQuestion: 'scale', name: 'Escala'}
+			{idTypeQuestion: 'scale-nominal', name: 'Escala Nominal'},
+			{idTypeQuestion: 'scale-numeric', name: 'Escala Numérica'}
 		];
 
 		this.measurementFrameworkForm = this.formBuilder.group({

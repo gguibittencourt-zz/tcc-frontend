@@ -6,9 +6,6 @@
 			<mat-form-field>
 				<input matInput type="number" placeholder="Métrica" [value]="node.percentage"
 					   (blur)="addGoal($event.target.value, node)"/>
-				<div *ngIf="node.isInvalid" class="invalid-feedback display-grid">
-					O valor total deve ser de 100
-				</div>
 			</mat-form-field>
 		</li>
 	</mat-tree-node>
@@ -22,13 +19,16 @@
 					</mat-icon>
 				</button>
 				{{node.name}}
-				<mat-form-field>
-					<input matInput type="number" placeholder="Métrica" [value]="node.percentage"
-						   (blur)="addGoal($event.target.value, node)"/>
-					<div *ngIf="node.isInvalid" class="invalid-feedback display-grid">
-						O valor total deve ser de 100
+				<div *ngIf="node.percentage">
+					<mat-form-field>
+						<input matInput type="number" placeholder="Métrica" [value]="node.percentage"
+							   ngClass="{{isPercentageInvalid(node.percentage) ? 'is-invalid' : ''}}"
+							   (blur)="addGoal($event.target.value, node)"/>
+					</mat-form-field>
+					<div *ngIf="isPercentageInvalid(node.percentage)" class="invalid-feedback">
+						Valor inválido
 					</div>
-				</mat-form-field>
+				</div>
 			</div>
 			<ul>
 				<ng-container matTreeNodeOutlet></ng-container>

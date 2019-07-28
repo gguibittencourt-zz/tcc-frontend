@@ -9,4 +9,5 @@ export class TreeNode {
     percentage?: number;
     hasMetricScale?: boolean;
 	metricScale?: MetricScale;
+	isInvalid?: boolean;
 }

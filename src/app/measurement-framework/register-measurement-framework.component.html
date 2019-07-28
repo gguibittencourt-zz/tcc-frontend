@@ -3,7 +3,7 @@
 <mat-horizontal-stepper [linear]="true" #stepper>
 	<mat-step [stepControl]="measurementFrameworkForm">
 		<form [formGroup]="measurementFrameworkForm">
-			<ng-template matStepLabel>Preencha o nome e o modelo de referência</ng-template>
+			<ng-template matStepLabel>Preencha os dados básicos</ng-template>
 			<div class="form-group">
 				<mat-form-field class="full-width-input">
 					<input matInput formControlName="name" class="form-control" placeholder="Nome"
@@ -73,12 +73,35 @@
 										   (onConfirmGoals)="confirmGoals($event)">
 				</tree-node-metrics-boolean>
 			</div>
-			<div *ngIf="type == 'scale'">
-				<tree-node-metrics-scale *ngIf="referenceModel"
+			<div *ngIf="type == 'scale-nominal'">
+				<tree-node-metrics-scale-nominal *ngIf="referenceModel"
 										 [knowledgeAreas]="referenceModel.knowledgeAreas"
 										 [goals]="measurementFramework.goals"
 										 (onConfirmGoals)="confirmGoals($event)">
-				</tree-node-metrics-scale>
+				</tree-node-metrics-scale-nominal>
+			</div>
+			<div *ngIf="type == 'scale-numeric'">
+				<tree-node-metrics-scale-numeric *ngIf="referenceModel"
+												 [knowledgeAreas]="referenceModel.knowledgeAreas"
+												 [goals]="measurementFramework.goals"
+												 (onConfirmGoals)="confirmGoals($event)">
+				</tree-node-metrics-scale-numeric>
+			</div>
+		</form>
+
+		<div class="form-group">
+			<button mat-button matStepperPrevious>Voltar</button>
+			<button mat-raised-button class="btn btn-outline-success save-button"
+					matStepperNext>Próximo</button>
+		</div>
+	</mat-step>
+	<mat-step [stepControl]="measurementFrameworkForm">
+		<ng-template matStepLabel>Preencha a classificação</ng-template>
+
+		<form [formGroup]="measurementFrameworkForm">
+			<div *ngIf="type == 'boolean'">
+			</div>
+			<div *ngIf="type == 'scale'">
 			</div>
 		</form>
 
