@@ -8,6 +8,7 @@ export class TreeNode {
     expectedResults?: ExpectedResult[];
     percentage?: number;
     hasMetricScale?: boolean;
-	metricScale?: MetricScale;
+	metricScale?: MetricScale[];
+	valueMetrics?: any;
 	isInvalid?: boolean;
 }

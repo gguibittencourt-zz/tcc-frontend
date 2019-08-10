@@ -38,10 +38,12 @@
 								</mat-form-field>
 								<mat-form-field class="col-md-12">
 									<mat-select placeholder="Resultado Esperado" formControlName="idExpectedResult"
+												(valueChange)="expectedResultSelected(i, $event)"
 												[ngClass]="{ 'is-invalid': submitted && f.idExpectedResult.errors }">
 										<mat-option *ngFor="let expectedResult of data.node.expectedResults"
+													[disabled]="expectedResult.disable"
 													[value]="expectedResult.idExpectedResult">
-											{{expectedResult.name}}
+												{{expectedResult.name}}
 										</mat-option>
 									</mat-select>
 								</mat-form-field>
@@ -54,8 +56,6 @@
 								<mat-form-field class="col-md-12">
 									<mat-select placeholder="Tipo" formControlName="type" disabled
 												[ngClass]="{ 'is-invalid': submitted && f.type.errors }">
-										<mat-option value="numeric">Numérico</mat-option>
-										<mat-option value="text">Texto</mat-option>
 										<mat-option value="scale-nominal">Escala Nominal</mat-option>
 										<mat-option value="scale-numeric">Escala Numérica</mat-option>
 										<mat-option value="boolean">Verdadeiro/Falso</mat-option>
@@ -66,40 +66,19 @@
 								<ng-template mat-tab-label>
 									Configuração
 								</ng-template>
-								<div class="display-flex">
-									<mat-form-field *ngIf="isType(i, 'text')" class="col-md-6">
-										<div formGroupName="config">
-											<input matInput formControlName="minCharacters"
-												   (change)="formChange(i)"
-												   type="number"
-												   placeholder="Caractéres Mínimos"/>
-										</div>
-									</mat-form-field>
-									<mat-form-field *ngIf="isType(i, 'text')" class="col-md-6">
-										<div formGroupName="config">
-											<input matInput formControlName="maxCharacters"
-												   (change)="formChange(i)"
-												   type="number"
-												   placeholder="Caractéres Máximos"/>
-										</div>
-									</mat-form-field>
-								</div>
-								<div class="display-flex">
-									<mat-form-field *ngIf="isType(i, 'numeric')" class="col-md-6">
-										<div formGroupName="config">
-											<input matInput formControlName="minValue"
-												   (change)="formChange(i)"
-												   type="number"
-												   placeholder="Valor Mínimo"/>
-										</div>
-									</mat-form-field>
-									<mat-form-field *ngIf="isType(i, 'numeric')" class="col-md-6">
-										<div formGroupName="config">
-											<input matInput formControlName="maxValue"
-												   (change)="formChange(i)"
-												   type="number"
-												   placeholder="Valor Máximo"/>
-										</div>
+								<div class="display-inline-flex">
+									<mat-slide-toggle class="col-md-6" formControlName="required"
+													  (change)="changeQuestionRequired($event)"
+													  labelPosition="before">Obrigatória
+									</mat-slide-toggle>
+									<mat-form-field class="col-md-6" *ngIf="!questionRequired">
+										<mat-select placeholder="Valor padrão" formControlName="defaultValue"
+													[ngClass]="{ 'is-invalid': submitted && f.defaultValue.errors }">
+											<mat-option *ngFor="let defaultValue of defaultValues"
+														[value]="defaultValue.value">
+												<span>{{defaultValue.title}}</span>
+											</mat-option>
+										</mat-select>
 									</mat-form-field>
 								</div>
 								<mat-slide-toggle class="col-md-12" formControlName="dependsOnAnyQuestion"
@@ -124,28 +103,8 @@
 												<mat-option *ngFor="let dependentValue of dependentValueByQuestion"
 															[value]="dependentValue.id">
 													<span>{{dependentValue.title}}</span>
-													<i *ngIf="dependentValue.id === 'greaterThanEqual'"> &ge;</i>
-													<i *ngIf="dependentValue.id === 'lessThanEqual'"> &le;</i>
 												</mat-option>
 											</mat-select>
-										</div>
-									</mat-form-field>
-									<mat-form-field class="col-md-6 col-md" *ngIf="hasInputValueNumeric(i)">
-										<div formGroupName="dependentValue">
-											<input matInput formControlName="value"
-												   (change)="formChange(i)"
-												   type="number"
-												   placeholder="Valor"/>
-										</div>
-									</mat-form-field>
-									<mat-form-field class="col-md-6 col-md" *ngIf="hasInputValueText(i)">
-										<div formGroupName="dependentValue">
-											<input matInput formControlName="value"
-												   (change)="formChange(i)"
-												   [minlength]="getMinLength(i)"
-												   [maxlength]=""
-												   type="text"
-												   placeholder="Valor"/>
 										</div>
 									</mat-form-field>
 								</div>
@@ -156,7 +115,7 @@
 						</mat-tab-group>
 
 						<mat-action-row class="action-row">
-							<button mat-raised-button [disabled]="loading" (click)="cancelQuestion(i)"
+							<button mat-raised-button [disabled]="loading"
 									class="btn btn-outline-danger">
 								Cancelar
 							</button>

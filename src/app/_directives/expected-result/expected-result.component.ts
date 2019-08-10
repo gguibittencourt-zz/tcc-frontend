@@ -65,6 +65,7 @@ export class ExpectedResultComponent implements OnInit {
 	}
 
 	deleteExpectedResult(index: number) {
+		this.expectedResultForms.splice(index, 1);
 		this.expectedResults.splice(index, 1);
 	}
 

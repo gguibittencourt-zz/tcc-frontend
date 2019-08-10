@@ -1,8 +1,8 @@
 import {Component, Inject} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {Guid} from "guid-typescript";
-import {MAT_DIALOG_DATA, MatDialogRef, MatSelectChange} from "@angular/material";
-import {DependentValue, MatQuestionDialogData, Question} from "../../_models";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Guid} from 'guid-typescript';
+import {MAT_DIALOG_DATA, MatDialogRef, MatSelectChange} from '@angular/material';
+import {DependentValue, MatQuestionDialogData, Question} from '../../_models';
 
 @Component({
 	selector: 'question',
@@ -14,23 +14,32 @@ export class QuestionComponent {
 	questionForms: FormGroup[] = [];
 	mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
 	dependentValueByQuestion: any[] = [];
+	defaultValues: any[] = [];
+	private _questionRequired: boolean = true;
 	private _isPossibleConfirm: boolean = true;
 
 	constructor(private dialogRef: MatDialogRef<QuestionComponent>,
 				@Inject(MAT_DIALOG_DATA) public data: MatQuestionDialogData,
 				private formBuilder: FormBuilder) {
+		this.fillDefaultValues(data.type);
 
 		this.data.questions.forEach((value, index) => {
-			let form = this.createForm();
+			const form = this.createForm();
 			form.patchValue(this.data.questions[index]);
 			this.questionForms[index] = form;
 			this.mapCloseAccordion.set(index, false);
 			this.createDependentValues(value.idDependentQuestion);
+			this.fillDefaultValues(value.type);
 		});
+		this.disableExpectedResultsSelected();
 	}
 
 	get isPossibleConfirm(): boolean {
 		return this._isPossibleConfirm;
+	}
+
+	get questionRequired(): boolean {
+		return this._questionRequired;
 	}
 
 	onNoClick(): void {
@@ -45,6 +54,13 @@ export class QuestionComponent {
 		this._isPossibleConfirm = true;
 		this.mapCloseAccordion.set(index, false);
 		this.data.questions[index] = this.questionForms[index].value;
+	}
+
+	disableExpectedResultsSelected(): void {
+		this.data.questions.forEach(question => {
+			const selected = this.data.node.expectedResults.find(expectedResult => expectedResult.idExpectedResult === question.idExpectedResult);
+			selected.disable = true;
+		});
 	}
 
 	addQuestion() {
@@ -65,53 +81,8 @@ export class QuestionComponent {
 	createDependentValues(idQuestion: string) {
 		let question: Question = this.getQuestion(idQuestion);
 		if (question) {
-			if (question.type === "boolean") {
-				this.dependentValueByQuestion = [
-					this.newDependentValue("true", "Verdadeiro", true),
-					this.newDependentValue("false", "Falso", false)
-				];
-			} else if (question.type === "scale") {
-				this.dependentValueByQuestion = [
-					this.newDependentValue("1", "Não ainda", 1),
-					this.newDependentValue("2", "Não implementado", 2),
-					this.newDependentValue("3", "Parcialmente implementado", 3),
-					this.newDependentValue("4", "Largamente implementado", 4),
-					this.newDependentValue("5", "Totalmente implementado", 5),
-				];
-			} else if (question.type === "numeric") {
-				this.dependentValueByQuestion = [
-					this.newDependentValue("greaterThanEqual", "Maior e igual", 0),
-					this.newDependentValue("lessThanEqual", "Menor e igual", 0),
-				];
-			} else {
-				this.dependentValueByQuestion = [
-					this.newDependentValue("contains", "Contém", ""),
-					this.newDependentValue("equal", "Igual", ""),
-				];
-			}
-		} else {
-			this.dependentValueByQuestion = [];
+			this.dependentValueByQuestion = this.createValues(question.type);
 		}
-	}
-
-	hasInputValueNumeric(index: number) {
-		let value = this.questionForms[index].controls["dependentValue"].value;
-		return value != null && (value.id === "lessThanEqual" || value.id === "greaterThanEqual");
-	}
-
-	hasInputValueText(index: number) {
-		let value = this.questionForms[index].controls["dependentValue"].value;
-		return value != null && (value.id === "equal" || value.id === "contains");
-	}
-
-	getMinLength(index: number) {
-		let value = this.questionForms[index].controls["config"].value;
-		return value.minCharacters;
-	}
-
-	getMaxLength(index: number) {
-		let value = this.questionForms[index].controls["config"].value;
-		return value.maxCharacters;
 	}
 
 	getQuestion(idQuestion: string): Question {
@@ -119,18 +90,19 @@ export class QuestionComponent {
 	}
 
 	dependsOnAnyQuestion(index: number): boolean {
-		return this.questionForms[index].controls["dependsOnAnyQuestion"].value;
+		return this.questionForms[index].controls['dependsOnAnyQuestion'].value;
 	}
 
 	getQuestions(index: number): Question[] {
 		return this.data.questions.filter(value => this.data.questions.indexOf(value) < index);
 	}
 
-	isType(index: number, type: string): boolean {
-		return this.questionForms[index].controls["type"].value === type;
-	}
-
 	deleteQuestion(index: number): void {
+		const questionDeleted = this.data.questions[index];
+		const expectedResult = this.data.node.expectedResults.find(expectedResult => expectedResult.idExpectedResult === questionDeleted.idExpectedResult);
+		if (expectedResult) {
+			expectedResult.disable = false;
+		}
 		this.data.questions.splice(index, 1);
 		this.questionForms.splice(index, 1);
 	}
@@ -147,6 +119,21 @@ export class QuestionComponent {
 		return this.questionForms.every(form => form.valid);
 	}
 
+	changeQuestionRequired(event: any): void {
+		this._questionRequired = event.checked;
+	}
+
+	expectedResultSelected(indexQuestion: number, event: any): void {
+		const oldIdExpectedResult = this.questionForms[indexQuestion].controls['idExpectedResult'].value;
+		const expectedResult = this.data.node.expectedResults.find(expectedResult => expectedResult.idExpectedResult === event);
+		expectedResult.disable = true;
+
+		const oldExpectedResult = this.data.node.expectedResults.find(expectedResult => expectedResult.idExpectedResult === oldIdExpectedResult);
+		if (oldExpectedResult) {
+			oldExpectedResult.disable = false;
+		}
+	}
+
 	private createForm(idQuestion: string = '', idProcess: string = ''): FormGroup {
 		return this.formBuilder.group({
 			idQuestion: [idQuestion, Validators.required],
@@ -155,6 +142,8 @@ export class QuestionComponent {
 			name: ['', Validators.required],
 			tip: ['', Validators.maxLength(255)],
 			type: [this.data.type, Validators.required],
+			required: [true],
+			defaultValue: [''],
 			dependsOnAnyQuestion: [false],
 			hasDataSource: [false],
 			idDependentQuestion: [''],
@@ -168,12 +157,40 @@ export class QuestionComponent {
 				maxCharacters: [],
 				maxValue: [],
 				minValue: []
-
 			})
 		});
 	}
 
-	private newDependentValue(id: string, title: string, value: any): DependentValue {
-		return new DependentValue(id, title, value);
+	private createValues(type: string) {
+		if (type === 'boolean') {
+			return [
+				this.newDependentValue('Verdadeiro', true),
+				this.newDependentValue('Falso', false)
+			];
+		} else if (type === 'scale-nominal') {
+			return [
+				this.newDependentValue('Não ainda', 1),
+				this.newDependentValue('Não implementado', 2),
+				this.newDependentValue('Parcialmente implementado', 3),
+				this.newDependentValue('Largamente implementado', 4),
+				this.newDependentValue('Totalmente implementado', 5),
+			];
+		} else if (type === 'scale-numeric') {
+			return [
+				this.newDependentValue('1', 1),
+				this.newDependentValue('2', 2),
+				this.newDependentValue('3', 3),
+				this.newDependentValue('4', 4),
+				this.newDependentValue('5', 5),
+			];
+		}
+	}
+
+	private newDependentValue(title: string, value: any): DependentValue {
+		return new DependentValue(title, value);
+	}
+
+	private fillDefaultValues(type: string) {
+		this.defaultValues = this.createValues(type);
 	}
 }

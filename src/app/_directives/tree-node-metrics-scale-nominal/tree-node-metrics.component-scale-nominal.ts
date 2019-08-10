@@ -41,9 +41,9 @@ export class TreeNodeMetricsComponentScaleNominal implements OnInit {
 			const goal: GoalScale = this.goals.find(goal => goal.idReference == String(knowledgeArea.idKnowledgeArea));
 			if (goal) {
 				treeNode.metricScale = goal.metrics;
-				treeNode.hasMetricScale = !isEmpty(goal.metrics.values);
+				treeNode.hasMetricScale = !isEmpty(goal.metrics);
 			} else {
-				treeNode.metricScale = new MetricScale();
+				treeNode.metricScale = [];
 				treeNode.hasMetricScale = false;
 			}
 			treeNode.children = knowledgeArea.processes.map(process => {
@@ -53,9 +53,9 @@ export class TreeNodeMetricsComponentScaleNominal implements OnInit {
 				const goal: GoalScale = this.goals.find(goal => goal.idReference == process.idProcess);
 				if (goal) {
 					treeNodeChildren.metricScale = goal.metrics;
-					treeNodeChildren.hasMetricScale = !isEmpty(goal.metrics.values);
+					treeNodeChildren.hasMetricScale = !isEmpty(goal.metrics);
 				} else {
-					treeNodeChildren.metricScale = new MetricScale();
+					treeNodeChildren.metricScale = [];
 					treeNodeChildren.hasMetricScale = false;
 				}
 				return treeNodeChildren;
@@ -67,26 +67,26 @@ export class TreeNodeMetricsComponentScaleNominal implements OnInit {
 	toggleHasMetricScale(event: any, node: TreeNode, hasChild?: boolean) {
 		node.hasMetricScale = event.checked;
 		if (node.hasMetricScale) {
-			if (hasChild) {
-				node.metricScale.valueMetrics = flatMap(node.children, child => {
-					return child.metricScale;
-				});
-			} else {
-				node.metricScale.valueMetrics = this.valueMetrics;
-			}
-			this.openMetricScaleDialog(node);
+			this.openMetricScaleDialog(node, hasChild);
 		}
 	}
 
 	hasChild = (_: number, node: TreeNode) => !!node.children && node.children.length > 0;
 
-	openMetricScaleDialog(node: TreeNode) {
+	openMetricScaleDialog(node: TreeNode, hasChild?: boolean) {
+		if (hasChild) {
+			node.valueMetrics = flatMap(node.children, child => {
+				return child.metricScale;
+			});
+		} else {
+			node.valueMetrics = this.valueMetrics;
+		}
 		const dialogRef = this.dialog.open(MetricScaleDialogComponent, {
 			disableClose: true,
-			data: node.metricScale
+			data: node,
 		});
 
-		dialogRef.afterClosed().subscribe((result: MetricScale) => {
+		dialogRef.afterClosed().subscribe((result: MetricScale[]) => {
 			if (result) {
 				let actualGoal = this.goals.find(value => value.idReference === node.idTreeNode);
 				if (actualGoal) {
@@ -104,13 +104,13 @@ export class TreeNodeMetricsComponentScaleNominal implements OnInit {
 				this.onConfirmGoals.emit(this.goals);
 				return;
 			}
-			if (isEmpty(node.metricScale.values)) {
+			if (isEmpty(node.metricScale)) {
 				node.hasMetricScale = false;
 			}
 		});
 	}
 
 	allChildrensHasMetric(node: TreeNode): boolean {
-		return node.children.every(value => value.hasMetricScale && !isEmpty(value.metricScale.values))
+		return node.children.every(value => value.hasMetricScale && !isEmpty(value.metricScale))
 	}
 }

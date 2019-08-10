@@ -1,0 +1,39 @@
+﻿<div [formGroup]="level" *ngFor="let level of levelForms; let i = index">
+	<div>
+		<mat-form-field class="col-md-6">
+			<mat-select placeholder="Área de processo" formControlName="idProcessArea"
+						[ngClass]="{ 'is-invalid': submitted && f.idProcessArea.errors }">
+				<mat-option *ngFor="let knowledgeArea of knowledgeAreas"
+							[value]="knowledgeArea.idKnowledgeArea">
+					{{knowledgeArea.name}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<mat-form-field class="col-md-6">
+			<mat-select placeholder="Área de processo" formArrayName="values"
+						[ngClass]="{ 'is-invalid': submitted && f.values.errors }">
+				<mat-option *ngFor="let knowledgeArea of knowledgeAreas"
+							[value]="knowledgeArea.idKnowledgeArea">
+					{{knowledgeArea.name}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<div class="col-auto align-self-center">
+			<button *ngIf="levelForms.length > 1"
+					class="btn btn-secondary mt-2 p-2"
+					type="button"
+					[id]="'removeLevel-' + i"
+					(click)="deleteLevel(i)">
+				<i class="fa fa-trash-o"></i>
+			</button>
+		</div>
+	</div>
+	<hr class="my-2">
+</div>
+<div class="row">
+	<div class="col">
+		<button class="btn btn-secondary p-2" type="button" (click)="addLevel()" id="addLevel">
+			Adicionar
+		</button>
+	</div>
+</div>

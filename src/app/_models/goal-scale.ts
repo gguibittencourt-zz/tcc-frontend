@@ -5,9 +5,10 @@ export class GoalScale {
 
 	idGoal: string;
 	idReference: string;
-	metrics: MetricScale;
+	metrics: MetricScale[];
 
 	constructor() {
 		this.idGoal = Guid.create().toString();
+		this.metrics = [];
 	}
 }

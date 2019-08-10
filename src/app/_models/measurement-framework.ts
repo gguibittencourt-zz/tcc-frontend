@@ -1,6 +1,7 @@
 ﻿import {Question} from "./question";
 import {GoalBoolean} from "./goal-boolean";
 import {GoalScale} from "./goal-scale";
+import {Classification} from "./classification";
 
 export class MeasurementFramework {
     idMeasurementFramework: number;
@@ -9,4 +10,5 @@ export class MeasurementFramework {
     type: string;
 	questions?: Question[];
 	goals?: GoalBoolean[] | GoalScale[];
+	classifications?: Classification[];
 }

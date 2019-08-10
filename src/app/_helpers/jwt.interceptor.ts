@@ -7,7 +7,7 @@ export class JwtInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     	request = request.clone({
 			setHeaders: {
-				"Content-Type": "application/json",
+				"Content-Type": "application/json;charset=UTF-8",
 				"Access-Control-Allow-Origin": "*",
 				"Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS"
 			}

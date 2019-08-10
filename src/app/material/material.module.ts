@@ -8,6 +8,7 @@ import {
 	MatDialogModule,
 	MatExpansionModule,
 	MatFormFieldModule,
+	MatDividerModule,
 	MatIconModule,
 	MatInputModule,
 	MatListModule,
@@ -54,7 +55,8 @@ import {
 		MatTreeModule,
 		MatPaginatorModule,
 		MatRadioModule,
-		MatSliderModule
+		MatSliderModule,
+		MatDividerModule
 	],
 })
 export class CustomMaterialModule {

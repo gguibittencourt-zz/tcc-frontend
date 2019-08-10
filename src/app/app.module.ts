@@ -39,8 +39,11 @@ import {LoadingComponent} from "./_directives/loading";
 import {TreeNodeMetricsComponentBoolean} from "./_directives/tree-node-metrics-boolean";
 import {TreeNodeMetricsComponentScaleNominal} from "./_directives/tree-node-metrics-scale-nominal";
 import {TreeNodeMetricsComponentScaleNumeric} from "./_directives/tree-node-metrics-scale-numeric";
+import {ClassificationScaleNominalComponent} from "./_directives/classification-scale-nominal";
 import {ListAssessmentComponent, RegisterAssessmentComponent} from "./assessment";
 import {QuestionAssessmentComponent} from "./_directives/question-assessment";
+import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
+import {LevelScaleNominalComponent} from "./_directives/level-scale-nominal";
 
 @NgModule({
 	imports: [
@@ -77,11 +80,14 @@ import {QuestionAssessmentComponent} from "./_directives/question-assessment";
 		LoadingComponent,
 		ListAssessmentComponent,
 		RegisterAssessmentComponent,
-		QuestionAssessmentComponent
+		QuestionAssessmentComponent,
+		ClassificationScaleNominalComponent,
+		LevelScaleNominalComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
 		{provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+		{provide: STEPPER_GLOBAL_OPTIONS, useValue: {showError: true}},
 		AuthGuard,
 		AlertService,
 		AuthenticationService,

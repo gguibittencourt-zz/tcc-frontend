@@ -4,7 +4,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AlertService, ReferenceModelService} from '../_services';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {KnowledgeArea, ReferenceModel} from "../_models";
-import {first} from "rxjs/operators";
 
 @Component({
 	templateUrl: './register-reference-model.component.html',
@@ -16,7 +15,7 @@ export class RegisterReferenceModelComponent implements OnInit {
 	loading = false;
 	submitted = false;
 	idReferenceModel: number = null;
-	private _knowledgeAreas: KnowledgeArea[] = [];
+	knowledgeAreas: KnowledgeArea[] = [];
 
 	constructor(
 		private route: ActivatedRoute,
@@ -38,15 +37,11 @@ export class RegisterReferenceModelComponent implements OnInit {
 			if (this.idReferenceModel) {
 				this.referenceModelService.get(this.idReferenceModel).subscribe((data: ReferenceModel) => {
 					this.referenceModelForm.setValue(data);
-					this._knowledgeAreas = data.knowledgeAreas;
+					this.knowledgeAreas = data.knowledgeAreas;
 				});
 			}
 
 		});
-	}
-
-	get knowledgeAreas(): KnowledgeArea[] {
-		return this._knowledgeAreas;
 	}
 
 	get f() {

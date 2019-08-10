@@ -1,0 +1,51 @@
+﻿<div class="classification-scale-nominal">
+
+	<div class="classification-scale-nominal-header">
+		<div class="classification-scale-nominal-header-title">
+			<div class="classification-scale-nominal-header-title-spacer">Classificação</div>
+			<button mat-stroked-button type="button" (click)="addClassification()" class="mat-stroked-button">
+			<span class="mat-button-wrapper">
+				Adicionar
+				<i class="fa fa-plus"></i>
+			</span>
+			</button>
+		</div>
+	</div>
+	<div class="classification-scale-nominal-body">
+		<mat-accordion>
+			<mat-expansion-panel *ngFor="let classification of classifications; let i = index"
+								 [expanded]="mapCloseAccordion.get(i)">
+				<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
+					<input matInput value="{{classification.name}}" disabled placeholder="Nome"/>
+					<button mat-icon-button type="button" (click)="deleteClassification(i)"
+							class="mat-icon-button active">
+						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
+							<i class="fa fa-trash"></i>
+						</mat-icon>
+					</button>
+				</mat-expansion-panel-header>
+
+				<form [formGroup]="getClassificationForm(i)" (ngSubmit)="confirmClassification(i)">
+					<mat-form-field class="col-md-12">
+						<input matInput formControlName="name"
+							   (change)="formChange(i)" placeholder="Nome"/>
+					</mat-form-field>
+					<level-scale-nominal [knowledgeAreas]="knowledgeAreas"
+										 [goals]="goals"
+										 [levels]="levels">
+					</level-scale-nominal>
+					<mat-action-row class="action-row">
+						<button mat-raised-button [disabled]="loading" (click)="cancelClassification(i)"
+								class="btn btn-outline-danger">
+							Cancelar
+						</button>
+						<button mat-raised-button [disabled]="loading || !allValidForms()"
+								class="btn btn-outline-success confirm-button">
+							Confirmar
+						</button>
+					</mat-action-row>
+				</form>
+			</mat-expansion-panel>
+		</mat-accordion>
+	</div>
+</div>

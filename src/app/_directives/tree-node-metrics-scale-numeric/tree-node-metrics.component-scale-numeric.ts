@@ -1,5 +1,5 @@
 ﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GoalBoolean, KnowledgeArea, MetricScale, TreeNode} from '../../_models';
+import {GoalBoolean, KnowledgeArea, TreeNode} from '../../_models';
 import {MatDialog, MatTreeNestedDataSource} from '@angular/material';
 import {NestedTreeControl} from '@angular/cdk/tree';
 import {FormBuilder} from '@angular/forms';
@@ -18,13 +18,6 @@ export class TreeNodeMetricsComponentScaleNumeric implements OnInit {
 
 	treeControl = new NestedTreeControl<TreeNode>(node => node.children);
 	dataSource = new MatTreeNestedDataSource<TreeNode>();
-	readonly valueMetrics: MetricScale[] = [
-		{idMetricScale: '1', name: 'Não ainda'},
-		{idMetricScale: '2', name: 'Não implementado'},
-		{idMetricScale: '3', name: 'Parcialmente implementado'},
-		{idMetricScale: '4', name: 'Largamente implementado'},
-		{idMetricScale: '5', name: 'Totalmente implementado'},
-	];
 
 	constructor(private formBuilder: FormBuilder, private  dialog: MatDialog) {
 	}

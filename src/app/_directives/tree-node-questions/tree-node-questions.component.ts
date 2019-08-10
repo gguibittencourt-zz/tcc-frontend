@@ -1,5 +1,5 @@
 ﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {KnowledgeArea, MatQuestionDialogData, Question, TreeNode, TypeQuestion} from "../../_models";
+import {KnowledgeArea, MatQuestionDialogData, Question, TreeNode} from "../../_models";
 import {MatDialog, MatTreeNestedDataSource} from "@angular/material";
 import {NestedTreeControl} from "@angular/cdk/tree";
 import {FormBuilder} from "@angular/forms";
@@ -15,7 +15,7 @@ import {cloneDeep, isEmpty} from "lodash";
 export class TreeNodeQuestionsComponent implements OnInit {
 	@Input('knowledgeAreas') knowledgeAreas: KnowledgeArea[];
 	@Input('questions') questions: Question[] = [];
-	@Input('type') type: TypeQuestion;
+	@Input('type') type: string;
 	@Output() onConfirmQuestions: EventEmitter<any> = new EventEmitter();
 
 	treeControl = new NestedTreeControl<TreeNode>(node => node.children);
@@ -49,7 +49,8 @@ export class TreeNodeQuestionsComponent implements OnInit {
 			height: '95%',
 			width: '95%',
 			maxWidth: '95%',
-			data: data
+			data: data,
+			disableClose: true
 		});
 
 		dialogRef.afterClosed().subscribe((result: Question[]) => {

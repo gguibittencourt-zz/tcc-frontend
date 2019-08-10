@@ -3,7 +3,16 @@ import {ActivatedRoute, Router} from '@angular/router';
 
 import {AlertService, MeasurementFrameworkService, ReferenceModelService} from '../_services';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {GoalBoolean, GoalScale, MeasurementFramework, Question, ReferenceModel, TypeQuestion} from "../_models";
+import {
+	Classification,
+	GoalBoolean,
+	GoalScale,
+	KnowledgeArea,
+	MeasurementFramework,
+	Question,
+	ReferenceModel,
+	TypeQuestion
+} from "../_models";
 import {MatSelectChange} from "@angular/material";
 
 @Component({
@@ -54,12 +63,15 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			type: ['', Validators.required],
 			questions: [[]],
 			goals: [[]],
+			classifications: [[]],
 		});
 
 		this.route.params.subscribe(params => {
 			this.idMeasurementFramework = params['idMeasurementFramework'];
 			if (this.idMeasurementFramework) {
 				this.measurementFrameworkService.get(this.idMeasurementFramework).subscribe((data: MeasurementFramework) => {
+					//TODO retirar
+					data.classifications = [];
 					this.measurementFrameworkForm.setValue(data);
 					this.measurementFramework = data;
 					this.referenceModel = this.getReferenceModel(data.idReferenceModel);
@@ -89,6 +101,11 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 	confirmGoals(goals: GoalBoolean[] | GoalScale[]) {
 		this.f["goals"].setValue(goals);
 		this.measurementFramework.goals = goals;
+	}
+
+	confirmClassifications(classifications: Classification[]) {
+		this.f["classifications"].setValue(classifications);
+		this.measurementFramework.classifications = classifications;
 	}
 
 	onSubmit(): void {

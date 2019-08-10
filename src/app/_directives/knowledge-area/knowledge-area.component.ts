@@ -96,6 +96,7 @@ export class KnowledgeAreaComponent implements OnInit {
 
 		let knowledgeArea = this.knowledgeAreas[index];
 		const dialogRef = this.dialog.open(ProcessComponent, {
+			disableClose: true,
 			height: '95%',
 			width: '95%',
 			maxWidth: '95%',

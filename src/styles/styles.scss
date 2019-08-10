@@ -52,6 +52,14 @@ mat-expansion-panel-header {
 	display: block;
 }
 
+.display-flex {
+	display: flex;
+}
+
+.display-inline-flex {
+	display: inline-flex;
+}
+
 .error-message {
 	display: block;
 	padding-left: 15px;

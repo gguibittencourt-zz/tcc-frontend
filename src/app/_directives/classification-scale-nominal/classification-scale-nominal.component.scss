@@ -1,0 +1,55 @@
+.classification-scale-nominal {
+
+	border: 1px solid #00000008;
+	background-color: #f2f2f2;
+	box-shadow: 0 2px 2px #0000003d, 0 0 2px #0000001f;
+
+	.classification-scale-nominal-header {
+
+		.classification-scale-nominal-header-title {
+			align-content: center;
+			align-items: center;
+			display: flex;
+			padding: 4px 20px;
+
+			.classification-scale-nominal-header-title-spacer {
+				flex: 1 1 auto;
+				max-width: 87%;
+				color: #0000008a;
+			}
+		}
+	}
+
+	.classification-scale-nominal-body {
+		background-color: #fafafa;
+		padding: 10px;
+
+		.margin-top {
+			padding-top: 20px;
+		}
+
+		.process-button {
+			padding-bottom: 10px;
+			padding-left: 15px;
+		}
+
+		.action-row {
+			padding-top: 10px;
+			padding-bottom: 0;
+		}
+
+		.not-active {
+			pointer-events: none;
+			cursor: default;
+		}
+
+		.active {
+			pointer-events: all !important;
+			cursor: pointer;
+		}
+
+		.confirm-button {
+			margin-right: 5px;
+		}
+	}
+}

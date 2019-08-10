@@ -1,9 +1,10 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {MetricScale} from "../../_models";
+import {MetricScale, TreeNode} from "../../_models";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {isEmpty} from "lodash";
 import {Guid} from "guid-typescript";
+import {EmptyListValidator} from "../../_helpers";
 
 @Component({
 	selector: 'metric-scale-dialog',
@@ -13,27 +14,22 @@ import {Guid} from "guid-typescript";
 
 export class MetricScaleDialogComponent {
 
-	metricScaleForm: FormGroup;
+	metricScaleForms: FormGroup[] = [];
 	submitted: boolean = false;
+	private _isPossibleConfirm: boolean = true;
 
-	constructor(private _dialogRef: MatDialogRef<MetricScaleDialogComponent>,
-				@Inject(MAT_DIALOG_DATA) public data: MetricScale,
+	constructor(private dialogRef: MatDialogRef<MetricScaleDialogComponent>,
+				@Inject(MAT_DIALOG_DATA) public data: TreeNode,
 				private formBuilder: FormBuilder) {
-		this.metricScaleForm = this.formBuilder.group({
-			idMetricScale: [Guid.create().toString()],
-			name: ['', Validators.required],
-			values: [],
-			valueMetrics: []
-		});
-		this.metricScaleForm.patchValue(this.data);
-	}
-
-	get dialogRef(): MatDialogRef<MetricScaleDialogComponent> {
-		return this._dialogRef;
-	}
-
-	get f() {
-		return this.metricScaleForm.controls;
+		if (isEmpty(data.metricScale)) {
+			this.metricScaleForms = [this.createMetricScaleForm()];
+		} else {
+			this.data.metricScale.map(value => {
+				const metricScaleForm = this.createMetricScaleForm();
+				metricScaleForm.patchValue(value);
+				this.metricScaleForms.push(metricScaleForm);
+			});
+		}
 	}
 
 	onNoClick(): void {
@@ -42,17 +38,46 @@ export class MetricScaleDialogComponent {
 
 	confirmMetric(): void {
 		this.submitted = true;
-		if (this.metricScaleForm.invalid) {
+		if (!this.allValidForms()) {
 			return;
 		}
-		this.dialogRef.close(this.metricScaleForm.value);
+		this.dialogRef.close(this.parseFormToData(this.metricScaleForms));
 	}
 
-	valuesEmpty(): boolean {
-		return isEmpty(this.f['values'].value);
+	addMetric() {
+		if (this.allValidForms()) {
+			this._isPossibleConfirm = false;
+			this.metricScaleForms.push(this.createMetricScaleForm());
+		}
+	}
+
+	deleteMetric(index: number) {
+		this.metricScaleForms.splice(index, 1);
+	}
+
+	hasError(field: string, form: FormGroup): boolean {
+		return !isEmpty(form.controls[field].errors);
 	}
 
 	comparer(o1: any, o2: any): boolean {
-		return o1 && o2 ? o1.idMetricScale === o2.idMetricScale : o2 === o2;
+		return o1 && o2 ? o1.idMetricScale === o2.idMetricScale : false;
+	}
+
+	private allValidForms(): boolean {
+		return this.metricScaleForms.every(form => form.valid);
+	}
+
+	private parseFormToData(forms: FormGroup[]): MetricScale[] {
+		return forms.map(form => {
+			return form.value;
+		});
+	}
+
+	private createMetricScaleForm(): FormGroup {
+		return this.formBuilder.group({
+			idMetricScale: [Guid.create().toString()],
+			name: ['', Validators.required],
+			values: [[], EmptyListValidator.listaVaziaValidator()]
+		});
 	}
 }

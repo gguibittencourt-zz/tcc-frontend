@@ -1,24 +1,38 @@
-<h1 mat-dialog-title><input matInput [ngModel]="data.name" placeholder="Métrica" disabled/></h1>
+<h1 mat-dialog-title><input matInput placeholder="Métricas" disabled/></h1>
 <div mat-dialog-content>
-	<form [formGroup]="metricScaleForm">
-		<mat-form-field class="col-md-12">
-			<input matInput formControlName="name" placeholder="Nome"/>
-		</mat-form-field>
-		<div class="invalid-feedback error-message-metric">
-			<span *ngIf="submitted && f.name?.errors?.required">Nome é obrigatório</span>
+	<div [formGroup]="metricScaleForm" *ngFor="let metricScaleForm of metricScaleForms; let i = index"
+		 class="display-flex">
+		<div class="display-block padding-right">
+			<mat-form-field>
+				<input matInput formControlName="name" placeholder="Nome"/>
+			</mat-form-field>
+			<mat-error *ngIf="submitted && hasError('name', metricScaleForm)">Nome é obrigatório</mat-error>
 		</div>
-		<mat-form-field class="col-md-12">
-			<mat-select placeholder="Valor" multiple formControlName="values" [compareWith]="comparer">
-				<mat-option *ngFor="let metric of data.valueMetrics" [value]="metric">
-					{{metric.name}}
-				</mat-option>
-			</mat-select>
-		</mat-form-field>
-		<div class="invalid-feedback error-message-metric">
-			<span *ngIf="submitted && valuesEmpty()">Valor é obrigatório</span>
+
+		<div class="display-block">
+			<mat-form-field>
+				<mat-select placeholder="Valor" multiple formControlName="values" [compareWith]="comparer">
+					<mat-option *ngFor="let metric of data.valueMetrics" [value]="metric">
+						{{metric.name}}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+			<mat-error *ngIf="submitted && hasError('values', metricScaleForm)">Valor é obrigatório</mat-error>
 		</div>
-	</form>
+		<button class="align-self-center btn btn-outline-danger botao-excluir btn-sm"
+				matTooltip="Excluir"
+				*ngIf="metricScaleForms.length > 1"
+				[id]="'removeMetric-' + i"
+				(click)="deleteMetric(i)">
+			<i class="fa fa-trash-o"></i>
+		</button>
+	</div>
+	<mat-divider class="divider"></mat-divider>
+	<button class="btn btn-outline-secondary btn-sm" type="button" (click)="addMetric()" id="addMetric">
+		Adicionar <i class="fa fa-plus"></i>
+	</button>
 </div>
+
 <div mat-dialog-actions>
 	<button mat-button (click)="onNoClick()">Cancelar</button>
 	<button mat-raised-button [disabled]="loading"

@@ -17,3 +17,5 @@ export * from './dialog-data';
 export * from './result';
 export * from './json-assessment';
 export * from './type-question';
+export * from './classification';
+export * from './level';
