@@ -1,39 +1,35 @@
-﻿<div [formGroup]="level" *ngFor="let level of levelForms; let i = index">
-	<div>
-		<mat-form-field class="col-md-6">
-			<mat-select placeholder="Área de processo" formControlName="idProcessArea"
-						[ngClass]="{ 'is-invalid': submitted && f.idProcessArea.errors }">
-				<mat-option *ngFor="let knowledgeArea of knowledgeAreas"
-							[value]="knowledgeArea.idKnowledgeArea">
-					{{knowledgeArea.name}}
-				</mat-option>
-			</mat-select>
-		</mat-form-field>
-		<mat-form-field class="col-md-6">
-			<mat-select placeholder="Área de processo" formArrayName="values"
-						[ngClass]="{ 'is-invalid': submitted && f.values.errors }">
-				<mat-option *ngFor="let knowledgeArea of knowledgeAreas"
-							[value]="knowledgeArea.idKnowledgeArea">
-					{{knowledgeArea.name}}
-				</mat-option>
-			</mat-select>
-		</mat-form-field>
-		<div class="col-auto align-self-center">
-			<button *ngIf="levelForms.length > 1"
-					class="btn btn-secondary mt-2 p-2"
-					type="button"
-					[id]="'removeLevel-' + i"
-					(click)="deleteLevel(i)">
-				<i class="fa fa-trash-o"></i>
-			</button>
-		</div>
-	</div>
-	<hr class="my-2">
+﻿<div [formGroup]="levelForm" *ngFor="let levelForm of levelForms; let i = index" class="display-flex">
+	<mat-form-field class="col-md-5">
+		<mat-select placeholder="Área de processo" formControlName="idProcessArea"
+					(valueChange)="changeProcessArea($event)">
+			<mat-option *ngFor="let knowledgeArea of knowledgeAreas"
+						[disabled]="showProcessArea(knowledgeArea)"
+						[value]="knowledgeArea.idKnowledgeArea">
+				{{knowledgeArea.name}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<mat-error *ngIf="submitted && hasError('idProcessArea', levelForm)">Área de processo é obrigatório</mat-error>
+
+	<mat-form-field [ngClass]="levelForms.length > 1 ? 'col-md-6' : 'col-md-7'">
+		<mat-select placeholder="Valor" multiple formControlName="values" [compareWith]="comparer"
+					[disabled]="disableProcessArea(levelForm)"
+					(openedChange)="openLevelValues($event)">
+			<mat-option *ngFor="let level of getLevelValues(levelForm)" [value]="level">
+				{{level.name}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<mat-error *ngIf="submitted && hasError('values', levelForm)">Valor é obrigatório</mat-error>
+	<button class="align-self-center btn btn-outline-danger btn-sm"
+			matTooltip="Excluir"
+			*ngIf="levelForms.length > 1"
+			[id]="'removeLevel-' + i"
+			(click)="deleteLevel(i)">
+		<i class="fa fa-trash-o"></i>
+	</button>
 </div>
-<div class="row">
-	<div class="col">
-		<button class="btn btn-secondary p-2" type="button" (click)="addLevel()" id="addLevel">
-			Adicionar
-		</button>
-	</div>
-</div>
+<mat-divider class="divider margin-left"></mat-divider>
+<button class="btn btn-outline-secondary btn-sm" type="button" (click)="addLevel()" id="addLevel">
+	Adicionar <i class="fa fa-plus"></i>
+</button>

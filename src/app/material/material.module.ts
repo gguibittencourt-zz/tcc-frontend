@@ -2,13 +2,12 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from '@angular/common';
 import {
 	MatButtonModule,
-	MatTooltipModule,
 	MatCardModule,
 	MatCheckboxModule,
 	MatDialogModule,
+	MatDividerModule,
 	MatExpansionModule,
 	MatFormFieldModule,
-	MatDividerModule,
 	MatIconModule,
 	MatInputModule,
 	MatListModule,
@@ -18,12 +17,14 @@ import {
 	MatProgressSpinnerModule,
 	MatRadioModule,
 	MatSelectModule,
-	MatSidenavModule, MatSliderModule,
+	MatSidenavModule,
+	MatSliderModule,
 	MatSlideToggleModule,
 	MatStepperModule,
 	MatTableModule,
 	MatTabsModule,
 	MatToolbarModule,
+	MatTooltipModule,
 	MatTreeModule
 } from '@angular/material';
 
@@ -56,7 +57,7 @@ import {
 		MatPaginatorModule,
 		MatRadioModule,
 		MatSliderModule,
-		MatDividerModule
+		MatDividerModule,
 	],
 })
 export class CustomMaterialModule {

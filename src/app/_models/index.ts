@@ -19,3 +19,4 @@ export * from './json-assessment';
 export * from './type-question';
 export * from './classification';
 export * from './level';
+export * from './scale-values';

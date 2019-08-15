@@ -1,7 +1,7 @@
 ﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GoalScale, KnowledgeArea, Level} from '../../_models';
+import {GoalScale, KnowledgeArea, Level, MetricScale} from '../../_models';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {isNil} from "lodash";
+import {isEmpty, isNil} from "lodash";
 import {EmptyListValidator} from "../../_helpers";
 
 @Component({
@@ -13,10 +13,10 @@ import {EmptyListValidator} from "../../_helpers";
 export class LevelScaleNominalComponent implements OnInit {
 	@Input('knowledgeAreas') knowledgeAreas: KnowledgeArea[];
 	@Input('levels') levels: Level[];
+	@Input('levelValues') levelValues: Map<string, MetricScale[]>;
 	@Input('goals') goals: GoalScale[];
-	@Output() onConfirmLevel: EventEmitter<any> = new EventEmitter();
+	@Output() onUpdateLevels: EventEmitter<any> = new EventEmitter();
 	private levelForms: FormGroup[] = [];
-	private mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
 	private _isPossibleConfirm: boolean = false;
 
 	constructor(private formBuilder: FormBuilder) {
@@ -27,33 +27,34 @@ export class LevelScaleNominalComponent implements OnInit {
 			this.goals = [];
 		}
 
-		if (isNil(this.levels)) {
+		if (isEmpty(this.levels)) {
 			this.levels = [];
+			const formGroup = this.createLevelForm();
+			this.levelForms.push(formGroup);
 		}
-		//TODO preencher os levelForms a partir dos levels
-		this.levelForms = [] as FormGroup[];
-		const formGroup = this.formBuilder.group({
-			idProcessArea: [, Validators.required],
-			values: [[], EmptyListValidator.listaVaziaValidator],
+		this.levels.forEach(level => {
+			const formGroup = this.createLevelForm();
+			formGroup.patchValue(level);
+			this.levelForms.push(formGroup);
 		});
-		this.levelForms.push(formGroup);
-	}
 
-	confirmLevel(index: number) {
-		if (this.levelForms[index].invalid) {
-			return;
-		}
-
-		this._isPossibleConfirm = true;
-		this.mapCloseAccordion.set(index, false);
-		this.onConfirmLevel.emit(this.levels);
 	}
 
 	addLevel() {
 		if (this.allValidForms()) {
 			this._isPossibleConfirm = false;
-			const level: Level = new Level();
-			this.levels.push(level);
+			this.levelForms.push(this.createLevelForm());
+		}
+	}
+
+	changeProcessArea(event: string): void {
+		const goal = this.goals.find(goal => goal.idReference === event);
+		this.levelValues.set(event, goal.metrics);
+	}
+
+	openLevelValues(event: boolean) {
+		if (!event && this.allValidForms()) {
+			this.onUpdateLevels.emit(this.parseFormToData(this.levelForms));
 		}
 	}
 
@@ -65,24 +66,36 @@ export class LevelScaleNominalComponent implements OnInit {
 		this.levelForms.splice(index, 1);
 	}
 
-	formChange(index: number) {
-		this.mapCloseAccordion.set(index, true);
+	showProcessArea(processArea: KnowledgeArea): boolean {
+		 return this.levelForms.some(form => form.controls['idProcessArea'].value === processArea.idKnowledgeArea)
 	}
 
-	cancelLevel(index: number) {
-		this.mapCloseAccordion.set(index, false);
+	disableProcessArea(form: FormGroup): boolean {
+		return !form.controls['idProcessArea'].value;
 	}
 
-	getLevelForm(index: number) {
-		let form = this.levelForms[index];
-		if (form == null) {
-			form = this.formBuilder.group({
-				idProcessArea: [, Validators.required],
-				values: [[], EmptyListValidator.listaVaziaValidator],
-			});
-			form.patchValue(this.levels[index]);
-			this.levelForms[index] = form;
-		}
-		return form;
+	hasError(field: string, form: FormGroup): boolean {
+		return !isEmpty(form.controls[field].errors);
+	}
+
+	comparer(o1: any, o2: any): boolean {
+		return o1 && o2 ? o1.idMetricScale === o2.idMetricScale : false;
+	}
+
+	private createLevelForm(): FormGroup {
+		return this.formBuilder.group({
+			idProcessArea: [, Validators.required],
+			values: [[], EmptyListValidator.listaVaziaValidator()],
+		});
+	}
+
+	private parseFormToData(forms: FormGroup[]): Level[] {
+		return forms.map(form => {
+			return form.value;
+		});
+	}
+
+	getLevelValues(levelForm: FormGroup): MetricScale[] {
+		return this.levelValues.get(levelForm.controls['idProcessArea'].value);
 	}
 }

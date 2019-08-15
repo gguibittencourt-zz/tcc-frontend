@@ -14,7 +14,8 @@
 	<div class="classification-scale-nominal-body">
 		<mat-accordion>
 			<mat-expansion-panel *ngFor="let classification of classifications; let i = index"
-								 [expanded]="mapCloseAccordion.get(i)">
+								 [expanded]="mapCloseAccordion.get(i)"
+								 (afterExpand)="afterExpand(classification)">
 				<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
 					<input matInput value="{{classification.name}}" disabled placeholder="Nome"/>
 					<button mat-icon-button type="button" (click)="deleteClassification(i)"
@@ -32,14 +33,16 @@
 					</mat-form-field>
 					<level-scale-nominal [knowledgeAreas]="knowledgeAreas"
 										 [goals]="goals"
-										 [levels]="levels">
+										 [levels]="classification.levels"
+										 [levelValues]="levelValues"
+										 (onUpdateLevels)="updateLevels($event, classification, i)">
 					</level-scale-nominal>
 					<mat-action-row class="action-row">
 						<button mat-raised-button [disabled]="loading" (click)="cancelClassification(i)"
 								class="btn btn-outline-danger">
 							Cancelar
 						</button>
-						<button mat-raised-button [disabled]="loading || !allValidForms()"
+						<button mat-raised-button [disabled]="loading"
 								class="btn btn-outline-success confirm-button">
 							Confirmar
 						</button>

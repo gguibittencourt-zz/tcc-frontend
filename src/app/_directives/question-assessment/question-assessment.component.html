@@ -1,5 +1,5 @@
 ﻿<div *ngFor="let question of questions; let i = index">
-	<span>{{question.name}}</span>
+	<span>{{i+1 + '. ' + question.name}}</span>
 	<form [formGroup]="questionAssessmentForms[i]">
 		<div *ngIf="question.type === 'boolean'">
 			<mat-radio-group formControlName="value" (change)="confirmResult(i)">
@@ -11,44 +11,27 @@
 				</mat-radio-button>
 			</mat-radio-group>
 		</div>
-		<div *ngIf="question.type === 'scale'">
+		<div *ngIf="question.type === 'scale-nominal'">
 			<mat-radio-group formControlName="value"
 							 (change)="confirmResult(i)"
 							 aria-labelledby="example-radio-group-label"
 							 class="example-radio-group">
 				<mat-radio-button class="example-radio-button" value="1">
-					Strongly Disagree
+					Não ainda
 				</mat-radio-button>
 				<mat-radio-button class="example-radio-button" value="2">
-					Disagree
+					Não implementado
 				</mat-radio-button>
 				<mat-radio-button class="example-radio-button" value="3">
-					No Opinion
+					Parcialmente implementado
 				</mat-radio-button>
 				<mat-radio-button class="example-radio-button" value="4">
-					Agree
+					Largamente implementado
 				</mat-radio-button>
 				<mat-radio-button class="example-radio-button" value="5">
-					Strongly Agree
+					Totalmente implementado
 				</mat-radio-button>
 			</mat-radio-group>
-		</div>
-		<div *ngIf="question.type === 'numeric'">
-			<mat-form-field>
-				<input matInput type="number" [min]="question.config.minValue"
-					   [max]="question.config.maxValue"
-					   (blur)="confirmResult(i)"
-					   formControlName="value"
-					   placeholder="Valor"/>
-				<!--TODO fazer min e max value-->
-			</mat-form-field>
-		</div>
-		<div *ngIf="question.type === 'text'">
-			<mat-form-field>
-				<input matInput type="text" formControlName="value" (blur)="confirmResult(i)"
-					   placeholder="Valor" [minlength]="question.config.minCharacters"
-					   [maxlength]="question.config.maxCharacters"/>
-			</mat-form-field>
 		</div>
 	</form>
 </div>

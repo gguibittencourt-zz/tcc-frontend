@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Valores Escala Nominal</h1>
+<div mat-dialog-content>
+	<div *ngFor="let scaleValue of data">
+		<input [(ngModel)]="scaleValue.mappedValue" required/>
+		<input [value]="scaleValue.value" disabled/>
+	</div>
+</div>
+
+<div mat-dialog-actions>
+	<button mat-button (click)="onNoClick()">Cancelar</button>
+	<button mat-raised-button class="btn btn-outline-success confirm-button" (click)="confirm()">
+		Confirmar
+	</button>
+</div>

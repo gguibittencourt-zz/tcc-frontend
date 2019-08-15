@@ -1,5 +1,5 @@
 ﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Classification, GoalScale, KnowledgeArea} from '../../_models';
+import {Classification, GoalScale, KnowledgeArea, Level, MetricScale} from '../../_models';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {isNil} from "lodash";
 import {Guid} from "guid-typescript";
@@ -16,9 +16,9 @@ export class ClassificationScaleNominalComponent implements OnInit {
 	@Input('classifications') classifications: Classification[];
 	@Input('goals') goals: GoalScale[];
 	@Output() onConfirmClassification: EventEmitter<any> = new EventEmitter();
+	levelValues: Map<string, MetricScale[]> = new Map();
 	private classificationForms: FormGroup[] = [];
 	private mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
-	private _isPossibleConfirm: boolean = false;
 
 	constructor(private formBuilder: FormBuilder) {
 	}
@@ -32,21 +32,27 @@ export class ClassificationScaleNominalComponent implements OnInit {
 		}
 	}
 
+	afterExpand(classification: Classification) {
+		classification.levels.map(level => {
+			const goal = this.goals.find(goal => goal.idReference === String(level.idProcessArea));
+			this.levelValues.set(String(level.idProcessArea), goal.metrics);
+		});
+	}
+
 	confirmClassification(index: number) {
 		if (this.classificationForms[index].invalid) {
 			return;
 		}
-
-		this._isPossibleConfirm = true;
+		this.classifications[index] = this.classificationForms[index].value;
 		this.mapCloseAccordion.set(index, false);
 		this.onConfirmClassification.emit(this.classifications);
 	}
 
 	addClassification() {
 		if (this.allValidForms()) {
-			this._isPossibleConfirm = false;
 			const classification: Classification = new Classification();
 			this.classifications.push(classification);
+			this.mapCloseAccordion.set(this.classifications.indexOf(classification), false);
 		}
 	}
 
@@ -56,10 +62,17 @@ export class ClassificationScaleNominalComponent implements OnInit {
 
 	deleteClassification(index: number) {
 		this.classificationForms.splice(index, 1);
+		this.classifications.splice(index, 1);
+		this.mapCloseAccordion.delete(index);
 	}
 
 	formChange(index: number) {
 		this.mapCloseAccordion.set(index, true);
+	}
+
+	updateLevels(event: Level[], classification: Classification, index: number) {
+		classification.levels = event;
+		this.classificationForms[index].controls['levels'].patchValue(event);
 	}
 
 	cancelClassification(index: number) {
@@ -75,7 +88,7 @@ export class ClassificationScaleNominalComponent implements OnInit {
 				levels: [this.formBuilder.group({
 					idProcessArea: [],
 					values: [[], EmptyListValidator.listaVaziaValidator()],
-				})],
+				}), EmptyListValidator.listaVaziaValidator()],
 			});
 			form.patchValue(this.classifications[index]);
 			this.classificationForms[index] = form;

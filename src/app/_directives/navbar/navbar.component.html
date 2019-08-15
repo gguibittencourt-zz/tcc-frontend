@@ -30,16 +30,10 @@
 						[routerLink]="['/reference-model']">Modelo de Referência
 				</button>
 				<button mat-menu-item (click)="snav.close()" *ngIf="getUser.role === 'ADM'"
-						[routerLink]="['/measurement-framework']">Measurement
-					Framework
+						[routerLink]="['/measurement-framework']">Método de Avaliação
 				</button>
 				<button mat-menu-item (click)="snav.close()" *ngIf="getUser.role === 'ADM'"
 						[routerLink]="['/assessment']">Avaliação
-				</button>
-				<button mat-menu-item (click)="snav.close()" *ngIf="getUser.role === 'ADM'"
-						[routerLink]="['/data-source']">
-					<i class="icon fa fa-database"></i>
-					<span>Fonte de Dados</span>
 				</button>
 			</mat-nav-list>
 		</mat-sidenav>

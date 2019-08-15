@@ -44,6 +44,7 @@ import {ListAssessmentComponent, RegisterAssessmentComponent} from "./assessment
 import {QuestionAssessmentComponent} from "./_directives/question-assessment";
 import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
 import {LevelScaleNominalComponent} from "./_directives/level-scale-nominal";
+import {ScaleValuesDialogComponent} from "./_directives/scale-values-dialog";
 
 @NgModule({
 	imports: [
@@ -82,7 +83,8 @@ import {LevelScaleNominalComponent} from "./_directives/level-scale-nominal";
 		RegisterAssessmentComponent,
 		QuestionAssessmentComponent,
 		ClassificationScaleNominalComponent,
-		LevelScaleNominalComponent
+		LevelScaleNominalComponent,
+		ScaleValuesDialogComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -97,7 +99,13 @@ import {LevelScaleNominalComponent} from "./_directives/level-scale-nominal";
 		MeasurementFrameworkService,
 		AssessmentService
 	],
-	entryComponents: [ProcessComponent, ConfirmDialogComponent, QuestionComponent, MetricScaleDialogComponent],
+	entryComponents: [
+		ProcessComponent,
+		ConfirmDialogComponent,
+		QuestionComponent,
+		MetricScaleDialogComponent,
+		ScaleValuesDialogComponent
+	],
 	bootstrap: [AppComponent]
 })
 

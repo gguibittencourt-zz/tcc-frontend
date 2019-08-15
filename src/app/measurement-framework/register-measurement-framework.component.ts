@@ -7,13 +7,14 @@ import {
 	Classification,
 	GoalBoolean,
 	GoalScale,
-	KnowledgeArea,
 	MeasurementFramework,
 	Question,
 	ReferenceModel,
+	ScaleValues,
 	TypeQuestion
 } from "../_models";
-import {MatSelectChange} from "@angular/material";
+import {MatDialog, MatSelectChange} from "@angular/material";
+import {ScaleValuesDialogComponent} from "../_directives/scale-values-dialog";
 
 @Component({
 	templateUrl: './register-measurement-framework.component.html',
@@ -35,6 +36,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		private route: ActivatedRoute,
 		private formBuilder: FormBuilder,
 		private router: Router,
+		private  dialog: MatDialog,
 		private measurementFrameworkService: MeasurementFrameworkService,
 		private referenceModelService: ReferenceModelService,
 		private alertService: AlertService) {
@@ -46,6 +48,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.measurementFramework = new MeasurementFramework();
+		this.createScaleValues(this.measurementFramework);
 		this.referenceModelService.list().subscribe((data: ReferenceModel[]) => {
 			this.referenceModels = data;
 		});
@@ -61,6 +64,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			name: ['', Validators.required],
 			idReferenceModel: [, Validators.required],
 			type: ['', Validators.required],
+			scaleValues: [[]],
 			questions: [[]],
 			goals: [[]],
 			classifications: [[]],
@@ -70,8 +74,6 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			this.idMeasurementFramework = params['idMeasurementFramework'];
 			if (this.idMeasurementFramework) {
 				this.measurementFrameworkService.get(this.idMeasurementFramework).subscribe((data: MeasurementFramework) => {
-					//TODO retirar
-					data.classifications = [];
 					this.measurementFrameworkForm.setValue(data);
 					this.measurementFramework = data;
 					this.referenceModel = this.getReferenceModel(data.idReferenceModel);
@@ -140,5 +142,29 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 						this.loading = false;
 					});
 		}
+	}
+
+	openDialog(scaleValues: ScaleValues[]): void {
+		const dialogRef = this.dialog.open(ScaleValuesDialogComponent, {
+			width: '480px',
+			data: scaleValues,
+			disableClose: true
+		});
+
+		dialogRef.afterClosed().subscribe((result: ScaleValues[]) => {
+			if (result) {
+				console.log(result[0]);
+			}
+		});
+	}
+
+	private createScaleValues(measurementFramework: MeasurementFramework): void {
+		measurementFramework.scaleValues = [
+			{id: 1, value: 'Discordo totalmente', mappedValue: 'Não implementado'},
+			{id: 2, value: 'Discordo parcialmente', mappedValue: 'Parcialmente implementado'},
+			{id: 3, value: 'Não concordo, nem discordo', mappedValue: 'Não Avaliado'},
+			{id: 4, value: 'Concordo parcialmente', mappedValue: 'Largamente implementado'},
+			{id: 5, value: 'Concordo totalmente', mappedValue: 'Totalmente implementado'},
+		];
 	}
 }
