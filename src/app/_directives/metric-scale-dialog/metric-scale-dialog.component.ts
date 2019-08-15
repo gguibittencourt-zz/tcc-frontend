@@ -22,7 +22,8 @@ export class MetricScaleDialogComponent {
 				@Inject(MAT_DIALOG_DATA) public data: TreeNode,
 				private formBuilder: FormBuilder) {
 		if (isEmpty(data.metricScale)) {
-			this.metricScaleForms = [this.createMetricScaleForm()];
+			const values: MetricScale[] = [{idMetricScale: '5', name: 'Totalmente implementado'}];
+			this.metricScaleForms = [this.createMetricScaleForm('Totalmente', values)];
 		} else {
 			this.data.metricScale.map(value => {
 				const metricScaleForm = this.createMetricScaleForm();
@@ -73,11 +74,11 @@ export class MetricScaleDialogComponent {
 		});
 	}
 
-	private createMetricScaleForm(): FormGroup {
+	private createMetricScaleForm(name?: string, values?: MetricScale[]): FormGroup {
 		return this.formBuilder.group({
 			idMetricScale: [Guid.create().toString()],
-			name: ['', Validators.required],
-			values: [[], EmptyListValidator.listaVaziaValidator()]
+			name: [name ? name : '', Validators.required],
+			values: [isEmpty(values) ? '': values, EmptyListValidator.listaVaziaValidator()]
 		});
 	}
 }

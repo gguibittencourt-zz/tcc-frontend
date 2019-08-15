@@ -2,14 +2,14 @@
 <div mat-dialog-content>
 	<div [formGroup]="metricScaleForm" *ngFor="let metricScaleForm of metricScaleForms; let i = index"
 		 class="display-flex">
-		<div class="display-block padding-right">
+		<div class="metric-scale padding-right ">
 			<mat-form-field>
 				<input matInput formControlName="name" placeholder="Nome"/>
 			</mat-form-field>
 			<mat-error *ngIf="submitted && hasError('name', metricScaleForm)">Nome é obrigatório</mat-error>
 		</div>
 
-		<div class="display-block">
+		<div class="metric-scale">
 			<mat-form-field>
 				<mat-select placeholder="Valor" multiple formControlName="values" [compareWith]="comparer">
 					<mat-option *ngFor="let metric of data.valueMetrics" [value]="metric">

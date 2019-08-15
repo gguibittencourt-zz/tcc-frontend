@@ -146,14 +146,15 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 
 	openDialog(scaleValues: ScaleValues[]): void {
 		const dialogRef = this.dialog.open(ScaleValuesDialogComponent, {
-			width: '480px',
+			width: '500px',
 			data: scaleValues,
 			disableClose: true
 		});
 
 		dialogRef.afterClosed().subscribe((result: ScaleValues[]) => {
 			if (result) {
-				console.log(result[0]);
+				this.f['scaleValues'].setValue(result);
+				this.measurementFramework.scaleValues = result;
 			}
 		});
 	}

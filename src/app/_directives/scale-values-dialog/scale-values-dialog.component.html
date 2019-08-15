@@ -1,8 +1,10 @@
 <h1 mat-dialog-title>Valores Escala Nominal</h1>
 <div mat-dialog-content>
-	<div *ngFor="let scaleValue of data">
-		<input [(ngModel)]="scaleValue.mappedValue" required/>
-		<input [value]="scaleValue.value" disabled/>
+	<div class="content">
+		<div class="scale-value" *ngFor="let scaleValue of data">
+			<input class="input-value" spellcheck="false" [(ngModel)]="scaleValue.value" required/>
+			<input class="input-value" spellcheck="false" [value]="scaleValue.mappedValue" disabled/>
+		</div>
 	</div>
 </div>
 

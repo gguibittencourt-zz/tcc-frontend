@@ -1,0 +1,16 @@
+.input-value {
+	width: 50%;
+	border: 0;
+}
+
+.input-value:not(:last-child) {
+	border-right: 1px solid #909090;
+}
+
+.scale-value:not(:last-child) {
+	border-bottom: 1px solid #909090;
+}
+
+.content {
+	border: 1px solid #909090;
+}

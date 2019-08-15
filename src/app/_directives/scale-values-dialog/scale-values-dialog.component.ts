@@ -5,6 +5,7 @@ import {ScaleValues} from "../../_models";
 @Component({
 	selector: 'scale-values',
 	templateUrl: 'scale-values-dialog.component.html',
+	styleUrls: ['scale-values-dialog.component.scss']
 })
 
 export class ScaleValuesDialogComponent {

@@ -82,6 +82,7 @@ export class TreeNodeMetricsComponentScaleNominal implements OnInit {
 			node.valueMetrics = this.valueMetrics;
 		}
 		const dialogRef = this.dialog.open(MetricScaleDialogComponent, {
+			width: '480px',
 			disableClose: true,
 			data: node,
 		});
