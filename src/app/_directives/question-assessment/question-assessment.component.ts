@@ -1,5 +1,5 @@
 ﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Question, Result} from "../../_models";
+import {Question, Result, ScaleValues} from "../../_models";
 import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
@@ -11,6 +11,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 export class QuestionAssessmentComponent implements OnInit {
 	@Input('questions') questions: Question[];
 	@Input('results') results: Result[];
+	@Input('scaleValues') scaleValues: ScaleValues[];
 	@Output() onConfirmResult: EventEmitter<any> = new EventEmitter();
 	questionAssessmentForms: FormGroup[] = [];
 
@@ -27,7 +28,7 @@ export class QuestionAssessmentComponent implements OnInit {
 		});
 
 		this.results.forEach((value, index) => {
-			let result = this.results[index];
+			const result = this.results[index];
 			this.questionAssessmentForms[index] = this.formBuilder.group({
 				idResult: [result.idResult],
 				idKnowledgeArea: [result.idKnowledgeArea],
@@ -39,7 +40,7 @@ export class QuestionAssessmentComponent implements OnInit {
 	}
 
 	confirmResult(index: number) {
-		let value: Result = this.questionAssessmentForms[index].value;
+		const value: Result = this.questionAssessmentForms[index].value;
 		if (value.value) {
 			this.onConfirmResult.emit(value);
 		}

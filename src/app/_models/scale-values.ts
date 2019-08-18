@@ -1,5 +1,5 @@
 export class ScaleValues {
-	id: number;
+	id: string;
 	value: string;
 	mappedValue: string;
 }

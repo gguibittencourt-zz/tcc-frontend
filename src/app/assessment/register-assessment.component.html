@@ -46,6 +46,7 @@
 							<mat-card-content>
 								<question-assessment [questions]="getQuestionsByKnowledgeArea(knowledgeArea)"
 													 [results]="results"
+													 [scaleValues]="scaleValues"
 													 (onConfirmResult)="confirmResult($event)">
 								</question-assessment>
 							</mat-card-content>

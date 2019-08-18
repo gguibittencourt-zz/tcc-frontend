@@ -22,8 +22,12 @@ export class MetricScaleDialogComponent {
 				@Inject(MAT_DIALOG_DATA) public data: TreeNode,
 				private formBuilder: FormBuilder) {
 		if (isEmpty(data.metricScale)) {
-			const values: MetricScale[] = [{idMetricScale: '5', name: 'Totalmente implementado'}];
-			this.metricScaleForms = [this.createMetricScaleForm('Totalmente', values)];
+			if (this.data.hasMetricScale) {
+				this.metricScaleForms = [this.createMetricScaleForm()];
+			} else {
+				const values: MetricScale[] = [{idMetricScale: '5', name: 'Totalmente implementado'}];
+				this.metricScaleForms = [this.createMetricScaleForm('Totalmente', values)];
+			}
 		} else {
 			this.data.metricScale.map(value => {
 				const metricScaleForm = this.createMetricScaleForm();

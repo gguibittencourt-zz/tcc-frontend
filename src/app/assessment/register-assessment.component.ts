@@ -13,9 +13,9 @@ import {
 	Assessment,
 	JsonAssessment,
 	KnowledgeArea,
-	MeasurementFramework,
+	MeasurementFramework, Question,
 	ReferenceModel,
-	Result,
+	Result, ScaleValues,
 	User
 } from "../_models";
 
@@ -84,6 +84,10 @@ export class RegisterAssessmentComponent implements OnInit {
 		return user;
 	}
 
+	get scaleValues(): ScaleValues[] {
+		return this.measurementFramework ? this.measurementFramework.scaleValues : [];
+	}
+
 	get f() {
 		return this.assessmentForm.controls;
 	}
@@ -97,7 +101,7 @@ export class RegisterAssessmentComponent implements OnInit {
 		return knowledgeArea.processes.some(process => this.measurementFramework.questions.some(question => process.idProcess === question.idProcess));
 	}
 
-	getQuestionsByKnowledgeArea(knowledgeArea: KnowledgeArea) {
+	getQuestionsByKnowledgeArea(knowledgeArea: KnowledgeArea): Question[] {
 		return knowledgeArea.processes.map(process => {
 			return this.measurementFramework.questions.filter(question => question.idProcess == process.idProcess);
 		}).reduce((a, b) => a.concat(b), []);

@@ -2,7 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Guid} from 'guid-typescript';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSelectChange} from '@angular/material';
-import {DependentValue, MatQuestionDialogData, Question} from '../../_models';
+import {DependentValue, ExpectedResult, MatQuestionDialogData, Question} from '../../_models';
 
 @Component({
 	selector: 'question',
