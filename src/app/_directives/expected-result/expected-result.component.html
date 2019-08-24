@@ -17,7 +17,7 @@
 			<mat-expansion-panel *ngFor="let expectedResult of expectedResults; let i = index"
 								 [expanded]="mapCloseAccordion.get(i)">
 				<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-					<input matInput value="{{expectedResult.name}}" disabled placeholder="Resultado Esperado"/>
+					<input matInput value="{{prefix + '. ' + (i + 1) + ' ' + expectedResult.name}}" disabled placeholder="Resultado Esperado"/>
 					<button mat-icon-button type="button" (click)="deleteExpectedResult(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
@@ -28,23 +28,18 @@
 
 				<form [formGroup]="expectedResultForms[i]" (ngSubmit)="confirmExpectedResult(i)">
 					<mat-form-field class="col-md-12">
-						<input matInput formControlName="name"
-							   (change)="formChange(i)" placeholder="Nome"/>
+						<textarea matInput
+								  cdkTextareaAutosize
+								  cdkAutosizeMinRows="1"
+								  cdkAutosizeMaxRows="5"
+								  formControlName="name"
+								  (change)="formChange(i)"
+								  placeholder="Nome"></textarea>
 					</mat-form-field>
 					<div *ngIf="submitted && getControlsByForm(expectedResultForms[i]).name.errors?.required"
 						 class="invalid-feedback"
 						 [ngClass]="{ 'error-message': submitted && getControlsByForm(expectedResultForms[i])?.name?.errors?.required}">
 						Nome é obrigatório
-					</div>
-					<mat-form-field class="col-md-12">
-						<input matInput formControlName="description"
-							   (change)="formChange(i)"
-							   placeholder="Descrição"/>
-					</mat-form-field>
-					<div *ngIf="submitted && getControlsByForm(expectedResultForms[i]).description.errors?.required"
-						 class="invalid-feedback"
-						 [ngClass]="{ 'error-message': submitted && getControlsByForm(expectedResultForms[i]).description.errors?.required}">
-						Descrição é obrigatória
 					</div>
 					<mat-action-row class="action-row">
 						<button mat-raised-button [disabled]="loading" (click)="cancelExpectedResult(i)"

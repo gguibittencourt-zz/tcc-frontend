@@ -11,6 +11,7 @@ import {Guid} from "guid-typescript";
 
 export class ExpectedResultComponent implements OnInit {
 	@Input('expectedResults') expectedResults: ExpectedResult[];
+	@Input('prefix') prefix: string;
 	@Output() onConfirmExpectedResults: EventEmitter<any> = new EventEmitter();
 
 	expectedResultForms: FormGroup[] = [];
@@ -26,7 +27,6 @@ export class ExpectedResultComponent implements OnInit {
 			let form = this.formBuilder.group({
 				idExpectedResult: ['', Validators.required],
 				name: ['', Validators.required],
-				description: ['', Validators.required],
 			});
 
 			form.patchValue(this.expectedResults[index]);
@@ -59,7 +59,6 @@ export class ExpectedResultComponent implements OnInit {
 			this.expectedResultForms[this.expectedResults.indexOf(expectedResult)] = this.formBuilder.group({
 				idExpectedResult: [Guid.create().toString()],
 				name: ['', Validators.required],
-				description: ['', Validators.required]
 			});
 		}
 	}

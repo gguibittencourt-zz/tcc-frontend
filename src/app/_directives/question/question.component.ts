@@ -2,7 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Guid} from 'guid-typescript';
 import {MAT_DIALOG_DATA, MatDialogRef, MatSelectChange} from '@angular/material';
-import {DependentValue, ExpectedResult, MatQuestionDialogData, Question} from '../../_models';
+import {DependentValue, MatQuestionDialogData, Question} from '../../_models';
 
 @Component({
 	selector: 'question',
@@ -42,6 +42,14 @@ export class QuestionComponent {
 		return this._questionRequired;
 	}
 
+	get allValidForms(): boolean {
+		return this.questionForms.every(form => form.valid);
+	}
+
+	get allExpectedResultsSelected(): boolean {
+		return this.data.node.expectedResults.every(value => value.disable)
+	}
+
 	onNoClick(): void {
 		this.dialogRef.close(false);
 	}
@@ -64,14 +72,13 @@ export class QuestionComponent {
 	}
 
 	addQuestion() {
-		if (this.allValidForms()) {
-			this._isPossibleConfirm = false;
-			let question: Question = new Question();
-			this.data.questions.push(question);
-			const index: number = this.data.questions.indexOf(question);
-			this.mapCloseAccordion.set(index, false);
-			this.questionForms[index] = this.createForm(Guid.create().toString(), this.data.node.idTreeNode);
-		}
+		this._isPossibleConfirm = false;
+		const idQuestion = Guid.create().toString();
+		let question: Question = new Question(idQuestion);
+		this.data.questions.push(question);
+		const index: number = this.data.questions.indexOf(question);
+		this.mapCloseAccordion.set(index, false);
+		this.questionForms[index] = this.createForm(idQuestion, this.data.node.idTreeNode);
 	}
 
 	doChangeValue(event: MatSelectChange) {
@@ -113,10 +120,6 @@ export class QuestionComponent {
 
 	cancelQuestion(index: number) {
 		this.mapCloseAccordion.set(index, false);
-	}
-
-	allValidForms(): boolean {
-		return this.questionForms.every(form => form.valid);
 	}
 
 	changeQuestionRequired(event: any): void {

@@ -44,6 +44,7 @@
 					<mat-tab *ngFor="let knowledgeArea of referenceModel.knowledgeAreas" label="{{knowledgeArea.name}}">
 						<mat-card *ngIf="hasQuestions(knowledgeArea)">
 							<mat-card-content>
+								<div class="purpose">{{knowledgeArea.purpose}}</div>
 								<question-assessment [questions]="getQuestionsByKnowledgeArea(knowledgeArea)"
 													 [results]="results"
 													 [scaleValues]="scaleValues"

@@ -14,4 +14,8 @@ export class Question {
 	dependentValue: DependentValue;
 	hasDataSource: boolean;
 	config: any;
+
+	constructor(idQuestion: string) {
+		this.idQuestion = idQuestion;
+	}
 }

@@ -4,7 +4,8 @@
 		<div class="question-header">
 			<div class="question-header-title">
 				<div class="question-header-title-spacer">Questões</div>
-				<button mat-stroked-button type="button" (click)="addQuestion()" class="mat-stroked-button">
+				<button mat-stroked-button type="button" [disabled]="!allValidForms || allExpectedResultsSelected"
+						(click)="addQuestion()" class="mat-stroked-button">
 			<span class="mat-button-wrapper">
 				Adicionar
 				<i class="fa fa-plus"></i>
@@ -33,10 +34,6 @@
 									Questão
 								</ng-template>
 								<mat-form-field class="col-md-12">
-									<input matInput formControlName="name"
-										   (change)="formChange(i)" placeholder="Nome"/>
-								</mat-form-field>
-								<mat-form-field class="col-md-12">
 									<mat-select placeholder="Resultado Esperado" formControlName="idExpectedResult"
 												(valueChange)="expectedResultSelected(i, $event)"
 												[ngClass]="{ 'is-invalid': submitted && f.idExpectedResult.errors }">
@@ -48,6 +45,10 @@
 									</mat-select>
 								</mat-form-field>
 								<mat-form-field class="col-md-12">
+									<input matInput formControlName="name"
+										   (change)="formChange(i)" placeholder="Texto da questão"/>
+								</mat-form-field>
+								<mat-form-field class="col-md-12">
 									<input matInput formControlName="tip"
 										   (change)="formChange(i)"
 										   placeholder="Dica"/>
@@ -56,7 +57,7 @@
 								<mat-form-field class="col-md-12">
 									<mat-select placeholder="Tipo" formControlName="type"
 												[ngClass]="{ 'is-invalid': submitted && f.type.errors }">
-										<mat-option value="scale-nominal">Escala Nominal</mat-option>
+										<mat-option value="scale-nominal">Escala Ordinal</mat-option>
 										<mat-option value="scale-numeric">Escala Numérica</mat-option>
 										<mat-option value="boolean">Verdadeiro/Falso</mat-option>
 									</mat-select>

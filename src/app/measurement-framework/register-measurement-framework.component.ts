@@ -15,6 +15,8 @@ import {
 } from "../_models";
 import {MatDialog, MatSelectChange} from "@angular/material";
 import {ScaleValuesDialogComponent} from "../_directives/scale-values-dialog";
+import {Guid} from "guid-typescript";
+import {isEmpty, flatten} from 'lodash';
 
 @Component({
 	templateUrl: './register-measurement-framework.component.html',
@@ -36,7 +38,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		private route: ActivatedRoute,
 		private formBuilder: FormBuilder,
 		private router: Router,
-		private  dialog: MatDialog,
+		private dialog: MatDialog,
 		private measurementFrameworkService: MeasurementFrameworkService,
 		private referenceModelService: ReferenceModelService,
 		private alertService: AlertService) {
@@ -54,9 +56,9 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		});
 
 		this.types = [
-			{idTypeQuestion: 'boolean', name: 'Booleano'},
-			{idTypeQuestion: 'scale-nominal', name: 'Escala Nominal'},
-			{idTypeQuestion: 'scale-numeric', name: 'Escala Numérica'}
+			{idTypeQuestion: 'scale-nominal', name: 'Escala Ordinal'},
+			{idTypeQuestion: 'scale-numeric', name: 'Escala Numérica'},
+			{idTypeQuestion: 'boolean', name: 'Verdadeiro/Falso'},
 		];
 
 		this.measurementFrameworkForm = this.formBuilder.group({
@@ -77,7 +79,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 					this.measurementFrameworkForm.setValue(data);
 					this.measurementFramework = data;
 					this.referenceModel = this.getReferenceModel(data.idReferenceModel);
-					this.type = this.types.find(value => value.idTypeQuestion  == data.type).idTypeQuestion;
+					this.type = this.types.find(value => value.idTypeQuestion == data.type).idTypeQuestion;
 				});
 			}
 		});
@@ -108,6 +110,14 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 	confirmClassifications(classifications: Classification[]) {
 		this.f["classifications"].setValue(classifications);
 		this.measurementFramework.classifications = classifications;
+	}
+
+	nextFirstPage() {
+		if (this.measurementFrameworkForm.valid && isEmpty(this.measurementFramework.questions)) {
+			const questions = this.createQuestionsByExpectedResults(this.referenceModel);
+			this.f["questions"].setValue(questions);
+			this.measurementFramework.questions = questions;
+		}
 	}
 
 	onSubmit(): void {
@@ -167,5 +177,20 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			{id: '4', value: 'Concordo parcialmente', mappedValue: 'Largamente implementado'},
 			{id: '5', value: 'Concordo totalmente', mappedValue: 'Totalmente implementado'},
 		];
+	}
+
+	private createQuestionsByExpectedResults(referenceModel: ReferenceModel): Question[] {
+		return flatten(referenceModel.knowledgeAreas.map(processArea => {
+			return flatten(processArea.processes.map(process => {
+				return process.expectedResults.map(expectedResult => {
+					let question: Question = new Question(Guid.create().toString());
+					question.idExpectedResult = expectedResult.idExpectedResult;
+					question.name = expectedResult.name + '?';
+					question.idProcess = process.idProcess;
+					question.type = this.type;
+					return question;
+				});
+			}));
+		}));
 	}
 }

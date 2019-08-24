@@ -32,22 +32,26 @@
 								<div class="form-group">
 									<mat-form-field class="col-md-12">
 										<input matInput formControlName="name"
-											   (change)="formChange(i)" placeholder="Nome"/>
+											   (blur)="createPrefix($event.target.value, i)"
+											   placeholder="Nome"/>
 									</mat-form-field>
 									<div *ngIf="submitted && f.name.errors" class="invalid-feedback">
 										<div *ngIf="f.name.errors.required">Nome é obrigatório</div>
 									</div>
 									<mat-form-field class="padding-top col-md-12">
-										<input matInput formControlName="purpose"
-											   (change)="formChange(i)"
-											   placeholder="Objetivo"/>
+										<textarea matInput
+												  cdkTextareaAutosize
+												  cdkAutosizeMinRows="1"
+												  cdkAutosizeMaxRows="5"
+												  formControlName="purpose"
+												  placeholder="Objetivo"></textarea>
 									</mat-form-field>
 									<div *ngIf="submitted && f.name.errors" class="invalid-feedback">
 										<div *ngIf="f.name.errors.required">Objetivo é obrigatório</div>
 									</div>
 								</div>
 								<div class="form-group">
-									<button mat-raised-button [disabled]="loading" (click)="cancelProcess(i)"
+									<button mat-raised-button [disabled]="loading"
 											class="btn btn-outline-danger">
 										Cancelar
 									</button>
@@ -60,6 +64,7 @@
 
 							<form [formGroup]="processForms[i]" class="padding-bottom">
 								<expected-result formArrayName="expectedResults"
+												 [prefix]="processForms[i].controls['prefix'].value"
 												 [expectedResults]="process.expectedResults"
 												 (onConfirmExpectedResults)="confirmExpectedResults($event, process, i)">
 								</expected-result>

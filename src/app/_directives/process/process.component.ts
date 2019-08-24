@@ -26,6 +26,7 @@ export class ProcessComponent implements OnInit {
 			let form = this.formBuilder.group({
 				idProcess: ['', Validators.required],
 				name: ['', Validators.required],
+				prefix: [''],
 				purpose: ['', Validators.required],
 				expectedResults: [[]]
 			});
@@ -72,14 +73,6 @@ export class ProcessComponent implements OnInit {
 		this.processForms.splice(index, 1);
 	}
 
-	formChange(index: number) {
-		this.mapCloseAccordion.set(index, true);
-	}
-
-	cancelProcess(index: number) {
-		this.mapCloseAccordion.set(index, false);
-	}
-
 	confirmExpectedResults(expectedResults: ExpectedResult[], process: Process, index: number) {
 		process.expectedResults = expectedResults;
 		this.processForms[index].controls["expectedResults"].setValue(expectedResults);
@@ -87,5 +80,23 @@ export class ProcessComponent implements OnInit {
 
 	allValidForms(): boolean {
 		return this.processForms.every(form => form.valid);
+	}
+
+	createPrefix(name: string, index: number) {
+		if (name) {
+			let prefix = '';
+			const splitName: string[] = name.split(' ');
+			if (splitName.length > 1) {
+				prefix = splitName[0].charAt(0).toUpperCase();
+				if (splitName[1].charAt(0) == splitName[1].charAt(0).toUpperCase()) {
+					prefix += splitName[1].substring(0, 2).toUpperCase();
+				} else {
+					prefix += splitName[2].substring(0, 2).toUpperCase();
+				}
+			} else {
+				prefix = splitName[0].substring(0, 3).toUpperCase();
+			}
+			this.processForms[index].controls['prefix'].setValue(prefix);
+		}
 	}
 }
