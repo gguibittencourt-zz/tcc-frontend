@@ -31,12 +31,18 @@
 						<input matInput formControlName="name"
 							   (change)="formChange(i)" placeholder="Nome"/>
 					</mat-form-field>
-					<level-scale-nominal [knowledgeAreas]="knowledgeAreas"
-										 [goals]="goals"
+
+					<level-scale-ordinal [knowledgeAreas]="knowledgeAreas"
 										 [levels]="classification.levels"
-										 [levelValues]="levelValues"
 										 (onUpdateLevels)="updateLevels($event, classification, i)">
-					</level-scale-nominal>
+					</level-scale-ordinal>
+<!--					TODO Classificação por area de processo-->
+<!--					<level-scale-nominal [knowledgeAreas]="knowledgeAreas"-->
+<!--										 [goals]="goals"-->
+<!--										 [levels]="classification.levels"-->
+<!--										 [levelValues]="levelValues"-->
+<!--										 (onUpdateLevels)="updateLevels($event, classification, i)">-->
+<!--					</level-scale-nominal>-->
 					<mat-action-row class="action-row">
 						<button mat-raised-button [disabled]="loading" (click)="cancelClassification(i)"
 								class="btn btn-outline-danger">

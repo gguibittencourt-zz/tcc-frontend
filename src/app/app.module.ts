@@ -45,6 +45,9 @@ import {QuestionAssessmentComponent} from "./_directives/question-assessment";
 import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
 import {LevelScaleNominalComponent} from "./_directives/level-scale-nominal";
 import {ScaleValuesDialogComponent} from "./_directives/scale-values-dialog";
+import {LevelScaleOrdinalComponent} from "./_directives/level-scale-ordinal";
+import {ProcessAttributesComponent} from "./_directives/process-attributes";
+import {ProcessAttributeValueComponent} from "./_directives/process-attribute-value";
 
 @NgModule({
 	imports: [
@@ -84,6 +87,9 @@ import {ScaleValuesDialogComponent} from "./_directives/scale-values-dialog";
 		QuestionAssessmentComponent,
 		ClassificationScaleNominalComponent,
 		LevelScaleNominalComponent,
+		LevelScaleOrdinalComponent,
+		ProcessAttributesComponent,
+		ProcessAttributeValueComponent,
 		ScaleValuesDialogComponent
 	],
 	providers: [

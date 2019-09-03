@@ -1,0 +1,11 @@
+﻿<mat-form-field class="col-md-12">
+	<mat-select placeholder="Processos" multiple (openedChange)="openLevelValues($event)"
+				[formControl]="valuesForm">
+		<mat-optgroup *ngFor="let knowledgeArea of knowledgeAreas" [label]="knowledgeArea.name">
+			<mat-option *ngFor="let process of knowledgeArea.processes" [value]="process.idProcess"
+						(onSelectionChange)="updateLevel($event, knowledgeArea.idKnowledgeArea)">
+				{{process.name}}
+			</mat-option>
+		</mat-optgroup>
+	</mat-select>
+</mat-form-field>

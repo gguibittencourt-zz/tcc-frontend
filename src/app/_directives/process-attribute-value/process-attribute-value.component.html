@@ -1,0 +1,28 @@
+﻿<div class="process-attributes-values col-md-12">
+	<span class="label">Valores</span>
+	<div *ngFor="let value of values; let indexValue = index"
+		 class="display-flex">
+		<mat-form-field class="col-md-11">
+			<div class="display-flex">
+				<label [for]="'name-' + indexValue" class="label-name">
+					<span>{{(indexValue + 1) + '. '}}</span>
+				</label>
+				<input [id]="'name-' + indexValue" matInput type="text"
+					   [(ngModel)]="value.name" (blur)="onBlurValue($event, indexValue)"/>
+			</div>
+		</mat-form-field>
+		<button class="align-self-center btn btn-outline-danger btn-sm"
+				matTooltip="Excluir"
+				*ngIf="values.length > 1"
+				[id]="'removeProcessAttributeValue-' + indexValue"
+				(click)="deleteProcessAttributeValue(indexValue)">
+			<i class="fa fa-trash-o"></i>
+		</button>
+	</div>
+	<mat-divider class="divider"></mat-divider>
+	<button class="btn btn-outline-secondary btn-sm" type="button"
+			(click)="addProcessAttributeValue()"
+			id="addProcessAttributeValue">
+		Adicionar <i class="fa fa-plus"></i>
+	</button>
+</div>

@@ -23,7 +23,7 @@ export class ProcessComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.data.forEach((value, index) => {
-			let form = this.formBuilder.group({
+			const form = this.formBuilder.group({
 				idProcess: ['', Validators.required],
 				name: ['', Validators.required],
 				prefix: [''],
@@ -61,6 +61,7 @@ export class ProcessComponent implements OnInit {
 			this.data.push(process);
 			this.processForms[this.data.indexOf(process)] = this.formBuilder.group({
 				idProcess: [Guid.create().toString()],
+				prefix: [''],
 				name: ['', Validators.required],
 				purpose: ['', Validators.required],
 				expectedResults: [[]]

@@ -7,7 +7,7 @@ import {
 	Classification,
 	GoalBoolean,
 	GoalScale,
-	MeasurementFramework,
+	MeasurementFramework, ProcessAttribute,
 	Question,
 	ReferenceModel,
 	ScaleValues,
@@ -16,7 +16,7 @@ import {
 import {MatDialog, MatSelectChange} from "@angular/material";
 import {ScaleValuesDialogComponent} from "../_directives/scale-values-dialog";
 import {Guid} from "guid-typescript";
-import {isEmpty, flatten} from 'lodash';
+import {flatten, isEmpty} from 'lodash';
 
 @Component({
 	templateUrl: './register-measurement-framework.component.html',
@@ -69,6 +69,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			scaleValues: [[]],
 			questions: [[]],
 			goals: [[]],
+			processAttributes: [[]],
 			classifications: [[]],
 		});
 
@@ -105,6 +106,11 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 	confirmGoals(goals: GoalBoolean[] | GoalScale[]) {
 		this.f["goals"].setValue(goals);
 		this.measurementFramework.goals = goals;
+	}
+
+	confirmProcessAttributes(processAttributes: ProcessAttribute[]) {
+		this.f["processAttributes"].setValue(processAttributes);
+		this.measurementFramework.processAttributes = processAttributes;
 	}
 
 	confirmClassifications(classifications: Classification[]) {

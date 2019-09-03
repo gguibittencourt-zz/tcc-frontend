@@ -1,6 +1,6 @@
 ﻿<div [formGroup]="levelForm" *ngFor="let levelForm of levelForms; let i = index" class="display-flex">
 	<mat-form-field class="col-md-5">
-		<mat-select placeholder="Área de processo" formControlName="idProcessArea"
+		<mat-select placeholder="Grupo de processo" formControlName="idProcessArea"
 					(valueChange)="changeProcessArea($event)">
 			<mat-option *ngFor="let knowledgeArea of knowledgeAreas"
 						[disabled]="showProcessArea(knowledgeArea)"
@@ -9,7 +9,7 @@
 			</mat-option>
 		</mat-select>
 	</mat-form-field>
-	<mat-error *ngIf="submitted && hasError('idProcessArea', levelForm)">Área de processo é obrigatório</mat-error>
+	<mat-error *ngIf="submitted && hasError('idProcessArea', levelForm)">Grupo de processo é obrigatório</mat-error>
 
 	<mat-form-field [ngClass]="levelForms.length > 1 ? 'col-md-6' : 'col-md-7'">
 		<mat-select placeholder="Valor" multiple formControlName="values" [compareWith]="comparer"

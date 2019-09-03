@@ -4,6 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {isNil} from "lodash";
 import {Guid} from "guid-typescript";
 import {EmptyListValidator} from "../../_helpers";
+import {MatOptionSelectionChange} from "@angular/material";
 
 @Component({
 	selector: 'classification-scale-nominal',
@@ -30,13 +31,6 @@ export class ClassificationScaleNominalComponent implements OnInit {
 		if (isNil(this.classifications)) {
 			this.classifications = [];
 		}
-	}
-
-	afterExpand(classification: Classification) {
-		classification.levels.map(level => {
-			const goal = this.goals.find(goal => goal.idReference === String(level.idProcessArea));
-			this.levelValues.set(String(level.idProcessArea), goal.metrics);
-		});
 	}
 
 	confirmClassification(index: number) {
@@ -70,9 +64,21 @@ export class ClassificationScaleNominalComponent implements OnInit {
 		this.mapCloseAccordion.set(index, true);
 	}
 
+	//TODO classificação de area de processo por metrica
 	updateLevels(event: Level[], classification: Classification, index: number) {
 		classification.levels = event;
+		console.log(classification.levels);
 		this.classificationForms[index].controls['levels'].patchValue(event);
+	}
+
+	//TODO classificação de area de processo por metrica
+	afterExpand(classification: Classification) {
+		classification.levels.forEach(level => {
+			const goal = this.goals.find(goal => goal.idReference === String(level.idProcessArea));
+			if (goal) {
+				this.levelValues.set(String(level.idProcessArea), goal.metrics);
+			}
+		});
 	}
 
 	cancelClassification(index: number) {

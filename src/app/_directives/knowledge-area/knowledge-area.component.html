@@ -2,7 +2,7 @@
 
 	<div class="knowledge-area-header">
 		<div class="knowledge-area-header-title">
-			<div class="knowledge-area-header-title-spacer">Áreas de Processo</div>
+			<div class="knowledge-area-header-title-spacer">Grupos de Processo</div>
 			<button mat-stroked-button type="button" (click)="addKnowledgeArea()" class="mat-stroked-button">
 			<span class="mat-button-wrapper">
 				Adicionar
@@ -31,9 +31,13 @@
 							   (change)="formChange(i)" placeholder="Nome"/>
 					</mat-form-field>
 					<mat-form-field class="padding-top col-md-12">
-						<input matInput formControlName="purpose"
-							   (change)="formChange(i)"
-							   placeholder="Objetivo"/>
+						<textarea matInput
+								  cdkTextareaAutosize
+								  cdkAutosizeMinRows="1"
+								  cdkAutosizeMaxRows="5"
+								  formControlName="purpose"
+								  (change)="formChange(i)"
+								  placeholder="Objetivo"></textarea>
 					</mat-form-field>
 					<div class="process-button">
 						<a mat-raised-button (click)="openDialog(i)"

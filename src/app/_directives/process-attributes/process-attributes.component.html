@@ -1,0 +1,61 @@
+﻿<div class="process-attributes">
+
+	<div class="process-attributes-header">
+		<div class="process-attributes-header-title">
+			<div class="process-attributes-header-title-spacer">Atributos de Processo</div>
+			<button mat-stroked-button type="button" (click)="addProcessAttribute()" class="mat-stroked-button">
+			<span class="mat-button-wrapper">
+				Adicionar
+				<i class="fa fa-plus"></i>
+			</span>
+			</button>
+		</div>
+	</div>
+	<div class="process-attributes-body">
+		<mat-accordion>
+			<mat-expansion-panel *ngFor="let processAttribute of processAttributes; let i = index">
+				<mat-expansion-panel-header>
+					<input matInput value="{{processAttribute.name}}" disabled placeholder="Nome"/>
+					<button mat-icon-button type="button" *ngIf="i > 0" (click)="deleteProcessAttribute(i)"
+							class="mat-icon-button active">
+						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
+							<i class="fa fa-trash"></i>
+						</mat-icon>
+					</button>
+				</mat-expansion-panel-header>
+
+				<form [formGroup]="getProcessAttributeForm(i)" (ngSubmit)="confirmProcessAttribute(i)">
+					<mat-form-field class="col-md-12">
+						<input matInput formControlName="name" placeholder="Nome"/>
+					</mat-form-field>
+					<mat-form-field class="col-md-12">
+					<textarea matInput
+							  cdkTextareaAutosize
+							  cdkAutosizeMinRows="1"
+							  cdkAutosizeMaxRows="5"
+							  formControlName="description"
+							  placeholder="Descrição"></textarea>
+					</mat-form-field>
+
+					<process-attribute-value [formGroup]="getProcessAttributeForm(i)"
+											 [values]="processAttribute.values">
+					</process-attribute-value>
+					<!--					<tree-node-metrics-scale-nominal [knowledgeAreas]="knowledgeAreas"-->
+					<!--													 [goals]="goals"-->
+					<!--													 (onConfirmGoals)="confirmGoals($event)">-->
+					<!--					</tree-node-metrics-scale-nominal>-->
+
+					<mat-action-row class="action-row">
+						<button mat-raised-button [disabled]="loading" class="btn btn-outline-danger">
+							Cancelar
+						</button>
+						<button mat-raised-button [disabled]="loading"
+								class="btn btn-outline-success confirm-button">
+							Confirmar
+						</button>
+					</mat-action-row>
+				</form>
+			</mat-expansion-panel>
+		</mat-accordion>
+	</div>
+</div>

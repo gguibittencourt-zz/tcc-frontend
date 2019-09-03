@@ -64,7 +64,7 @@
 
 							<form [formGroup]="processForms[i]" class="padding-bottom">
 								<expected-result formArrayName="expectedResults"
-												 [prefix]="processForms[i].controls['prefix'].value"
+												 [prefix]="processForms[i].controls['prefix']?.value"
 												 [expectedResults]="process.expectedResults"
 												 (onConfirmExpectedResults)="confirmExpectedResults($event, process, i)">
 								</expected-result>

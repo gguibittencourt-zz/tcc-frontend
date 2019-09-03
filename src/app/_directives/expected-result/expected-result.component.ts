@@ -23,6 +23,9 @@ export class ExpectedResultComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		if (!this.expectedResults) {
+			this.expectedResults = [];
+		}
 		this.expectedResults.forEach((value, index) => {
 			let form = this.formBuilder.group({
 				idExpectedResult: ['', Validators.required],
