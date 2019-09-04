@@ -36,14 +36,16 @@
 							  formControlName="description"
 							  placeholder="Descrição"></textarea>
 					</mat-form-field>
-
+					<div *ngIf="i === 0" class="col-md-12 padding-bottom">
+						<span class="label">Capacidade</span>
+						<button class="btn btn-outline-secondary btn-sm" type="button"
+								(click)="openDialog()">
+							Mapear valores de capacidade
+						</button>
+					</div>
 					<process-attribute-value [formGroup]="getProcessAttributeForm(i)"
 											 [values]="processAttribute.values">
 					</process-attribute-value>
-					<!--					<tree-node-metrics-scale-nominal [knowledgeAreas]="knowledgeAreas"-->
-					<!--													 [goals]="goals"-->
-					<!--													 (onConfirmGoals)="confirmGoals($event)">-->
-					<!--					</tree-node-metrics-scale-nominal>-->
 
 					<mat-action-row class="action-row">
 						<button mat-raised-button [disabled]="loading" class="btn btn-outline-danger">

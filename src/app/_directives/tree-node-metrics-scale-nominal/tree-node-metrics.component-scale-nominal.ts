@@ -55,8 +55,7 @@ export class TreeNodeMetricsComponentScaleNominal implements OnInit {
 					treeNodeChildren.metricScale = goal.metrics;
 					treeNodeChildren.hasMetricScale = !isEmpty(goal.metrics);
 				} else {
-					treeNodeChildren.metricScale = [];
-					treeNodeChildren.hasMetricScale = false;
+					this.createScaleTotalmente(treeNodeChildren, process.idProcess);
 				}
 				return treeNodeChildren;
 			});
@@ -113,5 +112,17 @@ export class TreeNodeMetricsComponentScaleNominal implements OnInit {
 
 	allChildrensHasMetric(node: TreeNode): boolean {
 		return node.children.every(value => value.hasMetricScale && !isEmpty(value.metricScale))
+	}
+
+	private createScaleTotalmente(treeNodeChildren: TreeNode, idProcess: string) {
+		const metricScale = new MetricScale();
+		metricScale.name = 'Totalmente';
+		metricScale.values = [{idMetricScale: '5', name: 'Totalmente implementado'}];
+		treeNodeChildren.metricScale = [metricScale];
+		treeNodeChildren.hasMetricScale = true;
+		const goalScale = new GoalScale();
+		goalScale.idReference = idProcess;
+		goalScale.metrics = [metricScale];
+		this.goals.push(goalScale);
 	}
 }

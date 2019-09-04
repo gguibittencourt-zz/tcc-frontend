@@ -1,8 +1,10 @@
 ﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GoalScale, KnowledgeArea, ProcessAttribute} from '../../_models';
+import {CapacityDialog, GoalScale, KnowledgeArea, ProcessAttribute} from '../../_models';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {isEmpty} from "lodash";
 import {Guid} from "guid-typescript";
+import {MatDialog} from "@angular/material";
+import {CapacityDialogComponent} from "../capacity-dialog";
 
 @Component({
 	selector: 'process-attributes',
@@ -17,7 +19,7 @@ export class ProcessAttributesComponent implements OnInit {
 	@Output() onConfirmProcessAttribute: EventEmitter<any> = new EventEmitter();
 	private processAttributeForms: FormGroup[] = [];
 
-	constructor(private formBuilder: FormBuilder) {
+	constructor(private formBuilder: FormBuilder, private dialog: MatDialog) {
 	}
 
 	ngOnInit() {
@@ -36,10 +38,6 @@ export class ProcessAttributesComponent implements OnInit {
 		}
 		this.processAttributes[index] = this.processAttributeForms[index].value;
 		this.onConfirmProcessAttribute.emit(this.processAttributes);
-	}
-
-	confirmGoals(event: any) {
-
 	}
 
 	addProcessAttribute() {
@@ -72,5 +70,19 @@ export class ProcessAttributesComponent implements OnInit {
 		form.patchValue(this.processAttributes[index]);
 		this.processAttributeForms[index] = form;
 		return form;
+	}
+
+	openDialog(): void {
+		const capacityDialog: CapacityDialog = {goals: this.goals, knowledgeAreas: this.knowledgeAreas};
+		const dialogRef = this.dialog.open(CapacityDialogComponent, {
+			minWidth: '300px',
+			data: capacityDialog,
+			disableClose: true
+		});
+
+		dialogRef.afterClosed().subscribe((result: CapacityDialog) => {
+			if (result) {
+			}
+		});
 	}
 }

@@ -73,6 +73,8 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			classifications: [[]],
 		});
 
+		this.f['scaleValues'].setValue(this.measurementFramework.scaleValues);
+
 		this.route.params.subscribe(params => {
 			this.idMeasurementFramework = params['idMeasurementFramework'];
 			if (this.idMeasurementFramework) {

@@ -21,3 +21,4 @@ export * from './classification';
 export * from './level';
 export * from './scale-values';
 export * from './process-attribute';
+export * from './capacity-dialog';

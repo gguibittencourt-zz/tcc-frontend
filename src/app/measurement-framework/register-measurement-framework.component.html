@@ -96,7 +96,8 @@
 			<div *ngIf="type == 'boolean'">
 			</div>
 			<div *ngIf="type == 'scale-nominal'">
-				<classification-scale-nominal formArrayName="classifications"
+				<classification-scale-nominal *ngIf="referenceModel"
+											  formArrayName="classifications"
 											  [classifications]="measurementFramework.classifications"
 											  [goals]="measurementFramework.goals"
 											  [knowledgeAreas]="referenceModel.knowledgeAreas"

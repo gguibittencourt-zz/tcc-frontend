@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Capacidade</h1>
+<div mat-dialog-content class="capacity-dialog">
+	<tree-node-metrics-scale-nominal [knowledgeAreas]="data.knowledgeAreas"
+									 [goals]="data.goals"
+									 (onConfirmGoals)="confirmGoals($event)">
+	</tree-node-metrics-scale-nominal>
+</div>
+
+<div mat-dialog-actions>
+	<button mat-button (click)="onNoClick()">Cancelar</button>
+	<button mat-raised-button class="btn btn-outline-success confirm-button" (click)="confirm()">
+		Confirmar
+	</button>
+</div>

@@ -43,5 +43,6 @@ export class ProcessAttributeValueComponent implements OnInit {
 
 	deleteProcessAttributeValue(index: number) {
 		this.values.splice(index, 1);
+		this.valuesForm.removeAt(index);
 	}
 }
