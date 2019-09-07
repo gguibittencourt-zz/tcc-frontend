@@ -11,13 +11,20 @@ import {
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {
 	Assessment,
+	Classification, ExpectedResult,
 	JsonAssessment,
 	KnowledgeArea,
-	MeasurementFramework, Question,
+	MeasurementFramework,
+	Process,
+	ProcessAttribute,
+	Question,
 	ReferenceModel,
-	Result, ScaleValues,
+	Result,
+	ScaleValues,
 	User
 } from "../_models";
+import {flatMap} from "lodash";
+import {ProcessAttributeValue} from "../_models/process-attribute-value";
 
 @Component({
 	templateUrl: './register-assessment.component.html',
@@ -33,6 +40,9 @@ export class RegisterAssessmentComponent implements OnInit {
 	referenceModel: ReferenceModel;
 	measurementFrameworks: MeasurementFramework[] = [];
 	measurementFramework: MeasurementFramework;
+	classification: Classification;
+	processes: Process[];
+	processAttributes: ProcessAttribute[];
 	results: Result[] = [];
 
 	constructor(
@@ -61,6 +71,7 @@ export class RegisterAssessmentComponent implements OnInit {
 				measurementFramework: [, Validators.required],
 				referenceModel: [],
 				results: [],
+				targetLevel: [, Validators.required]
 			})
 		});
 
@@ -97,14 +108,26 @@ export class RegisterAssessmentComponent implements OnInit {
 		this.getReferenceModel(this.measurementFramework.idReferenceModel);
 	}
 
-	hasQuestions(knowledgeArea: KnowledgeArea): boolean {
-		return knowledgeArea.processes.some(process => this.measurementFramework.questions.some(question => process.idProcess === question.idProcess));
+
+	changeTargetLevel(classification: Classification): void {
+		this.classification = classification;
+		this.processes = this.getProcesses();
+		this.processAttributes = this.getProcessAttributes();
 	}
 
-	getQuestionsByKnowledgeArea(knowledgeArea: KnowledgeArea): Question[] {
-		return knowledgeArea.processes.map(process => {
-			return this.measurementFramework.questions.filter(question => question.idProcess == process.idProcess);
-		}).reduce((a, b) => a.concat(b), []);
+	hasQuestions(process: Process): boolean {
+		return this.measurementFramework.questions.some(question => process.idProcess === question.idProcess);
+	}
+
+	getQuestionsByProcess(process: Process): Question[] {
+		return this.measurementFramework.questions.filter(question => question.idProcess == process.idProcess);
+	}
+
+	getQuestionsByProcessAttributeValue() {
+		const idsProcessAttributes = this.processAttributes.map(value => value.idProcessAttribute);
+		return this.measurementFramework.questions.filter(question => {
+			return idsProcessAttributes.includes(question.idProcessAttribute);
+		});
 	}
 
 	getResultByIdQuestion(idQuestion: string) {
@@ -172,17 +195,39 @@ export class RegisterAssessmentComponent implements OnInit {
 		this.onSubmit(true);
 	}
 
-	private createResults(knowledgeArea: KnowledgeArea) {
-		let questions = this.getQuestionsByKnowledgeArea(knowledgeArea);
-		if (questions.length) {
-			let results: Result[] = questions.filter(value => !this.existResult(knowledgeArea.idKnowledgeArea, value.idProcess, value.idQuestion))
-				.map(question => new Result(knowledgeArea.idKnowledgeArea, question.idProcess, question.idQuestion));
-			this.results.push(...results);
-		}
+	checkForms(): void {
+		this.submitted = true;
 	}
 
-	private existResult(idKnowledgeArea: number, idProcess: string, idQuestion: string): boolean {
-		return this.results.some(value => value.idKnowledgeArea == idKnowledgeArea && value.idProcess == idProcess && value.idQuestion == idQuestion);
+	getExpectedResults(): ExpectedResult[] {
+		return flatMap(this.processes, (value => value.expectedResults));
+	}
+
+	private createResults(knowledgeArea: KnowledgeArea) {
+		knowledgeArea.processes.forEach(process => {
+			const questions = this.getQuestionsByProcess(process);
+			if (questions.length) {
+				const results: Result[] = questions.filter(value => !this.existResult(knowledgeArea.idKnowledgeArea, value.idProcess, value.idQuestion, value.idExpectedResult, value.idProcessAttribute, value.idProcessAttributeValue))
+					.map(question => new Result(
+						knowledgeArea.idKnowledgeArea,
+						question.idProcess,
+						question.idQuestion,
+						question.idExpectedResult,
+						question.idProcessAttribute,
+						question.idProcessAttributeValue));
+				this.results.push(...results);
+			}
+		})
+
+	}
+
+	private existResult(idKnowledgeArea: number, idProcess: string, idQuestion: string, idExpectedResult: string,
+						idProcessAttribute: string, idProcessAttributeValue: string): boolean {
+		return this.results.some(value => {
+			return value.idQuestion == idQuestion
+				&& (value.idProcess && value.idKnowledgeArea == idKnowledgeArea && value.idProcess == idProcess && idExpectedResult == value.idExpectedResult
+				|| value.idProcessAttribute && value.idProcessAttribute == idProcessAttribute && value.idProcessAttributeValue == idProcessAttributeValue);
+		});
 	}
 
 	private getReferenceModel(idReferenceModel: number): void {
@@ -197,7 +242,16 @@ export class RegisterAssessmentComponent implements OnInit {
 		});
 	}
 
-	checkForms(): void {
-		this.submitted = true;
+	private getProcesses(): Process[] {
+		return flatMap(this.classification.levels, (level => {
+			const knowledgeAreas = this.referenceModel.knowledgeAreas.filter(knowledgeArea => knowledgeArea.idKnowledgeArea === level.idProcessArea);
+			return flatMap(knowledgeAreas, knowledgeArea => knowledgeArea.processes.filter(process => level.values.includes(process.idProcess)));
+		}));
+	}
+
+	private getProcessAttributes(): ProcessAttribute[] {
+		return flatMap(this.classification.processAttributes, (value => {
+			return this.measurementFramework.processAttributes.filter(processAttribute => value === processAttribute.idProcessAttribute && processAttribute.generateQuestions);
+		}));
 	}
 }

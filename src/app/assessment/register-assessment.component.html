@@ -13,25 +13,43 @@
 			<div class="form-group" formGroupName="jsonAssessment">
 				<mat-form-field class="full-width-input">
 					<mat-select placeholder="Método de Avaliação" formControlName="measurementFramework"
-								(selectionChange)="changeMeasurementFramework($event.value)" [disabled]="idAssessment"
-								[ngClass]="{ 'is-invalid': submitted && f.jsonAssessment.controls.measurementFramework.errors }">
+								(selectionChange)="changeMeasurementFramework($event.value)" [disabled]="!!idAssessment">
 						<div *ngIf="!idAssessment">
 							<mat-option *ngFor="let measurementFramework of measurementFrameworks"
 										[value]="measurementFramework">
 								{{measurementFramework.name}}
 							</mat-option>
 						</div>
-
 						<mat-option *ngIf="idAssessment && measurementFramework" [value]="measurementFramework" disabled>
 							{{measurementFramework.name}}
 						</mat-option>
 					</mat-select>
 				</mat-form-field>
-				<div *ngIf="submitted && f.jsonAssessment.controls.measurementFramework.errors?.required" class="invalid-feedback"
-					 [ngClass]="{ 'display-block': submitted && f.jsonAssessment.controls.measurementFramework?.errors }">
+				<mat-error *ngIf="submitted && f.jsonAssessment.controls.measurementFramework.errors?.required">
 					Método de Avaliação é obrigatório
-				</div>
+				</mat-error>
 			</div>
+
+			<div class="form-group" formGroupName="jsonAssessment" *ngIf="measurementFramework">
+				<mat-form-field class="full-width-input">
+					<mat-select placeholder="Nível Alvo" formControlName="targetLevel"
+								(selectionChange)="changeTargetLevel($event.value)" [disabled]="!!idAssessment">
+						<div *ngIf="!idAssessment">
+							<mat-option *ngFor="let classification of measurementFramework.classifications"
+										[value]="classification">
+								{{classification.name}}
+							</mat-option>
+						</div>
+						<mat-option *ngIf="idAssessment && classification" [value]="classification" disabled>
+							{{classification.name}}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<mat-error *ngIf="submitted && f.jsonAssessment.controls.targetLevel.errors?.required">
+					Nível alvo é obrigatório
+				</mat-error>
+			</div>
+
 			<div class="form-group">
 				<button mat-raised-button class="btn btn-outline-danger" [routerLink]="['/assessment']">
 					Cancelar
@@ -45,15 +63,19 @@
 	<mat-step [stepControl]="assessmentForm">
 		<form [formGroup]="assessmentForm">
 			<ng-template matStepLabel>Preencha as questões</ng-template>
-			<div class="form-group" *ngIf="measurementFramework && referenceModel">
+			<div class="form-group" *ngIf="measurementFramework && referenceModel && processes">
 				<mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
-					<mat-tab *ngFor="let knowledgeArea of referenceModel.knowledgeAreas" label="{{knowledgeArea.name}}">
-						<mat-card *ngIf="hasQuestions(knowledgeArea)">
+					<mat-tab *ngFor="let process of processes" label="{{process.name}}">
+						<mat-card *ngIf="hasQuestions(process)" class="card-process">
 							<mat-card-content>
-								<div class="purpose">{{knowledgeArea.purpose}}</div>
-								<question-assessment [questions]="getQuestionsByKnowledgeArea(knowledgeArea)"
+								<div class="purpose">{{process.purpose}}</div>
+								<question-assessment [questions]="getQuestionsByProcess(process)"
+													 [questionsProcessAttributes]="getQuestionsByProcessAttributeValue()"
+													 [prefix]="process.prefix"
 													 [results]="results"
 													 [scaleValues]="scaleValues"
+													 [expectedResults]="getExpectedResults()"
+													 [processAttributes]="processAttributes"
 													 (onConfirmResult)="confirmResult($event)">
 								</question-assessment>
 							</mat-card-content>

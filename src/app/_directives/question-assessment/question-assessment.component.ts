@@ -1,6 +1,7 @@
 ﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Question, Result, ScaleValues} from "../../_models";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {ExpectedResult, ProcessAttribute, Question, Result, ScaleValues} from '../../_models';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {groupBy} from 'lodash'
 
 @Component({
 	selector: 'question-assessment',
@@ -10,10 +11,17 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 
 export class QuestionAssessmentComponent implements OnInit {
 	@Input('questions') questions: Question[];
+	@Input('questionsProcessAttributes') questionsProcessAttributes: Question[];
 	@Input('results') results: Result[];
+	@Input('prefix') prefix: string;
 	@Input('scaleValues') scaleValues: ScaleValues[];
+	@Input('expectedResults') expectedResults: ExpectedResult[];
+	@Input('processAttributes') processAttributes: ProcessAttribute[];
 	@Output() onConfirmResult: EventEmitter<any> = new EventEmitter();
 	questionAssessmentForms: FormGroup[] = [];
+	questionsByExpectedResult: any;
+	idsExpectedResults: string[];
+	questionsByIdProcessAttribute: any;
 
 	constructor(private formBuilder: FormBuilder) {
 	}
@@ -37,6 +45,10 @@ export class QuestionAssessmentComponent implements OnInit {
 				value: [result.value]
 			});
 		});
+
+		this.questionsByExpectedResult = groupBy(this.questions, 'idExpectedResult');
+		this.idsExpectedResults = Object.keys(this.questionsByExpectedResult);
+		this.questionsByIdProcessAttribute = groupBy(this.questionsProcessAttributes, 'idProcessAttribute');
 	}
 
 	confirmResult(index: number) {
@@ -44,5 +56,10 @@ export class QuestionAssessmentComponent implements OnInit {
 		if (value.value) {
 			this.onConfirmResult.emit(value);
 		}
+	}
+
+	getExpectedResultName(idExpectedResult: string, index: number): string {
+		const expectedResult = this.expectedResults.find(value => value.idExpectedResult === idExpectedResult);
+		return expectedResult ? this.prefix + ' ' + index + '. ' +expectedResult.name  : '';
 	}
 }

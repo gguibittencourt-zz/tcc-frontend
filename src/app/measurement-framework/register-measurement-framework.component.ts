@@ -227,7 +227,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 				question.idProcessAttributeValue = value.idProcessAttributeValue;
 				question.name = value.name;
 				question.idProcessAttribute = processAttribute.idProcessAttribute;
-				question.type = this.type;
+				question.type = 'boolean';
 				return question;
 			}));
 		}));

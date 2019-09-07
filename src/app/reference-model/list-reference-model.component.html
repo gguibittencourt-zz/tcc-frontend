@@ -2,12 +2,15 @@
 
 <h2>Modelos de Referência</h2>
 
-<mat-form-field class="col-md-11">
+<mat-form-field class="col-md-10">
 	<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtro">
 </mat-form-field>
 
-<a [routerLink]="['/reference-model/register']" class="btn btn-sm col-md-1">
-	<i class="fa fa-plus"></i>
+<a [routerLink]="['/reference-model/register']" class="btn btn-sm mat-raised-button col-md-2">
+		<span class="mat-button-wrapper">
+				Adicionar
+				<i class="fa fa-plus"></i>
+		</span>
 </a>
 
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">

@@ -1,47 +1,112 @@
-﻿<div *ngFor="let question of questions; let i = index">
-	<span>{{i+1 + '. ' + question.name}}</span>
-	<form [formGroup]="questionAssessmentForms[i]">
-		<div *ngIf="question.type === 'boolean'">
-			<mat-radio-group formControlName="value" (change)="confirmResult(i)">
-				<mat-radio-button value="true" class="padding-right">
-					Verdadeiro
-				</mat-radio-button>
-				<mat-radio-button value="false">
-					Falso
-				</mat-radio-button>
-			</mat-radio-group>
+﻿<mat-card *ngFor="let idExpectedResult of idsExpectedResults; let indexExpectedResult = index">
+	<mat-card-title class="title-card">
+		{{getExpectedResultName(idExpectedResult, indexExpectedResult + 1)}}
+	</mat-card-title>
+	<mat-card-content>
+		<div *ngFor="let question of questionsByExpectedResult[idExpectedResult]; let i = index">
+
+			<span>{{i + 1 + '. ' + question.name}}</span>
+			<form [formGroup]="questionAssessmentForms[i]">
+				<div *ngIf="question.type === 'boolean'">
+					<mat-radio-group formControlName="value" (change)="confirmResult(i)">
+						<mat-radio-button value="true" class="padding-right">
+							Falso
+						</mat-radio-button>
+						<mat-radio-button value="false">
+							Verdadeiro
+						</mat-radio-button>
+					</mat-radio-group>
+				</div>
+				<div *ngIf="question.type === 'scale-nominal' && scaleValues">
+					<mat-radio-group formControlName="value"
+									 (change)="confirmResult(i)"
+									 class="example-radio-group">
+						<mat-radio-button class="example-radio-button" value="1">
+							{{scaleValues[0].value}}
+						</mat-radio-button>
+						<mat-radio-button class="example-radio-button" value="2">
+							{{scaleValues[1].value}}
+						</mat-radio-button>
+						<mat-radio-button class="example-radio-button" value="3">
+							{{scaleValues[2].value}}
+						</mat-radio-button>
+						<mat-radio-button class="example-radio-button" value="4">
+							{{scaleValues[3].value}}
+						</mat-radio-button>
+						<mat-radio-button class="example-radio-button" value="5">
+							{{scaleValues[4].value}}
+						</mat-radio-button>
+					</mat-radio-group>
+				</div>
+				<div *ngIf="question.type === 'scale-numeric'">
+					<mat-slider
+						[max]="5"
+						[min]="1"
+						[step]="1"
+						[thumbLabel]="true"
+						[tickInterval]="1"
+						(change)="confirmResult(i)"
+						formControlName="value">
+					</mat-slider>
+				</div>
+			</form>
 		</div>
-		<div *ngIf="question.type === 'scale-nominal' && scaleValues">
-			<mat-radio-group formControlName="value"
-							 (change)="confirmResult(i)"
-							 class="example-radio-group">
-				<mat-radio-button class="example-radio-button" value="1">
-					{{scaleValues[0].value}}
-				</mat-radio-button>
-				<mat-radio-button class="example-radio-button" value="2">
-					{{scaleValues[1].value}}
-				</mat-radio-button>
-				<mat-radio-button class="example-radio-button" value="3">
-					{{scaleValues[2].value}}
-				</mat-radio-button>
-				<mat-radio-button class="example-radio-button" value="4">
-					{{scaleValues[3].value}}
-				</mat-radio-button>
-				<mat-radio-button class="example-radio-button" value="5">
-					{{scaleValues[4].value}}
-				</mat-radio-button>
-			</mat-radio-group>
+	</mat-card-content>
+</mat-card>
+
+<mat-card *ngFor="let processAttribute of processAttributes">
+	<mat-card-title class="title-card">
+		{{processAttribute.name}}
+	</mat-card-title>
+	<mat-card-content>
+		<div *ngFor="let question of questionsByIdProcessAttribute[processAttribute.idProcessAttribute]; let i = index">
+
+			<span>{{i + 1 + '. ' + question.name}}</span>
+			<form [formGroup]="questionAssessmentForms[i]">
+				<div *ngIf="question.type === 'boolean'">
+					<mat-radio-group formControlName="value" (change)="confirmResult(i)">
+						<mat-radio-button value="true" class="padding-right">
+							Falso
+						</mat-radio-button>
+						<mat-radio-button value="false">
+							Verdadeiro
+						</mat-radio-button>
+					</mat-radio-group>
+				</div>
+				<div *ngIf="question.type === 'scale-nominal' && scaleValues">
+					<mat-radio-group formControlName="value"
+									 (change)="confirmResult(i)"
+									 class="example-radio-group">
+						<mat-radio-button class="example-radio-button" value="1">
+							{{scaleValues[0].value}}
+						</mat-radio-button>
+						<mat-radio-button class="example-radio-button" value="2">
+							{{scaleValues[1].value}}
+						</mat-radio-button>
+						<mat-radio-button class="example-radio-button" value="3">
+							{{scaleValues[2].value}}
+						</mat-radio-button>
+						<mat-radio-button class="example-radio-button" value="4">
+							{{scaleValues[3].value}}
+						</mat-radio-button>
+						<mat-radio-button class="example-radio-button" value="5">
+							{{scaleValues[4].value}}
+						</mat-radio-button>
+					</mat-radio-group>
+				</div>
+				<div *ngIf="question.type === 'scale-numeric'">
+					<mat-slider
+						[max]="5"
+						[min]="1"
+						[step]="1"
+						[thumbLabel]="true"
+						[tickInterval]="1"
+						(change)="confirmResult(i)"
+						formControlName="value">
+					</mat-slider>
+				</div>
+			</form>
 		</div>
-		<div *ngIf="question.type === 'scale-numeric'">
-			<mat-slider
-				[max]="5"
-				[min]="1"
-				[step]="1"
-				[thumbLabel]="true"
-				[tickInterval]="1"
-				(change)="confirmResult(i)"
-				formControlName="value">
-			</mat-slider>
-		</div>
-	</form>
-</div>
+	</mat-card-content>
+</mat-card>
+

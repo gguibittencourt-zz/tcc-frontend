@@ -4,13 +4,19 @@ export class Result {
     idResult: string;
     idKnowledgeArea: number;
     idProcess: string;
+    idExpectedResult: string;
+	idProcessAttribute: string;
+	idProcessAttributeValue: string;
     idQuestion: string;
     value: any;
 
-	constructor(idKnowledgeArea: number, idProcess: string, idQuestion: string) {
+	constructor(idKnowledgeArea: number, idProcess: string, idQuestion: string, idExpectedResult: string, idProcessAttribute: string, idProcessAttributeValue: string) {
 		this.idResult = Guid.create().toString();
 		this.idKnowledgeArea = idKnowledgeArea;
 		this.idProcess = idProcess;
 		this.idQuestion = idQuestion;
+		this.idExpectedResult = idExpectedResult;
+		this.idProcessAttribute = idProcessAttribute;
+		this.idProcessAttributeValue = idProcessAttributeValue;
 	}
 }

@@ -4,7 +4,7 @@
 		<div class="question-header">
 			<div class="question-header-title">
 				<div class="question-header-title-spacer">Questões</div>
-				<button mat-stroked-button type="button" [disabled]="!allValidForms || allResultsSelected"
+				<button mat-stroked-button type="button" [disabled]="!allValidForms"
 						(click)="addQuestion()" class="mat-stroked-button">
 			<span class="mat-button-wrapper">
 				Adicionar
@@ -18,7 +18,7 @@
 				<mat-expansion-panel *ngFor="let question of data.questions; let i = index"
 									 [expanded]="mapCloseAccordion.get(i)">
 					<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-						<input matInput value="{{question.name}}" disabled placeholder="Questão {{i + 1}}"/>
+						<input matInput value="{{i + 1 + '. ' + (question.name ? question.name : '')}}" disabled/>
 						<button mat-icon-button type="button" (click)="deleteQuestion(i)"
 								class="mat-icon-button active">
 							<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
@@ -36,20 +36,18 @@
 								<mat-form-field class="col-md-12">
 									<mat-select *ngIf="data.node.expectedResults"
 												placeholder="Resultado Esperado" formControlName="idExpectedResult"
-												(valueChange)="expectedResultSelected(i, $event)"
 												[ngClass]="{ 'is-invalid': submitted && f.idExpectedResult.errors }">
 										<mat-option *ngFor="let expectedResult of data.node.expectedResults"
-													[disabled]="expectedResult.disable"
 													[value]="expectedResult.idExpectedResult">
 											{{expectedResult.name}}
 										</mat-option>
 									</mat-select>
 									<mat-select *ngIf="data.node.processAttributeValues"
-												placeholder="Resultado do atributo de processo" formControlName="idProcessAttributeValue"
-												(valueChange)="processAttributeValueSelected(i, $event)">
-										<mat-option *ngFor="let processAttributeValue of data.node.processAttributeValues"
-													[disabled]="processAttributeValue.disable"
-													[value]="processAttributeValue.idProcessAttributeValue">
+												placeholder="Resultado do atributo de processo"
+												formControlName="idProcessAttributeValue">
+										<mat-option
+											*ngFor="let processAttributeValue of data.node.processAttributeValues"
+											[value]="processAttributeValue.idProcessAttributeValue">
 											{{processAttributeValue.name}}
 										</mat-option>
 									</mat-select>
