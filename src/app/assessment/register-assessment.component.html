@@ -1,6 +1,12 @@
 ﻿<h2>Avaliação</h2>
 
 <mat-horizontal-stepper [linear]="true" #stepper>
+	<ng-template matStepperIcon="edit">
+		<i class="fa fa-edit"></i>
+	</ng-template>
+	<ng-template matStepperIcon="done">
+		<i class="fa fa-check"></i>
+	</ng-template>
 	<mat-step [stepControl]="assessmentForm">
 		<form [formGroup]="assessmentForm">
 			<ng-template matStepLabel>Selecione um método de avaliação</ng-template>
@@ -27,7 +33,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<button mat-raised-button [routerLink]="['/assessment']" class="btn btn-outline-danger">
+				<button mat-raised-button class="btn btn-outline-danger" [routerLink]="['/assessment']">
 					Cancelar
 				</button>
 				<button mat-raised-button class="mat-raised-button btn btn-outline-secondary" (click)="checkForms()"
@@ -56,7 +62,7 @@
 				</mat-tab-group>
 			</div>
 			<div class="form-group">
-				<button mat-raised-button class="mat-raised-button btn btn-outline-secondary" matStepperPrevious>Voltar</button>
+				<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
 				<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
 						class="btn btn-outline-success save-button">Salvar
 				</button>

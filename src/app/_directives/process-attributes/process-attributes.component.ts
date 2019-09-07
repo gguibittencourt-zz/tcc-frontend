@@ -5,6 +5,7 @@ import {isEmpty} from "lodash";
 import {Guid} from "guid-typescript";
 import {MatDialog} from "@angular/material";
 import {CapacityDialogComponent} from "../capacity-dialog";
+import {ProcessAttributeValue} from "../../_models/process-attribute-value";
 
 @Component({
 	selector: 'process-attributes',
@@ -27,6 +28,8 @@ export class ProcessAttributesComponent implements OnInit {
 			this.processAttributes = [];
 			const processAttribute = new ProcessAttribute();
 			processAttribute.name = 'AP 1.1 O processo é executado';
+			processAttribute.values = ProcessAttributesComponent.createValue();
+			processAttribute.generateQuestions = false;
 			this.processAttributes.push(processAttribute);
 			this.onConfirmProcessAttribute.emit(this.processAttributes);
 		}
@@ -43,6 +46,7 @@ export class ProcessAttributesComponent implements OnInit {
 	addProcessAttribute() {
 		if (this.allValidForms()) {
 			const processAttribute: ProcessAttribute = new ProcessAttribute();
+			processAttribute.generateQuestions = true;
 			this.processAttributes.push(processAttribute);
 		}
 	}
@@ -63,6 +67,7 @@ export class ProcessAttributesComponent implements OnInit {
 			form = this.formBuilder.group({
 				idProcessAttribute: [Guid.create().toString()],
 				name: ['', Validators.required],
+				generateQuestions: [],
 				description: [''],
 				values: this.formBuilder.array([])
 			});
@@ -84,5 +89,11 @@ export class ProcessAttributesComponent implements OnInit {
 			if (result) {
 			}
 		});
+	}
+
+	private static createValue(): ProcessAttributeValue[] {
+		const processAttributeValue = new ProcessAttributeValue();
+		processAttributeValue.name = 'O processo produz os resultados definidos.';
+		return [processAttributeValue];
 	}
 }

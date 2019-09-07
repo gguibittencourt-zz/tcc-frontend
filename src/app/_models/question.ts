@@ -4,6 +4,8 @@ export class Question {
 	idQuestion: string;
 	idExpectedResult: string;
 	idProcess: string;
+	idProcessAttributeValue: string;
+	idProcessAttribute: string;
 	name: string;
 	tip: string;
 	type: string;

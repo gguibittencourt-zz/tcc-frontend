@@ -1,9 +1,15 @@
 ﻿<h2>Método de Avaliação</h2>
 
 <mat-horizontal-stepper [linear]="true" #stepper>
+	<ng-template matStepperIcon="edit">
+		<i class="fa fa-edit"></i>
+	</ng-template>
+	<ng-template matStepperIcon="done">
+		<i class="fa fa-check"></i>
+	</ng-template>
 	<mat-step [stepControl]="measurementFrameworkForm">
 		<form [formGroup]="measurementFrameworkForm">
-			<ng-template matStepLabel>Preencha as configurações básicos</ng-template>
+			<ng-template matStepLabel>Preencha as configurações básicas</ng-template>
 			<div class="form-group">
 				<mat-form-field class="full-width-input">
 					<input matInput formControlName="name" class="form-control" placeholder="Nome"
@@ -15,6 +21,7 @@
 				<mat-form-field class="full-width-input">
 					<mat-select placeholder="Modelo de referência" formControlName="idReferenceModel"
 								(selectionChange)="changeReferenceModel($event)"
+								[disabled]="idMeasurementFramework"
 								[ngClass]="{ 'is-invalid': submitted && f.idReferenceModel.errors }">
 						<mat-option *ngFor="let referenceModel of referenceModels"
 									[value]="referenceModel.idReferenceModel">
@@ -38,7 +45,8 @@
 				<div *ngIf="submitted && f.type.errors" class="invalid-feedback">
 					<div *ngIf="f.type.errors.required">Escala padrão das questões é obrigatório</div>
 				</div>
-				<button class="btn btn-outline-secondary btn-sm" type="button" (click)="openDialog(measurementFramework.scaleValues)">
+				<button class="btn btn-outline-secondary btn-sm" type="button"
+						(click)="openDialog(measurementFramework.scaleValues)">
 					Mapear valores escala Ordinal
 				</button>
 			</div>
@@ -46,7 +54,9 @@
 				<button mat-raised-button [routerLink]="['/measurement-framework']" class="btn btn-outline-danger">
 					Cancelar
 				</button>
-				<button mat-button matStepperNext (click)="nextFirstPage()">Próximo</button>
+				<button mat-raised-button class="btn btn-outline-secondary" matStepperNext (click)="nextFirstPage()">
+					Próximo
+				</button>
 			</div>
 		</form>
 	</mat-step>
@@ -62,54 +72,51 @@
 			</process-attributes>
 
 
-<!--			<div *ngIf="type == 'boolean'">-->
-<!--				<tree-node-metrics-boolean *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"-->
-<!--										   [goals]="measurementFramework.goals"-->
-<!--										   (onConfirmGoals)="confirmGoals($event)">-->
-<!--				</tree-node-metrics-boolean>-->
-<!--			</div>-->
-<!--			<div *ngIf="type == 'scale-nominal'">-->
-<!--				<tree-node-metrics-scale-nominal *ngIf="referenceModel"-->
-<!--												 [knowledgeAreas]="referenceModel.knowledgeAreas"-->
-<!--												 [goals]="measurementFramework.goals"-->
-<!--												 (onConfirmGoals)="confirmGoals($event)">-->
-<!--				</tree-node-metrics-scale-nominal>-->
-<!--			</div>-->
-<!--			<div *ngIf="type == 'scale-numeric'">-->
-<!--				<tree-node-metrics-scale-numeric *ngIf="referenceModel"-->
-<!--												 [knowledgeAreas]="referenceModel.knowledgeAreas"-->
-<!--												 [goals]="measurementFramework.goals"-->
-<!--												 (onConfirmGoals)="confirmGoals($event)">-->
-<!--				</tree-node-metrics-scale-numeric>-->
-<!--			</div>-->
+			<!--			<div *ngIf="type == 'boolean'">-->
+			<!--				<tree-node-metrics-boolean *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"-->
+			<!--										   [goals]="measurementFramework.goals"-->
+			<!--										   (onConfirmGoals)="confirmGoals($event)">-->
+			<!--				</tree-node-metrics-boolean>-->
+			<!--			</div>-->
+			<!--			<div *ngIf="type == 'scale-nominal'">-->
+			<!--				<tree-node-metrics-scale-nominal *ngIf="referenceModel"-->
+			<!--												 [knowledgeAreas]="referenceModel.knowledgeAreas"-->
+			<!--												 [goals]="measurementFramework.goals"-->
+			<!--												 (onConfirmGoals)="confirmGoals($event)">-->
+			<!--				</tree-node-metrics-scale-nominal>-->
+			<!--			</div>-->
+			<!--			<div *ngIf="type == 'scale-numeric'">-->
+			<!--				<tree-node-metrics-scale-numeric *ngIf="referenceModel"-->
+			<!--												 [knowledgeAreas]="referenceModel.knowledgeAreas"-->
+			<!--												 [goals]="measurementFramework.goals"-->
+			<!--												 (onConfirmGoals)="confirmGoals($event)">-->
+			<!--				</tree-node-metrics-scale-numeric>-->
+			<!--			</div>-->
 		</form>
 
 		<div class="form-group">
-			<button mat-button matStepperPrevious>Voltar</button>
-			<button mat-raised-button class="btn btn-outline-success save-button" matStepperNext>Próximo</button>
+			<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
+			<button mat-raised-button class="btn btn-outline-secondary save-button" matStepperNext
+					(click)="nextProcessAttributes()">Próximo</button>
 		</div>
 	</mat-step>
 	<mat-step [stepControl]="measurementFrameworkForm">
 		<ng-template matStepLabel>Definição da Maturidade</ng-template>
 
 		<form [formGroup]="measurementFrameworkForm">
-			<div *ngIf="type == 'boolean'">
-			</div>
-			<div *ngIf="type == 'scale-nominal'">
-				<classification-scale-nominal *ngIf="referenceModel"
-											  formArrayName="classifications"
-											  [classifications]="measurementFramework.classifications"
-											  [goals]="measurementFramework.goals"
-											  [knowledgeAreas]="referenceModel.knowledgeAreas"
-											  (onConfirmClassification)="confirmClassifications($event)">
-				</classification-scale-nominal>
-			</div>
-			<div *ngIf="type == 'scale-numeric'">
-			</div>
+			<classification-scale-nominal *ngIf="referenceModel && enableProcessAttributes"
+										  formArrayName="classifications"
+										  [classifications]="measurementFramework.classifications"
+										  [goals]="measurementFramework.goals"
+										  [processAttributes]="measurementFramework.processAttributes"
+										  [knowledgeAreas]="referenceModel.knowledgeAreas"
+										  (onConfirmClassification)="confirmClassifications($event)">
+			</classification-scale-nominal>
 		</form>
 		<div class="form-group">
-			<button mat-button matStepperPrevious>Voltar</button>
-			<button mat-button matStepperNext>Próximo</button>
+			<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious
+					(click)="backProcessAttributes()">Voltar</button>
+			<button mat-raised-button class="btn btn-outline-secondary" mat-button matStepperNext>Próximo</button>
 		</div>
 
 	</mat-step>
@@ -117,14 +124,34 @@
 		<ng-template matStepLabel>Preencha as questões</ng-template>
 
 		<form [formGroup]="measurementFrameworkForm">
-			<tree-node-questions *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
-								 [questions]="measurementFramework.questions"
-								 [type]="type"
-								 (onConfirmQuestions)="confirmQuestions($event)">
-			</tree-node-questions>
+			<mat-tab-group mat-stretch-tabs class="mat-elevation-z4">
+				<mat-tab label="Questões de Processos">
+					<mat-card>
+						<mat-card-content>
+							<tree-node-questions *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
+												 [questions]="measurementFramework.questions"
+												 [type]="type"
+												 (onConfirmQuestions)="confirmQuestions($event)">
+							</tree-node-questions>
+						</mat-card-content>
+					</mat-card>
+				</mat-tab>
+				<mat-tab label="Questões de Atributos de Processos">
+					<mat-card>
+						<mat-card-content>
+							<tree-node-questions-process-attributes *ngIf="referenceModel && enableProcessAttributes"
+																	[processAttributes]="measurementFramework.processAttributes"
+																	[questions]="measurementFramework.questions"
+																	[type]="type"
+																	(onConfirmQuestions)="confirmQuestions($event)">
+							</tree-node-questions-process-attributes>
+						</mat-card-content>
+					</mat-card>
+				</mat-tab>
+			</mat-tab-group>
 		</form>
 		<div class="form-group">
-			<button mat-button matStepperPrevious>Voltar</button>
+			<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
 			<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
 					class="btn btn-outline-success save-button">Salvar
 			</button>

@@ -7,7 +7,8 @@ import {
 	Classification,
 	GoalBoolean,
 	GoalScale,
-	MeasurementFramework, ProcessAttribute,
+	MeasurementFramework,
+	ProcessAttribute,
 	Question,
 	ReferenceModel,
 	ScaleValues,
@@ -20,8 +21,7 @@ import {flatten, isEmpty} from 'lodash';
 
 @Component({
 	templateUrl: './register-measurement-framework.component.html',
-	styleUrls: ['register-measurement-framework.component.scss']
-
+	styleUrls: ['register-measurement-framework.component.scss'],
 })
 export class RegisterMeasurementFrameworkComponent implements OnInit {
 	measurementFrameworkForm: FormGroup;
@@ -33,6 +33,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 	referenceModel: ReferenceModel;
 	types: TypeQuestion[] = [];
 	type: string;
+	enableProcessAttributes: boolean = false;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -122,7 +123,8 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 
 	nextFirstPage() {
 		if (this.measurementFrameworkForm.valid && isEmpty(this.measurementFramework.questions)) {
-			const questions = this.createQuestionsByExpectedResults(this.referenceModel);
+			let questions = this.createQuestionsByExpectedResults(this.referenceModel);
+			questions = questions.concat(this.f["questions"].value);
 			this.f["questions"].setValue(questions);
 			this.measurementFramework.questions = questions;
 		}
@@ -198,6 +200,35 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 					question.type = this.type;
 					return question;
 				});
+			}));
+		}));
+	}
+
+	nextProcessAttributes() {
+		this.enableProcessAttributes = true;
+		let questions: Question[] = this.createQuestionsByProcessAttributes(this.measurementFramework.processAttributes);
+		questions = questions.concat(this.f["questions"].value);
+		this.f['questions'].setValue(questions);
+		this.measurementFramework.questions = questions;
+	}
+
+	backProcessAttributes() {
+		this.enableProcessAttributes = false;
+	}
+
+	private createQuestionsByProcessAttributes(processAttributes: ProcessAttribute[]): Question[] {
+		return flatten(processAttributes.filter(value => value.generateQuestions).map(processAttribute => {
+			const processAttributeValues = processAttribute.values.filter(value => {
+				const idsProcessAttributeValues = this.measurementFramework.questions.map(question => question.idProcessAttributeValue);
+				return !idsProcessAttributeValues.includes(value.idProcessAttributeValue);
+			});
+			return flatten(processAttributeValues.map(value => {
+				const question: Question = new Question(Guid.create().toString());
+				question.idProcessAttributeValue = value.idProcessAttributeValue;
+				question.name = value.name;
+				question.idProcessAttribute = processAttribute.idProcessAttribute;
+				question.type = this.type;
+				return question;
 			}));
 		}));
 	}

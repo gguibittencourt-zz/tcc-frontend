@@ -1,10 +1,9 @@
 ﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Classification, GoalScale, KnowledgeArea, Level, MetricScale} from '../../_models';
+import {Classification, GoalScale, KnowledgeArea, Level, MetricScale, ProcessAttribute} from '../../_models';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {isNil} from "lodash";
 import {Guid} from "guid-typescript";
 import {EmptyListValidator} from "../../_helpers";
-import {MatOptionSelectionChange} from "@angular/material";
 
 @Component({
 	selector: 'classification-scale-nominal',
@@ -16,6 +15,7 @@ export class ClassificationScaleNominalComponent implements OnInit {
 	@Input('knowledgeAreas') knowledgeAreas: KnowledgeArea[];
 	@Input('classifications') classifications: Classification[];
 	@Input('goals') goals: GoalScale[];
+	@Input('processAttributes') processAttributes: ProcessAttribute[];
 	@Output() onConfirmClassification: EventEmitter<any> = new EventEmitter();
 	levelValues: Map<string, MetricScale[]> = new Map();
 	private classificationForms: FormGroup[] = [];
@@ -67,7 +67,6 @@ export class ClassificationScaleNominalComponent implements OnInit {
 	//TODO classificação de area de processo por metrica
 	updateLevels(event: Level[], classification: Classification, index: number) {
 		classification.levels = event;
-		console.log(classification.levels);
 		this.classificationForms[index].controls['levels'].patchValue(event);
 	}
 
@@ -91,6 +90,7 @@ export class ClassificationScaleNominalComponent implements OnInit {
 			form = this.formBuilder.group({
 				idClassification: [Guid.create().toString()],
 				name: ['', Validators.required],
+				processAttributes: [[]],
 				levels: [this.formBuilder.group({
 					idProcessArea: [],
 					values: [[], EmptyListValidator.listaVaziaValidator()],

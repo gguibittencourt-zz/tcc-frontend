@@ -31,7 +31,7 @@ export class QuestionComponent {
 			this.createDependentValues(value.idDependentQuestion);
 			this.fillDefaultValues(value.type);
 		});
-		this.disableExpectedResultsSelected();
+		this.disableResultsSelected();
 	}
 
 	get isPossibleConfirm(): boolean {
@@ -46,8 +46,11 @@ export class QuestionComponent {
 		return this.questionForms.every(form => form.valid);
 	}
 
-	get allExpectedResultsSelected(): boolean {
-		return this.data.node.expectedResults.every(value => value.disable)
+	get allResultsSelected(): boolean {
+		if (this.data.node.processAttributeValues) {
+			return this.data.node.processAttributeValues.every(value => value.disable);
+		}
+		return this.data.node.expectedResults.every(value => value.disable);
 	}
 
 	onNoClick(): void {
@@ -64,10 +67,16 @@ export class QuestionComponent {
 		this.data.questions[index] = this.questionForms[index].value;
 	}
 
-	disableExpectedResultsSelected(): void {
+	disableResultsSelected(): void {
 		this.data.questions.forEach(question => {
-			const selected = this.data.node.expectedResults.find(expectedResult => expectedResult.idExpectedResult === question.idExpectedResult);
-			selected.disable = true;
+			if (question.idExpectedResult) {
+				const selected = this.data.node.expectedResults.find(expectedResult => expectedResult.idExpectedResult === question.idExpectedResult);
+				selected.disable = true;
+			} else {
+				const selected = this.data.node.processAttributeValues.find(expectedResult => expectedResult.idProcessAttributeValue === question.idProcessAttributeValue);
+				selected.disable = true;
+			}
+
 		});
 	}
 
@@ -118,10 +127,6 @@ export class QuestionComponent {
 		this.mapCloseAccordion.set(index, true);
 	}
 
-	cancelQuestion(index: number) {
-		this.mapCloseAccordion.set(index, false);
-	}
-
 	changeQuestionRequired(event: any): void {
 		this._questionRequired = event.checked;
 	}
@@ -137,11 +142,26 @@ export class QuestionComponent {
 		}
 	}
 
-	private createForm(idQuestion: string = '', idProcess: string = ''): FormGroup {
-		return this.formBuilder.group({
+	processAttributeValueSelected(indexQuestion: number, event: any): void {
+		const oldIdExpectedResult = this.questionForms[indexQuestion].controls['idProcessAttributeValue'].value;
+		const processAttributeValue = this.data.node.processAttributeValues
+			.find(processAttributeValue => processAttributeValue.idProcessAttributeValue === event);
+		processAttributeValue.disable = true;
+
+		const oldExpectedResult = this.data.node.processAttributeValues
+			.find(processAttributeValue => processAttributeValue.idProcessAttributeValue === oldIdExpectedResult);
+		if (oldExpectedResult) {
+			oldExpectedResult.disable = false;
+		}
+	}
+
+	private createForm(idQuestion: string = '', idTreeNode: string = ''): FormGroup {
+		const formGroup = this.formBuilder.group({
 			idQuestion: [idQuestion, Validators.required],
-			idProcess: [idProcess, Validators.required],
+			idProcess: [idTreeNode, Validators.required],
 			idExpectedResult: ['', Validators.required],
+			idProcessAttribute: [idTreeNode],
+			idProcessAttributeValue: [''],
 			name: ['', Validators.required],
 			tip: ['', Validators.maxLength(255)],
 			type: [this.data.type, Validators.required],
@@ -162,6 +182,13 @@ export class QuestionComponent {
 				minValue: []
 			})
 		});
+		if (this.data.node.processAttributeValues) {
+			formGroup.get('idExpectedResult').setValidators(null);
+			formGroup.get('idProcess').setValidators(null);
+			formGroup.get('idProcessAttribute').setValidators(Validators.required);
+			formGroup.get('idProcessAttributeValue').setValidators(Validators.required);
+		}
+		return formGroup;
 	}
 
 	private createValues(type: string) {

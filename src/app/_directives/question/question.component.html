@@ -4,7 +4,7 @@
 		<div class="question-header">
 			<div class="question-header-title">
 				<div class="question-header-title-spacer">Questões</div>
-				<button mat-stroked-button type="button" [disabled]="!allValidForms || allExpectedResultsSelected"
+				<button mat-stroked-button type="button" [disabled]="!allValidForms || allResultsSelected"
 						(click)="addQuestion()" class="mat-stroked-button">
 			<span class="mat-button-wrapper">
 				Adicionar
@@ -34,13 +34,23 @@
 									Questão
 								</ng-template>
 								<mat-form-field class="col-md-12">
-									<mat-select placeholder="Resultado Esperado" formControlName="idExpectedResult"
+									<mat-select *ngIf="data.node.expectedResults"
+												placeholder="Resultado Esperado" formControlName="idExpectedResult"
 												(valueChange)="expectedResultSelected(i, $event)"
 												[ngClass]="{ 'is-invalid': submitted && f.idExpectedResult.errors }">
 										<mat-option *ngFor="let expectedResult of data.node.expectedResults"
 													[disabled]="expectedResult.disable"
 													[value]="expectedResult.idExpectedResult">
-												{{expectedResult.name}}
+											{{expectedResult.name}}
+										</mat-option>
+									</mat-select>
+									<mat-select *ngIf="data.node.processAttributeValues"
+												placeholder="Resultado do atributo de processo" formControlName="idProcessAttributeValue"
+												(valueChange)="processAttributeValueSelected(i, $event)">
+										<mat-option *ngFor="let processAttributeValue of data.node.processAttributeValues"
+													[disabled]="processAttributeValue.disable"
+													[value]="processAttributeValue.idProcessAttributeValue">
+											{{processAttributeValue.name}}
 										</mat-option>
 									</mat-select>
 								</mat-form-field>
@@ -109,9 +119,6 @@
 										</div>
 									</mat-form-field>
 								</div>
-								<mat-slide-toggle class="col-md-12" formControlName="hasDataSource"
-												  labelPosition="before">Possui fonte de dados?
-								</mat-slide-toggle>
 							</mat-tab>
 						</mat-tab-group>
 

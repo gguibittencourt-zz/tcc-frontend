@@ -30,6 +30,9 @@ export class ProcessAttributeValueComponent implements OnInit {
 	}
 
 	addProcessAttributeValue() {
+		if (this.values.some(value => !value.name)) {
+			return;
+		}
 		const processAttributeValue = new ProcessAttributeValue();
 		this.values.push(processAttributeValue);
 	}

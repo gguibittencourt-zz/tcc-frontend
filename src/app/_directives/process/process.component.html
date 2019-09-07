@@ -26,6 +26,12 @@
 					</mat-expansion-panel-header>
 
 					<mat-horizontal-stepper [linear]="true" #stepper>
+						<ng-template matStepperIcon="edit">
+							<i class="fa fa-edit"></i>
+						</ng-template>
+						<ng-template matStepperIcon="done">
+							<i class="fa fa-check"></i>
+						</ng-template>
 						<mat-step [stepControl]="processForms[i]">
 							<form [formGroup]="processForms[i]">
 								<ng-template matStepLabel>Preencha o nome e o objetivo</ng-template>
@@ -55,7 +61,7 @@
 											class="btn btn-outline-danger">
 										Cancelar
 									</button>
-									<button mat-raised-button class="mat-raised-button btn btn-outline-secondary" matStepperNext>Próximo</button>
+									<button mat-raised-button class="btn btn-outline-secondary" matStepperNext>Próximo</button>
 								</div>
 							</form>
 						</mat-step>
@@ -71,7 +77,7 @@
 							</form>
 
 							<div class="form-group">
-								<button mat-raised-button class="mat-raised-button btn btn-outline-secondary" matStepperPrevious>Voltar</button>
+								<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
 								<button mat-raised-button (click)="confirmProcess(i)" [disabled]="loading"
 										class="btn btn-outline-success save-button">Salvar
 								</button>

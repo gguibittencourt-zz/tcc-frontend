@@ -17,7 +17,7 @@
 								 [expanded]="mapCloseAccordion.get(i)"
 								 (afterExpand)="afterExpand(classification)">
 				<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-					<input matInput value="{{classification.name}}" disabled placeholder="Nome"/>
+					<input matInput value="{{(i + 1) + '. ' + (classification.name ? classification.name : '')}}" disabled placeholder="Nome"/>
 					<button mat-icon-button type="button" (click)="deleteClassification(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
@@ -30,6 +30,14 @@
 					<mat-form-field class="col-md-12">
 						<input matInput formControlName="name"
 							   (change)="formChange(i)" placeholder="Nome"/>
+					</mat-form-field>
+
+					<mat-form-field class="col-md-12">
+						<mat-select placeholder="Atributos de Processo" multiple formControlName="processAttributes">
+							<mat-option *ngFor="let processAttribute of processAttributes" [value]="processAttribute.idProcessAttribute">
+								{{processAttribute.name}}
+							</mat-option>
+						</mat-select>
 					</mat-form-field>
 
 					<level-scale-ordinal [knowledgeAreas]="knowledgeAreas"

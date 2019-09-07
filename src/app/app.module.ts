@@ -34,6 +34,7 @@ import {MetricScaleDialogComponent} from "./_directives/metric-scale-dialog";
 import {ListMeasurementFrameworkComponent, RegisterMeasurementFrameworkComponent} from "./measurement-framework";
 import {ExpectedResultComponent} from "./_directives/expected-result";
 import {TreeNodeQuestionsComponent} from "./_directives/tree-node-questions";
+import {TreeNodeQuestionsProcessAttributesComponent} from "./_directives/tree-node-questions-process-attributes";
 import {QuestionComponent} from "./_directives/question";
 import {LoadingComponent} from "./_directives/loading";
 import {TreeNodeMetricsComponentBoolean} from "./_directives/tree-node-metrics-boolean";
@@ -78,6 +79,7 @@ import {CapacityDialogComponent} from "./_directives/capacity-dialog";
 		RegisterMeasurementFrameworkComponent,
 		ExpectedResultComponent,
 		TreeNodeQuestionsComponent,
+		TreeNodeQuestionsProcessAttributesComponent,
 		TreeNodeMetricsComponentBoolean,
 		TreeNodeMetricsComponentScaleNominal,
 		TreeNodeMetricsComponentScaleNumeric,
@@ -97,7 +99,7 @@ import {CapacityDialogComponent} from "./_directives/capacity-dialog";
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
 		{provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
-		{provide: STEPPER_GLOBAL_OPTIONS, useValue: {showError: true}},
+		{provide: STEPPER_GLOBAL_OPTIONS, useValue: {displayDefaultIndicatorType: false}},
 		AuthGuard,
 		AlertService,
 		AuthenticationService,

@@ -7,8 +7,12 @@
 				<label [for]="'name-' + indexValue" class="label-name">
 					<span>{{(indexValue + 1) + '. '}}</span>
 				</label>
-				<input [id]="'name-' + indexValue" matInput type="text"
-					   [(ngModel)]="value.name" (blur)="onBlurValue($event, indexValue)"/>
+				<textarea matInput
+						  cdkTextareaAutosize
+						  cdkAutosizeMinRows="1"
+						  cdkAutosizeMaxRows="5"
+						  [(ngModel)]="value.name" (blur)="onBlurValue($event, indexValue)"
+						  [id]="'name-' + indexValue"></textarea>
 			</div>
 		</mat-form-field>
 		<button class="align-self-center btn btn-outline-danger btn-sm"
