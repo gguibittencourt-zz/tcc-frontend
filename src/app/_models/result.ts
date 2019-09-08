@@ -2,7 +2,7 @@
 
 export class Result {
     idResult: string;
-    idKnowledgeArea: number;
+    idKnowledgeArea: string;
     idProcess: string;
     idExpectedResult: string;
 	idProcessAttribute: string;
@@ -10,7 +10,7 @@ export class Result {
     idQuestion: string;
     value: any;
 
-	constructor(idKnowledgeArea: number, idProcess: string, idQuestion: string, idExpectedResult: string, idProcessAttribute: string, idProcessAttributeValue: string) {
+	constructor(idKnowledgeArea: string, idProcess: string, idQuestion: string, idExpectedResult: string, idProcessAttribute: string, idProcessAttributeValue: string) {
 		this.idResult = Guid.create().toString();
 		this.idKnowledgeArea = idKnowledgeArea;
 		this.idProcess = idProcess;

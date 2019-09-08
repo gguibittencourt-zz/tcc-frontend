@@ -84,7 +84,7 @@ export class LevelScaleNominalComponent implements OnInit {
 
 	private createLevelForm(): FormGroup {
 		return this.formBuilder.group({
-			idProcessArea: [, Validators.required],
+			idProcessArea: ['', Validators.required],
 			values: [[], EmptyListValidator.listaVaziaValidator()],
 		});
 	}

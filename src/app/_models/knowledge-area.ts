@@ -1,7 +1,7 @@
 ﻿import {Process} from "./process";
 
 export class KnowledgeArea {
-    idKnowledgeArea: number;
+    idKnowledgeArea: string;
     name: string;
     purpose: string;
 	processes: Process[];

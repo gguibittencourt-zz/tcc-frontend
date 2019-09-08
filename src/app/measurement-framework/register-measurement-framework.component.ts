@@ -183,7 +183,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		measurementFramework.scaleValues = [
 			{id: '1', value: 'Discordo totalmente', mappedValue: 'Não implementado'},
 			{id: '2', value: 'Discordo parcialmente', mappedValue: 'Parcialmente implementado'},
-			{id: '3', value: 'Não concordo, nem discordo', mappedValue: 'Não Avaliado'},
+			{id: '3', value: 'Não concordo, nem discordo', mappedValue: 'Não avaliado'},
 			{id: '4', value: 'Concordo parcialmente', mappedValue: 'Largamente implementado'},
 			{id: '5', value: 'Concordo totalmente', mappedValue: 'Totalmente implementado'},
 		];

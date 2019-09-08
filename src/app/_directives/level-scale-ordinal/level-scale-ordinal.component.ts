@@ -21,7 +21,7 @@ export class LevelScaleOrdinalComponent implements OnInit {
 		this.valuesForm.patchValue(flatten(this.levels.map(level => level.values)));
 	}
 
-	updateLevel(event: MatOptionSelectionChange, idProcessArea: number) {
+	updateLevel(event: MatOptionSelectionChange, idProcessArea: string) {
 		let level = this.levels.find(level => level.idProcessArea === idProcessArea);
 		if (level) {
 			const index = this.levels.indexOf(level);

@@ -13,8 +13,8 @@ export class Question {
 	defaultValue: any;
 	dependsOnAnyQuestion: boolean;
 	idDependentQuestion: string;
-	dependentValue: DependentValue;
-	hasDataSource: boolean;
+	dependentValue: any;
+	updateValue: any;
 	config: any;
 
 	constructor(idQuestion: string) {

@@ -20,9 +20,9 @@ export class TreeNodeMetricsComponentScaleNominal implements OnInit {
 	treeControl = new NestedTreeControl<TreeNode>(node => node.children);
 	dataSource = new MatTreeNestedDataSource<TreeNode>();
 	readonly valueMetrics: MetricScale[] = [
-		{idMetricScale: '1', name: 'Não ainda'},
-		{idMetricScale: '2', name: 'Não implementado'},
-		{idMetricScale: '3', name: 'Parcialmente implementado'},
+		{idMetricScale: '1', name: 'Não implementado'},
+		{idMetricScale: '2', name: 'Parcialmente implementado'},
+		{idMetricScale: '3', name: 'Não avaliado'},
 		{idMetricScale: '4', name: 'Largamente implementado'},
 		{idMetricScale: '5', name: 'Totalmente implementado'},
 	];

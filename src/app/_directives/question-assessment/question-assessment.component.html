@@ -5,10 +5,12 @@
 	<mat-card-content>
 		<div *ngFor="let question of questionsByExpectedResult[idExpectedResult]; let i = index">
 
-			<span>{{i + 1 + '. ' + question.name}}</span>
-			<form [formGroup]="questionAssessmentForms[i]">
+			<span>{{i + 1 + '. ' + question.name}}
+				<i *ngIf="question.tip" class="fa fa-info-circle" [matTooltip]="question.tip"></i>
+			</span>
+			<form [formGroup]="getFormByIdQuestion(question.idQuestion)">
 				<div *ngIf="question.type === 'boolean'">
-					<mat-radio-group formControlName="value" (change)="confirmResult(i)">
+					<mat-radio-group formControlName="value" (change)="confirmResult(question.idQuestion)">
 						<mat-radio-button value="true" class="padding-right">
 							Falso
 						</mat-radio-button>
@@ -19,7 +21,7 @@
 				</div>
 				<div *ngIf="question.type === 'scale-nominal' && scaleValues">
 					<mat-radio-group formControlName="value"
-									 (change)="confirmResult(i)"
+									 (change)="confirmResult(question.idQuestion)"
 									 class="example-radio-group">
 						<mat-radio-button class="example-radio-button" value="1">
 							{{scaleValues[0].value}}
@@ -45,7 +47,7 @@
 						[step]="1"
 						[thumbLabel]="true"
 						[tickInterval]="1"
-						(change)="confirmResult(i)"
+						(change)="confirmResult(question.idQuestion)"
 						formControlName="value">
 					</mat-slider>
 				</div>
@@ -62,9 +64,9 @@
 		<div *ngFor="let question of questionsByIdProcessAttribute[processAttribute.idProcessAttribute]; let i = index">
 
 			<span>{{i + 1 + '. ' + question.name}}</span>
-			<form [formGroup]="questionAssessmentForms[i]">
+			<form [formGroup]="getFormByIdQuestion(question.idQuestion)">
 				<div *ngIf="question.type === 'boolean'">
-					<mat-radio-group formControlName="value" (change)="confirmResult(i)">
+					<mat-radio-group formControlName="value" (change)="confirmResult(question.idQuestion, true)">
 						<mat-radio-button value="true" class="padding-right">
 							Falso
 						</mat-radio-button>
@@ -75,7 +77,7 @@
 				</div>
 				<div *ngIf="question.type === 'scale-nominal' && scaleValues">
 					<mat-radio-group formControlName="value"
-									 (change)="confirmResult(i)"
+									 (change)="confirmResult(question.idQuestion, true)"
 									 class="example-radio-group">
 						<mat-radio-button class="example-radio-button" value="1">
 							{{scaleValues[0].value}}
@@ -101,7 +103,7 @@
 						[step]="1"
 						[thumbLabel]="true"
 						[tickInterval]="1"
-						(change)="confirmResult(i)"
+						(change)="confirmResult(question.idQuestion, true)"
 						formControlName="value">
 					</mat-slider>
 				</div>

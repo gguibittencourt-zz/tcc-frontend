@@ -27,23 +27,18 @@ export class QuestionAssessmentComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.questionAssessmentForms[0] = this.formBuilder.group({
-			idResult: [''],
-			idKnowledgeArea: [],
-			idProcess: [''],
-			idQuestion: [''],
-			value: []
-		});
-
-		this.results.forEach((value, index) => {
-			const result = this.results[index];
-			this.questionAssessmentForms[index] = this.formBuilder.group({
+		this.results.forEach(result => {
+			const formGroup = this.formBuilder.group({
 				idResult: [result.idResult],
 				idKnowledgeArea: [result.idKnowledgeArea],
 				idProcess: [result.idProcess],
+				idExpectedResult: [result.idExpectedResult],
 				idQuestion: [result.idQuestion],
+				idProcessAttribute: [result.idProcessAttribute],
+				idProcessAttributeValue: [result.idProcessAttributeValue],
 				value: [result.value]
 			});
+			this.questionAssessmentForms.push(formGroup);
 		});
 
 		this.questionsByExpectedResult = groupBy(this.questions, 'idExpectedResult');
@@ -51,8 +46,33 @@ export class QuestionAssessmentComponent implements OnInit {
 		this.questionsByIdProcessAttribute = groupBy(this.questionsProcessAttributes, 'idProcessAttribute');
 	}
 
-	confirmResult(index: number) {
-		const value: Result = this.questionAssessmentForms[index].value;
+	confirmResult(idQuestion: string, isProcessAttribute: boolean = false) {
+		const value: Result = this.getFormByIdQuestion(idQuestion).value;
+		let questions: Question[] = [];
+		if (isProcessAttribute) {
+			questions = this.questionsProcessAttributes.filter(question => {
+				return question.dependsOnAnyQuestion && question.idDependentQuestion == value.idQuestion && value.value == String(question.dependentValue.value);
+			});
+		} else {
+			questions = this.questions.filter(question => {
+				return question.dependsOnAnyQuestion && question.idDependentQuestion == value.idQuestion && value.value == String(question.dependentValue.value);
+			});
+		}
+
+		if (questions) {
+			this.results.forEach(result => {
+				const question = questions.find(question => result.idQuestion == question.idQuestion);
+				if (question) {
+					result.value = String(question.updateValue.value);
+					const form = this.getFormByIdQuestion(result.idQuestion);
+					form.get('value').setValue(String(question.updateValue.value));
+					this.onConfirmResult.emit(result);
+					this.confirmResult(question.idQuestion, isProcessAttribute);
+				}
+			});
+
+		}
+
 		if (value.value) {
 			this.onConfirmResult.emit(value);
 		}
@@ -60,6 +80,10 @@ export class QuestionAssessmentComponent implements OnInit {
 
 	getExpectedResultName(idExpectedResult: string, index: number): string {
 		const expectedResult = this.expectedResults.find(value => value.idExpectedResult === idExpectedResult);
-		return expectedResult ? this.prefix + ' ' + index + '. ' +expectedResult.name  : '';
+		return expectedResult ? this.prefix + ' ' + index + '. ' + expectedResult.name : '';
+	}
+
+	getFormByIdQuestion(idQuestion: string) {
+		return this.questionAssessmentForms.find(form => form.get('idQuestion').value == idQuestion);
 	}
 }

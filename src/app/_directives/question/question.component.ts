@@ -88,10 +88,6 @@ export class QuestionComponent {
 		return this.questionForms[index].controls['dependsOnAnyQuestion'].value;
 	}
 
-	getQuestions(index: number): Question[] {
-		return this.data.questions.filter(value => this.data.questions.indexOf(value) < index);
-	}
-
 	deleteQuestion(index: number): void {
 		this.data.questions.splice(index, 1);
 		this.questionForms.splice(index, 1);
@@ -103,6 +99,10 @@ export class QuestionComponent {
 
 	changeQuestionRequired(event: any): void {
 		this._questionRequired = event.checked;
+	}
+
+	comparer(o1: any, o2: any): boolean {
+		return o1 && o2 ? o1.value === o2.value : false;
 	}
 
 	private createForm(idQuestion: string = '', idTreeNode: string = ''): FormGroup {
@@ -120,11 +120,8 @@ export class QuestionComponent {
 			dependsOnAnyQuestion: [false],
 			hasDataSource: [false],
 			idDependentQuestion: [''],
-			dependentValue: this.formBuilder.group({
-				id: [],
-				title: [],
-				value: []
-			}),
+			dependentValue: [''],
+			updateValue: [''],
 			config: this.formBuilder.group({
 				minCharacters: [],
 				maxCharacters: [],
@@ -144,14 +141,14 @@ export class QuestionComponent {
 	private createValues(type: string) {
 		if (type === 'boolean') {
 			return [
-				this.newDependentValue('Verdadeiro', true),
-				this.newDependentValue('Falso', false)
+				this.newDependentValue('Verdadeiro', 5),
+				this.newDependentValue('Falso', 1)
 			];
 		} else if (type === 'scale-nominal') {
 			return [
-				this.newDependentValue('Não ainda', 1),
-				this.newDependentValue('Não implementado', 2),
-				this.newDependentValue('Parcialmente implementado', 3),
+				this.newDependentValue('Não implementado', 1),
+				this.newDependentValue('Parcialmente implementado', 2),
+				this.newDependentValue('Não avaliado', 3),
 				this.newDependentValue('Largamente implementado', 4),
 				this.newDependentValue('Totalmente implementado', 5),
 			];

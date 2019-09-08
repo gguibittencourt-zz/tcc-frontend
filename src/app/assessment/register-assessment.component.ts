@@ -11,7 +11,8 @@ import {
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {
 	Assessment,
-	Classification, ExpectedResult,
+	Classification,
+	ExpectedResult,
 	JsonAssessment,
 	KnowledgeArea,
 	MeasurementFramework,
@@ -24,7 +25,6 @@ import {
 	User
 } from "../_models";
 import {flatMap} from "lodash";
-import {ProcessAttributeValue} from "../_models/process-attribute-value";
 
 @Component({
 	templateUrl: './register-assessment.component.html',
@@ -83,6 +83,7 @@ export class RegisterAssessmentComponent implements OnInit {
 					this.assessment = data;
 					this.measurementFramework = this.assessment.jsonAssessment.measurementFramework;
 					this.referenceModel = this.assessment.jsonAssessment.referenceModel;
+					this.changeTargetLevel(this.assessment.jsonAssessment.targetLevel);
 					this.results = this.assessment.jsonAssessment.results;
 				});
 			}
@@ -123,15 +124,11 @@ export class RegisterAssessmentComponent implements OnInit {
 		return this.measurementFramework.questions.filter(question => question.idProcess == process.idProcess);
 	}
 
-	getQuestionsByProcessAttributeValue() {
+	getQuestionsByProcessAttribute() {
 		const idsProcessAttributes = this.processAttributes.map(value => value.idProcessAttribute);
 		return this.measurementFramework.questions.filter(question => {
 			return idsProcessAttributes.includes(question.idProcessAttribute);
 		});
-	}
-
-	getResultByIdQuestion(idQuestion: string) {
-		return this.results.find(value => value.idQuestion === idQuestion);
 	}
 
 	confirmResult(result: Result) {
@@ -217,16 +214,15 @@ export class RegisterAssessmentComponent implements OnInit {
 						question.idProcessAttributeValue));
 				this.results.push(...results);
 			}
-		})
-
+		});
 	}
 
-	private existResult(idKnowledgeArea: number, idProcess: string, idQuestion: string, idExpectedResult: string,
+	private existResult(idKnowledgeArea: string, idProcess: string, idQuestion: string, idExpectedResult: string,
 						idProcessAttribute: string, idProcessAttributeValue: string): boolean {
 		return this.results.some(value => {
 			return value.idQuestion == idQuestion
-				&& (value.idProcess && value.idKnowledgeArea == idKnowledgeArea && value.idProcess == idProcess && idExpectedResult == value.idExpectedResult
-				|| value.idProcessAttribute && value.idProcessAttribute == idProcessAttribute && value.idProcessAttributeValue == idProcessAttributeValue);
+				&& (value.idProcess && value.idKnowledgeArea == idKnowledgeArea && value.idProcess == idProcess && idExpectedResult == value.idExpectedResult)
+					|| (value.idProcessAttribute && value.idProcessAttribute == idProcessAttribute && value.idProcessAttributeValue == idProcessAttributeValue);
 		});
 	}
 
@@ -250,8 +246,30 @@ export class RegisterAssessmentComponent implements OnInit {
 	}
 
 	private getProcessAttributes(): ProcessAttribute[] {
-		return flatMap(this.classification.processAttributes, (value => {
+		const processAttributes = flatMap(this.classification.processAttributes, (value => {
 			return this.measurementFramework.processAttributes.filter(processAttribute => value === processAttribute.idProcessAttribute && processAttribute.generateQuestions);
 		}));
+		this.createResultsProcessAttributes(processAttributes);
+		return processAttributes;
+	}
+
+	private createResultsProcessAttributes(processAttributes: ProcessAttribute[]) {
+		processAttributes.forEach(processAttribute => {
+			const questions = this.measurementFramework.questions.filter(question => {
+				return processAttribute.idProcessAttribute == question.idProcessAttribute;
+			});
+			if (questions.length) {
+				const results: Result[] = questions.filter(value => {
+					return !this.existResult('', value.idProcess, value.idQuestion, value.idExpectedResult, value.idProcessAttribute, value.idProcessAttributeValue)
+				}).map(question => new Result(
+					'',
+					question.idProcess,
+					question.idQuestion,
+					question.idExpectedResult,
+					question.idProcessAttribute,
+					question.idProcessAttributeValue));
+				this.results.push(...results);
+			}
+		})
 	}
 }

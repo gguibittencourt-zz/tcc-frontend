@@ -63,14 +63,14 @@
 	<mat-step [stepControl]="assessmentForm">
 		<form [formGroup]="assessmentForm">
 			<ng-template matStepLabel>Preencha as questões</ng-template>
-			<div class="form-group" *ngIf="measurementFramework && referenceModel && processes">
+			<div class="form-group" *ngIf="measurementFramework && referenceModel && processes && processAttributes">
 				<mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
 					<mat-tab *ngFor="let process of processes" label="{{process.name}}">
 						<mat-card *ngIf="hasQuestions(process)" class="card-process">
 							<mat-card-content>
 								<div class="purpose">{{process.purpose}}</div>
 								<question-assessment [questions]="getQuestionsByProcess(process)"
-													 [questionsProcessAttributes]="getQuestionsByProcessAttributeValue()"
+													 [questionsProcessAttributes]="getQuestionsByProcessAttribute()"
 													 [prefix]="process.prefix"
 													 [results]="results"
 													 [scaleValues]="scaleValues"

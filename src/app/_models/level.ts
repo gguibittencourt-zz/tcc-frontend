@@ -1,4 +1,4 @@
 ﻿export class Level {
-	idProcessArea: number;
+	idProcessArea: string;
 	values: any[];
 }
