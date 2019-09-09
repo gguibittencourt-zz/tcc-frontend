@@ -8,20 +8,23 @@
 			<span>{{i + 1 + '. ' + question.name}}
 				<i *ngIf="question.tip" class="fa fa-info-circle" [matTooltip]="question.tip"></i>
 			</span>
-			<form [formGroup]="getFormByIdQuestion(question.idQuestion)">
+			<form [formGroup]="getFormByIdQuestion(question)">
 				<div *ngIf="question.type === 'boolean'">
-					<mat-radio-group formControlName="value" (change)="confirmResult(question.idQuestion)">
-						<mat-radio-button value="true" class="padding-right">
+					<mat-radio-group formControlName="value" (change)="confirmResult(question)">
+						<mat-radio-button value="1" class="padding-right">
 							Falso
 						</mat-radio-button>
-						<mat-radio-button value="false">
+						<mat-radio-button value="5">
 							Verdadeiro
 						</mat-radio-button>
 					</mat-radio-group>
+					<mat-error class="error-padding-bottom" *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
+						Questão obrigatória
+					</mat-error>
 				</div>
 				<div *ngIf="question.type === 'scale-nominal' && scaleValues">
 					<mat-radio-group formControlName="value"
-									 (change)="confirmResult(question.idQuestion)"
+									 (change)="confirmResult(question)"
 									 class="example-radio-group">
 						<mat-radio-button class="example-radio-button" value="1">
 							{{scaleValues[0].value}}
@@ -39,6 +42,9 @@
 							{{scaleValues[4].value}}
 						</mat-radio-button>
 					</mat-radio-group>
+					<mat-error class="error-padding-bottom" *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
+						Questão obrigatória
+					</mat-error>
 				</div>
 				<div *ngIf="question.type === 'scale-numeric'">
 					<mat-slider
@@ -47,9 +53,12 @@
 						[step]="1"
 						[thumbLabel]="true"
 						[tickInterval]="1"
-						(change)="confirmResult(question.idQuestion)"
+						(change)="confirmResult(question)"
 						formControlName="value">
 					</mat-slider>
+					<mat-error class="error-padding-bottom" *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
+						Questão obrigatória
+					</mat-error>
 				</div>
 			</form>
 		</div>
@@ -64,20 +73,23 @@
 		<div *ngFor="let question of questionsByIdProcessAttribute[processAttribute.idProcessAttribute]; let i = index">
 
 			<span>{{i + 1 + '. ' + question.name}}</span>
-			<form [formGroup]="getFormByIdQuestion(question.idQuestion)">
+			<form [formGroup]="getFormByIdQuestion(question)">
 				<div *ngIf="question.type === 'boolean'">
-					<mat-radio-group formControlName="value" (change)="confirmResult(question.idQuestion, true)">
-						<mat-radio-button value="true" class="padding-right">
+					<mat-radio-group formControlName="value" (change)="confirmResult(question, true)">
+						<mat-radio-button value="1" class="padding-right">
 							Falso
 						</mat-radio-button>
-						<mat-radio-button value="false">
+						<mat-radio-button value="5">
 							Verdadeiro
 						</mat-radio-button>
 					</mat-radio-group>
+					<mat-error class="error-padding-bottom" *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
+						Questão obrigatória
+					</mat-error>
 				</div>
 				<div *ngIf="question.type === 'scale-nominal' && scaleValues">
 					<mat-radio-group formControlName="value"
-									 (change)="confirmResult(question.idQuestion, true)"
+									 (change)="confirmResult(question, true)"
 									 class="example-radio-group">
 						<mat-radio-button class="example-radio-button" value="1">
 							{{scaleValues[0].value}}
@@ -95,6 +107,9 @@
 							{{scaleValues[4].value}}
 						</mat-radio-button>
 					</mat-radio-group>
+					<mat-error class="error-padding-bottom" *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
+						Questão obrigatória
+					</mat-error>
 				</div>
 				<div *ngIf="question.type === 'scale-numeric'">
 					<mat-slider
@@ -103,9 +118,12 @@
 						[step]="1"
 						[thumbLabel]="true"
 						[tickInterval]="1"
-						(change)="confirmResult(question.idQuestion, true)"
+						(change)="confirmResult(question, true)"
 						formControlName="value">
 					</mat-slider>
+					<mat-error class="error-padding-bottom" *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
+						Questão obrigatória
+					</mat-error>
 				</div>
 			</form>
 		</div>

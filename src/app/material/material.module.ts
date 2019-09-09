@@ -20,12 +20,13 @@ import {
 	MatSidenavModule,
 	MatSliderModule,
 	MatSlideToggleModule,
+	MatSnackBarModule,
 	MatStepperModule,
 	MatTableModule,
 	MatTabsModule,
 	MatToolbarModule,
 	MatTooltipModule,
-	MatTreeModule
+	MatTreeModule,
 } from '@angular/material';
 
 @NgModule({
@@ -58,6 +59,7 @@ import {
 		MatRadioModule,
 		MatSliderModule,
 		MatDividerModule,
+		MatSnackBarModule
 	],
 })
 export class CustomMaterialModule {

@@ -1,7 +1,7 @@
 ﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ExpectedResult, ProcessAttribute, Question, Result, ScaleValues} from '../../_models';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {groupBy} from 'lodash'
+import {FormGroup} from '@angular/forms';
+import {groupBy} from 'lodash';
 
 @Component({
 	selector: 'question-assessment',
@@ -12,42 +12,25 @@ import {groupBy} from 'lodash'
 export class QuestionAssessmentComponent implements OnInit {
 	@Input('questions') questions: Question[];
 	@Input('questionsProcessAttributes') questionsProcessAttributes: Question[];
-	@Input('results') results: Result[];
 	@Input('prefix') prefix: string;
+	@Input('finish') finish: boolean;
 	@Input('scaleValues') scaleValues: ScaleValues[];
 	@Input('expectedResults') expectedResults: ExpectedResult[];
 	@Input('processAttributes') processAttributes: ProcessAttribute[];
+	@Input('resultForms') resultForms: FormGroup[];
 	@Output() onConfirmResult: EventEmitter<any> = new EventEmitter();
-	questionAssessmentForms: FormGroup[] = [];
 	questionsByExpectedResult: any;
 	idsExpectedResults: string[];
 	questionsByIdProcessAttribute: any;
 
-	constructor(private formBuilder: FormBuilder) {
-	}
-
 	ngOnInit() {
-		this.results.forEach(result => {
-			const formGroup = this.formBuilder.group({
-				idResult: [result.idResult],
-				idKnowledgeArea: [result.idKnowledgeArea],
-				idProcess: [result.idProcess],
-				idExpectedResult: [result.idExpectedResult],
-				idQuestion: [result.idQuestion],
-				idProcessAttribute: [result.idProcessAttribute],
-				idProcessAttributeValue: [result.idProcessAttributeValue],
-				value: [result.value]
-			});
-			this.questionAssessmentForms.push(formGroup);
-		});
-
 		this.questionsByExpectedResult = groupBy(this.questions, 'idExpectedResult');
 		this.idsExpectedResults = Object.keys(this.questionsByExpectedResult);
 		this.questionsByIdProcessAttribute = groupBy(this.questionsProcessAttributes, 'idProcessAttribute');
 	}
 
-	confirmResult(idQuestion: string, isProcessAttribute: boolean = false) {
-		const value: Result = this.getFormByIdQuestion(idQuestion).value;
+	confirmResult(question: Question, isProcessAttribute: boolean = false) {
+		const value: Result = this.getFormByIdQuestion(question).value;
 		let questions: Question[] = [];
 		if (isProcessAttribute) {
 			questions = this.questionsProcessAttributes.filter(question => {
@@ -60,21 +43,14 @@ export class QuestionAssessmentComponent implements OnInit {
 		}
 
 		if (questions) {
-			this.results.forEach(result => {
+			this.resultForms.forEach((resultForm: FormGroup) => {
+				const result = resultForm.value;
 				const question = questions.find(question => result.idQuestion == question.idQuestion);
 				if (question) {
-					result.value = String(question.updateValue.value);
-					const form = this.getFormByIdQuestion(result.idQuestion);
-					form.get('value').setValue(String(question.updateValue.value));
-					this.onConfirmResult.emit(result);
-					this.confirmResult(question.idQuestion, isProcessAttribute);
+					resultForm.get('value').setValue(String(question.updateValue.value));
+					this.confirmResult(question, isProcessAttribute);
 				}
 			});
-
-		}
-
-		if (value.value) {
-			this.onConfirmResult.emit(value);
 		}
 	}
 
@@ -83,7 +59,9 @@ export class QuestionAssessmentComponent implements OnInit {
 		return expectedResult ? this.prefix + ' ' + index + '. ' + expectedResult.name : '';
 	}
 
-	getFormByIdQuestion(idQuestion: string) {
-		return this.questionAssessmentForms.find(form => form.get('idQuestion').value == idQuestion);
+	getFormByIdQuestion(question: Question) {
+		return this.resultForms.find(result => {
+			return result.get('idQuestion').value == question.idQuestion;
+		});
 	}
 }

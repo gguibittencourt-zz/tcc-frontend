@@ -76,10 +76,10 @@
 								</ng-template>
 								<div class="display-inline-flex">
 									<mat-slide-toggle class="col-md-6" formControlName="required"
-													  (change)="changeQuestionRequired($event)"
+													  (change)="changeQuestionRequired($event, i)"
 													  labelPosition="before">Obrigatória
 									</mat-slide-toggle>
-									<mat-form-field class="col-md-6" *ngIf="!questionRequired">
+									<mat-form-field class="col-md-6" *ngIf="!getQuestionRequired(i)">
 										<mat-select placeholder="Valor padrão" formControlName="defaultValue">
 											<mat-option *ngFor="let defaultValue of defaultValues"
 														[value]="defaultValue.value">

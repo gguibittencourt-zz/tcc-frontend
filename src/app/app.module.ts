@@ -50,6 +50,7 @@ import {LevelScaleOrdinalComponent} from "./_directives/level-scale-ordinal";
 import {ProcessAttributesComponent} from "./_directives/process-attributes";
 import {ProcessAttributeValueComponent} from "./_directives/process-attribute-value";
 import {CapacityDialogComponent} from "./_directives/capacity-dialog";
+import {SnackBarComponent} from "./_directives/snack-bar";
 
 @NgModule({
 	imports: [
@@ -94,7 +95,8 @@ import {CapacityDialogComponent} from "./_directives/capacity-dialog";
 		ProcessAttributesComponent,
 		ProcessAttributeValueComponent,
 		ScaleValuesDialogComponent,
-		CapacityDialogComponent
+		CapacityDialogComponent,
+		SnackBarComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -115,7 +117,8 @@ import {CapacityDialogComponent} from "./_directives/capacity-dialog";
 		QuestionComponent,
 		MetricScaleDialogComponent,
 		ScaleValuesDialogComponent,
-		CapacityDialogComponent
+		CapacityDialogComponent,
+		SnackBarComponent
 	],
 	bootstrap: [AppComponent]
 })

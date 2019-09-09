@@ -1,6 +1,4 @@
-﻿import {DependentValue} from "./dependent-value";
-
-export class Question {
+﻿export class Question {
 	idQuestion: string;
 	idExpectedResult: string;
 	idProcess: string;

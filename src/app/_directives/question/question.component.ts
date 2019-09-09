@@ -15,7 +15,6 @@ export class QuestionComponent {
 	mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
 	dependentValueByQuestion: any[] = [];
 	defaultValues: any[] = [];
-	private _questionRequired: boolean = true;
 	private _isPossibleConfirm: boolean = true;
 
 	constructor(private dialogRef: MatDialogRef<QuestionComponent>,
@@ -35,10 +34,6 @@ export class QuestionComponent {
 
 	get isPossibleConfirm(): boolean {
 		return this._isPossibleConfirm;
-	}
-
-	get questionRequired(): boolean {
-		return this._questionRequired;
 	}
 
 	get allValidForms(): boolean {
@@ -74,7 +69,7 @@ export class QuestionComponent {
 	}
 
 	createDependentValues(idQuestion: string) {
-		let question: Question = this.getQuestion(idQuestion);
+		const question: Question = this.getQuestion(idQuestion);
 		if (question) {
 			this.dependentValueByQuestion = this.createValues(question.type);
 		}
@@ -97,8 +92,12 @@ export class QuestionComponent {
 		this.mapCloseAccordion.set(index, true);
 	}
 
-	changeQuestionRequired(event: any): void {
-		this._questionRequired = event.checked;
+	changeQuestionRequired(event: any, i: number): void {
+		this.questionForms[i].get('required').setValue(event.checked);
+	}
+
+	getQuestionRequired(i: number) {
+		return this.questionForms[i].get('required').value;
 	}
 
 	comparer(o1: any, o2: any): boolean {

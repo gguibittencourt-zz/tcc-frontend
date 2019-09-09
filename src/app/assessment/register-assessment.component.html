@@ -13,14 +13,16 @@
 			<div class="form-group" formGroupName="jsonAssessment">
 				<mat-form-field class="full-width-input">
 					<mat-select placeholder="Método de Avaliação" formControlName="measurementFramework"
-								(selectionChange)="changeMeasurementFramework($event.value)" [disabled]="!!idAssessment">
+								(selectionChange)="changeMeasurementFramework($event.value)"
+								[disabled]="!!idAssessment">
 						<div *ngIf="!idAssessment">
 							<mat-option *ngFor="let measurementFramework of measurementFrameworks"
 										[value]="measurementFramework">
 								{{measurementFramework.name}}
 							</mat-option>
 						</div>
-						<mat-option *ngIf="idAssessment && measurementFramework" [value]="measurementFramework" disabled>
+						<mat-option *ngIf="idAssessment && measurementFramework" [value]="measurementFramework"
+									disabled>
 							{{measurementFramework.name}}
 						</mat-option>
 					</mat-select>
@@ -69,10 +71,11 @@
 						<mat-card *ngIf="hasQuestions(process)" class="card-process">
 							<mat-card-content>
 								<div class="purpose">{{process.purpose}}</div>
-								<question-assessment [questions]="getQuestionsByProcess(process)"
+								<question-assessment [resultForms]="getResultForms.value"
+													 [questions]="getQuestionsByProcess(process)"
 													 [questionsProcessAttributes]="getQuestionsByProcessAttribute()"
 													 [prefix]="process.prefix"
-													 [results]="results"
+													 [finish]="isFinish"
 													 [scaleValues]="scaleValues"
 													 [expectedResults]="getExpectedResults()"
 													 [processAttributes]="processAttributes"
