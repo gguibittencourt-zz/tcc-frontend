@@ -1,22 +1,30 @@
-﻿import {Component, OnInit} from '@angular/core';
+﻿import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {first} from 'rxjs/operators';
 
-import {AlertService, CompanyService} from '../_services';
+import {CompanyService} from '../_services';
+import {Company} from "../_models";
+import {MatDialogRef, MatSnackBar} from "@angular/material";
+import {CompanyDialogComponent} from "../_directives/company-dialog";
+import {SnackBarComponent} from "../_directives/snack-bar";
 
-@Component({templateUrl: 'company.component.html'})
+@Component({
+	selector: 'company',
+	templateUrl: 'company.component.html'
+})
 export class CompanyComponent implements OnInit {
 	companyForm: FormGroup;
 	loading = false;
 	submitted = false;
+	@Input('company') company: Company;
+	@Input('dialogRef') dialogRef: MatDialogRef<CompanyDialogComponent>;
 
 	constructor(
 		private route: ActivatedRoute,
 		private formBuilder: FormBuilder,
 		private router: Router,
 		private companyService: CompanyService,
-		private alertService: AlertService) {
+		private snackBar: MatSnackBar) {
 	}
 
 	ngOnInit() {
@@ -28,15 +36,18 @@ export class CompanyComponent implements OnInit {
 			occupationArea: ['', Validators.required],
 		});
 
-		this.route.params.subscribe(params => {
-			let idCompany: number = params['idCompany'];
-			this.companyService.get(idCompany).subscribe(data => {
-				this.companyForm.setValue(data);
+		if (this.company) {
+			this.companyForm.setValue(this.company);
+		} else {
+			this.route.params.subscribe(params => {
+				const idCompany: number = params['idCompany'];
+				this.companyService.get(idCompany).subscribe(data => {
+					this.companyForm.setValue(data);
+				});
 			});
-		});
+		}
 	}
 
-	// convenience getter for easy access to form fields
 	get f() {
 		return this.companyForm.controls;
 	}
@@ -44,7 +55,6 @@ export class CompanyComponent implements OnInit {
 	onSubmit() {
 		this.submitted = true;
 
-		// stop here if form is invalid
 		if (this.companyForm.invalid) {
 			return;
 		}
@@ -53,12 +63,32 @@ export class CompanyComponent implements OnInit {
 		this.companyService.update(this.companyForm.value)
 			.subscribe(
 				data => {
-					this.alertService.success('Update successful', true);
-					this.router.navigate(['/home']);
+					if (this.company) {
+						this.dialogRef.close(false);
+					} else {
+						this.createSnackBar('Organização atualizada', 'success');
+						this.router.navigate(['/home']);
+					}
 				},
 				error => {
-					this.alertService.error(error.error);
+					this.createSnackBar(error.error, 'error');
 					this.loading = false;
 				});
+	}
+
+	cancel(): void {
+		if (this.company) {
+			this.dialogRef.close(false);
+			return;
+		}
+		this.router.navigate(['/home']);
+	}
+
+	private createSnackBar(message: string, panelClass: string): void {
+		this.snackBar.openFromComponent(SnackBarComponent, {
+			data: message,
+			panelClass: [panelClass],
+			duration: 5000
+		});
 	}
 }

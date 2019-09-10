@@ -1,10 +1,11 @@
 ﻿import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {AlertService, AssessmentService, MeasurementFrameworkService} from '../_services';
-import {MatDialog, MatPaginator, MatTableDataSource} from "@angular/material";
+import {AssessmentService, MeasurementFrameworkService} from '../_services';
+import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from "@angular/material";
 import {ConfirmDialogComponent} from "../_directives/confirm-dialog";
-import {DialogData, Assessment, MeasurementFramework} from "../_models";
+import {Assessment, DialogData, MeasurementFramework} from "../_models";
+import {SnackBarComponent} from "../_directives/snack-bar";
 
 @Component({
 	templateUrl: './list-assessment.component.html',
@@ -26,7 +27,7 @@ export class ListAssessmentComponent implements OnInit {
 		private assessmentService: AssessmentService,
 		private measurementFrameworkService: MeasurementFrameworkService,
 		private dialog: MatDialog,
-		private alertService: AlertService) {
+		private snackBar: MatSnackBar) {
 	}
 
 	ngOnInit() {
@@ -65,7 +66,7 @@ export class ListAssessmentComponent implements OnInit {
 	delete(assessment: Assessment) {
 		this.assessmentService.delete(assessment.idAssessment).subscribe(value => {
 			this.list();
-			this.alertService.success('Deletado com sucesso', true);
+			this.createSnackBar('Deletado com sucesso', 'success');
 		});
 	}
 
@@ -79,5 +80,13 @@ export class ListAssessmentComponent implements OnInit {
 
 	formatStatus(status: string) {
 		return status =='finalized' ? 'Finalizado' : 'Em progresso';
+	}
+
+	private createSnackBar(message: string, panelClass: string): void {
+		this.snackBar.openFromComponent(SnackBarComponent, {
+			data: message,
+			panelClass: [panelClass],
+			duration: 5000
+		});
 	}
 }

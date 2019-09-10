@@ -1,9 +1,11 @@
 ﻿import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {AlertService, ReferenceModelService} from '../_services';
+import {ReferenceModelService} from '../_services';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {KnowledgeArea, ReferenceModel} from "../_models";
+import {MatSnackBar} from "@angular/material";
+import {SnackBarComponent} from "../_directives/snack-bar";
 
 @Component({
 	templateUrl: './register-reference-model.component.html',
@@ -22,7 +24,7 @@ export class RegisterReferenceModelComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		private router: Router,
 		private referenceModelService: ReferenceModelService,
-		private alertService: AlertService) {
+		private snackBar: MatSnackBar) {
 	}
 
 	ngOnInit() {
@@ -61,22 +63,22 @@ export class RegisterReferenceModelComponent implements OnInit {
 			this.referenceModelService.update(this.referenceModelForm.value)
 				.subscribe(
 					data => {
-						this.alertService.success('Atualizado com sucesso', true);
+						this.createSnackBar('Atualizado com sucesso', 'success');
 						this.router.navigate(['/reference-model']);
 					},
 					error => {
-						this.alertService.error(error.error);
+						this.createSnackBar(error.error, 'error');
 						this.loading = false;
 					});
 		} else {
 			this.referenceModelService.register(this.referenceModelForm.value)
 				.subscribe(
 					data => {
-						this.alertService.success('Cadastro com sucesso', true);
+						this.createSnackBar('Cadastro com sucesso', 'success');
 						this.router.navigate(['/reference-model']);
 					},
 					error => {
-						this.alertService.error(error.error);
+						this.createSnackBar(error.error, 'error');
 						this.loading = false;
 					});
 		}
@@ -92,5 +94,13 @@ export class RegisterReferenceModelComponent implements OnInit {
 
 	deleteKnowledgeArea(index: number) {
 		this.knowledgeAreas.splice(index, 1);
+	}
+
+	private createSnackBar(message: string, panelClass: string): void {
+		this.snackBar.openFromComponent(SnackBarComponent, {
+			data: message,
+			panelClass: [panelClass],
+			duration: 5000
+		});
 	}
 }

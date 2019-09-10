@@ -1,7 +1,7 @@
 ﻿import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {AlertService, MeasurementFrameworkService, ReferenceModelService} from '../_services';
+import {MeasurementFrameworkService, ReferenceModelService} from '../_services';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {
 	Classification,
@@ -14,10 +14,11 @@ import {
 	ScaleValues,
 	TypeQuestion
 } from "../_models";
-import {MatDialog, MatSelectChange} from "@angular/material";
+import {MatDialog, MatSelectChange, MatSnackBar} from "@angular/material";
 import {ScaleValuesDialogComponent} from "../_directives/scale-values-dialog";
 import {Guid} from "guid-typescript";
 import {flatten, isEmpty} from 'lodash';
+import {SnackBarComponent} from "../_directives/snack-bar";
 
 @Component({
 	templateUrl: './register-measurement-framework.component.html',
@@ -42,7 +43,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		private dialog: MatDialog,
 		private measurementFrameworkService: MeasurementFrameworkService,
 		private referenceModelService: ReferenceModelService,
-		private alertService: AlertService) {
+		private snackBar: MatSnackBar) {
 	}
 
 	get f() {
@@ -143,22 +144,22 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			this.measurementFrameworkService.update(this.measurementFrameworkForm.value)
 				.subscribe(
 					data => {
-						this.alertService.success('Atualizado com sucesso', true);
+						this.createSnackBar('Atualizado com sucesso', 'success');
 						this.router.navigate(['/measurement-framework']);
 					},
 					error => {
-						this.alertService.error(error.error);
+						this.createSnackBar(error.error, 'error');
 						this.loading = false;
 					});
 		} else {
 			this.measurementFrameworkService.register(this.measurementFrameworkForm.value)
 				.subscribe(
 					data => {
-						this.alertService.success('Cadastrado com sucesso', true);
+						this.createSnackBar('Cadastrado com sucesso', 'success');
 						this.router.navigate(['/measurement-framework']);
 					},
 					error => {
-						this.alertService.error(error.error);
+						this.createSnackBar(error.error, 'error');
 						this.loading = false;
 					});
 		}
@@ -231,5 +232,13 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 				return question;
 			}));
 		}));
+	}
+
+	private createSnackBar(message: string, panelClass: string): void {
+		this.snackBar.openFromComponent(SnackBarComponent, {
+			data: message,
+			panelClass: [panelClass],
+			duration: 5000
+		});
 	}
 }

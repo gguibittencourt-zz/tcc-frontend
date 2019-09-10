@@ -39,7 +39,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<a [routerLink]="['/home']" mat-raised-button class="btn btn-outline-danger">Cancelar</a>
+				<button mat-raised-button class="btn btn-outline-danger" (click)="cancel()">Cancelar</button>
 				<button mat-raised-button [disabled]="loading" class="btn btn-outline-success">Salvar</button>
 			</div>
 		</form>

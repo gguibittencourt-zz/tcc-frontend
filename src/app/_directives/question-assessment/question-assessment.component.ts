@@ -1,4 +1,4 @@
-﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+﻿import {Component, Input, OnInit} from '@angular/core';
 import {ExpectedResult, ProcessAttribute, Question, Result, ScaleValues} from '../../_models';
 import {FormGroup} from '@angular/forms';
 import {groupBy} from 'lodash';
@@ -18,7 +18,6 @@ export class QuestionAssessmentComponent implements OnInit {
 	@Input('expectedResults') expectedResults: ExpectedResult[];
 	@Input('processAttributes') processAttributes: ProcessAttribute[];
 	@Input('resultForms') resultForms: FormGroup[];
-	@Output() onConfirmResult: EventEmitter<any> = new EventEmitter();
 	questionsByExpectedResult: any;
 	idsExpectedResults: string[];
 	questionsByIdProcessAttribute: any;
@@ -48,7 +47,6 @@ export class QuestionAssessmentComponent implements OnInit {
 				const question = questions.find(question => result.idQuestion == question.idQuestion);
 				if (question) {
 					resultForm.get('value').setValue(String(question.updateValue.value));
-					this.confirmResult(question, isProcessAttribute);
 				}
 			});
 		}

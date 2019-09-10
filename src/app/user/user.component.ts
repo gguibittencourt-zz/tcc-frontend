@@ -1,10 +1,11 @@
 ﻿import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {first} from 'rxjs/operators';
 
-import {AlertService, AuthenticationService, UserService} from '../_services';
+import {AuthenticationService, UserService} from '../_services';
 import {User} from "../_models";
+import {SnackBarComponent} from "../_directives/snack-bar";
+import {MatSnackBar} from "@angular/material";
 
 @Component({templateUrl: 'user.component.html'})
 export class UserComponent implements OnInit {
@@ -20,7 +21,7 @@ export class UserComponent implements OnInit {
 		private route: ActivatedRoute,
 		private userService: UserService,
 		private authenticationService: AuthenticationService,
-		private alertService: AlertService) {
+		private snackBar: MatSnackBar) {
 	}
 
 	ngOnInit() {
@@ -57,23 +58,23 @@ export class UserComponent implements OnInit {
 			this.userService.update(this.userForm.value)
 				.subscribe(
 					data => {
-						this.alertService.success('Update successful', true);
+						this.createSnackBar('Atualizado com sucesso', 'success');
 						this.authenticationService.setUser(this.userForm.value);
 						this.router.navigate(['/home']);
 					},
 					error => {
-						this.alertService.error(error.error);
+						this.createSnackBar(error.error, 'error');
 						this.loading = false;
 					});
 		} else {
 			this.userService.register(this.userForm.value)
 				.subscribe(
 					data => {
-						this.alertService.success('Registration successful', true);
+						this.createSnackBar('Registrado com sucesso', 'success');
 						this.router.navigate(['/login']);
 					},
 					error => {
-						this.alertService.error(error.error);
+						this.createSnackBar(error.error, 'error');
 						this.loading = false;
 					});
 		}
@@ -89,5 +90,13 @@ export class UserComponent implements OnInit {
 
 	set idUser(value: number) {
 		this._idUser = value;
+	}
+
+	private createSnackBar(message: string, panelClass: string): void {
+		this.snackBar.openFromComponent(SnackBarComponent, {
+			data: message,
+			panelClass: [panelClass],
+			duration: 5000
+		});
 	}
 }

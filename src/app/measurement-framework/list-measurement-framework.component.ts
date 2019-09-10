@@ -1,11 +1,11 @@
 ﻿import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {AlertService, MeasurementFrameworkService} from '../_services';
-import {MeasurementFramework} from "../_models";
-import {MatDialog, MatPaginator, MatTableDataSource} from "@angular/material";
+import {MeasurementFrameworkService} from '../_services';
+import {DialogData, MeasurementFramework} from "../_models";
+import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from "@angular/material";
 import {ConfirmDialogComponent} from "../_directives/confirm-dialog";
-import {DialogData} from "../_models/dialog-data";
+import {SnackBarComponent} from "../_directives/snack-bar";
 
 @Component({
 	templateUrl: './list-measurement-framework.component.html',
@@ -25,7 +25,7 @@ export class ListMeasurementFrameworkComponent implements OnInit {
 		private router: Router,
 		private measurementFrameworkService: MeasurementFrameworkService,
 		private dialog: MatDialog,
-		private alertService: AlertService) {
+		private snackBar: MatSnackBar) {
 	}
 
 	ngOnInit() {
@@ -63,7 +63,15 @@ export class ListMeasurementFrameworkComponent implements OnInit {
 	delete(measurementFramework: MeasurementFramework) {
 		this.measurementFrameworkService.delete(measurementFramework.idMeasurementFramework).subscribe(value => {
 			this.list();
-			this.alertService.success('Delete successful', true);
+			this.createSnackBar('Deletado com sucesso', 'success');
+		});
+	}
+
+	private createSnackBar(message: string, panelClass: string): void {
+		this.snackBar.openFromComponent(SnackBarComponent, {
+			data: message,
+			panelClass: [panelClass],
+			duration: 5000
 		});
 	}
 }

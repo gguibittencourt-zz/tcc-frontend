@@ -6,12 +6,9 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
-
-import {AlertComponent} from './_directives/alert';
 import {AuthGuard} from './_guards';
 import {ErrorInterceptor, JwtInterceptor} from './_helpers';
 import {
-	AlertService,
 	AssessmentService,
 	AuthenticationService,
 	CompanyService,
@@ -51,6 +48,7 @@ import {ProcessAttributesComponent} from "./_directives/process-attributes";
 import {ProcessAttributeValueComponent} from "./_directives/process-attribute-value";
 import {CapacityDialogComponent} from "./_directives/capacity-dialog";
 import {SnackBarComponent} from "./_directives/snack-bar";
+import {CompanyDialogComponent} from "./_directives/company-dialog";
 
 @NgModule({
 	imports: [
@@ -64,7 +62,6 @@ import {SnackBarComponent} from "./_directives/snack-bar";
 	],
 	declarations: [
 		AppComponent,
-		AlertComponent,
 		HomeComponent,
 		LoginComponent,
 		UserComponent,
@@ -96,6 +93,7 @@ import {SnackBarComponent} from "./_directives/snack-bar";
 		ProcessAttributeValueComponent,
 		ScaleValuesDialogComponent,
 		CapacityDialogComponent,
+		CompanyDialogComponent,
 		SnackBarComponent
 	],
 	providers: [
@@ -103,7 +101,6 @@ import {SnackBarComponent} from "./_directives/snack-bar";
 		{provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
 		{provide: STEPPER_GLOBAL_OPTIONS, useValue: {displayDefaultIndicatorType: false}},
 		AuthGuard,
-		AlertService,
 		AuthenticationService,
 		UserService,
 		CompanyService,
@@ -118,7 +115,9 @@ import {SnackBarComponent} from "./_directives/snack-bar";
 		MetricScaleDialogComponent,
 		ScaleValuesDialogComponent,
 		CapacityDialogComponent,
-		SnackBarComponent
+		SnackBarComponent,
+		CompanyDialogComponent,
+		CompanyComponent
 	],
 	bootstrap: [AppComponent]
 })

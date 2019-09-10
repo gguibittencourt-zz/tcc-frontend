@@ -2,9 +2,9 @@
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {
-	AlertService,
 	AssessmentService,
 	AuthenticationService,
+	CompanyService,
 	MeasurementFrameworkService,
 	ReferenceModelService
 } from '../_services';
@@ -12,6 +12,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import {
 	Assessment,
 	Classification,
+	Company,
 	ExpectedResult,
 	JsonAssessment,
 	KnowledgeArea,
@@ -20,14 +21,14 @@ import {
 	ProcessAttribute,
 	Question,
 	ReferenceModel,
-	Result,
 	ScaleValues,
 	User
 } from "../_models";
 import {flatMap} from "lodash";
 import {Guid} from "guid-typescript";
-import {MatSnackBar} from "@angular/material";
+import {MatDialog, MatSnackBar} from "@angular/material";
 import {SnackBarComponent} from "../_directives/snack-bar";
+import {CompanyDialogComponent} from "../_directives/company-dialog";
 
 @Component({
 	templateUrl: './register-assessment.component.html',
@@ -55,9 +56,10 @@ export class RegisterAssessmentComponent implements OnInit {
 		private assessmentService: AssessmentService,
 		private measurementFrameworkService: MeasurementFrameworkService,
 		private referenceModelService: ReferenceModelService,
-		private alertService: AlertService,
 		private authenticationService: AuthenticationService,
-		private snackBar: MatSnackBar) {
+		private companyService: CompanyService,
+		private snackBar: MatSnackBar,
+		private dialog: MatDialog) {
 	}
 
 	ngOnInit(): void {
@@ -72,11 +74,18 @@ export class RegisterAssessmentComponent implements OnInit {
 			idUser: [this.getUser.idUser],
 			date: [],
 			jsonAssessment: this.formBuilder.group({
+				company: [],
 				measurementFramework: [, Validators.required],
 				referenceModel: [],
 				results: [],
 				targetLevel: [, Validators.required]
 			})
+		});
+
+		this.companyService.get(this.getUser.idCompany).subscribe((company: Company) => {
+			if (company && !company.name) {
+				this.openDialog(company);
+			}
 		});
 
 		this.route.params.subscribe(params => {
@@ -90,6 +99,13 @@ export class RegisterAssessmentComponent implements OnInit {
 					this.changeTargetLevel(this.assessment.jsonAssessment.targetLevel);
 				});
 			}
+		});
+	}
+
+	openDialog(company: Company): void {
+		this.dialog.open(CompanyDialogComponent, {
+			data: company,
+			disableClose: true
 		});
 	}
 
@@ -135,11 +151,6 @@ export class RegisterAssessmentComponent implements OnInit {
 		return this.measurementFramework.questions.filter(question => {
 			return idsProcessAttributes.includes(question.idProcessAttribute);
 		});
-	}
-
-	confirmResult(result: Result) {
-		const resultsForms: FormGroup[] = this.getResultForms.value;
-		// resultsForms.find(value => value.get('idResult').value == result.idResult).set = result.value;
 	}
 
 	finishForm(): void {

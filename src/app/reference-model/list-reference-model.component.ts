@@ -1,11 +1,11 @@
 ﻿import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {AlertService, ReferenceModelService} from '../_services';
-import {ReferenceModel} from "../_models";
-import {MatDialog, MatPaginator, MatTableDataSource} from "@angular/material";
+import {ReferenceModelService} from '../_services';
+import {DialogData, ReferenceModel} from "../_models";
+import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from "@angular/material";
 import {ConfirmDialogComponent} from "../_directives/confirm-dialog";
-import {DialogData} from "../_models/dialog-data";
+import {SnackBarComponent} from "../_directives/snack-bar";
 
 @Component({
 	templateUrl: './list-reference-model.component.html',
@@ -25,7 +25,7 @@ export class ListReferenceModelComponent implements OnInit {
 		private router: Router,
 		private referenceModelService: ReferenceModelService,
 		private dialog: MatDialog,
-		private alertService: AlertService) {
+		private snackBar: MatSnackBar) {
 	}
 
 	ngOnInit() {
@@ -47,7 +47,7 @@ export class ListReferenceModelComponent implements OnInit {
 	}
 
 	openConfirmationDialog(referenceModel: ReferenceModel) {
-		let data = new DialogData(referenceModel.name, "Delete Reference Model", "Do you want to delete the reference model: ");
+		const data = new DialogData(referenceModel.name, "Deletar Modelo de Referência", "Você deseja deletar o modelo de referência: ");
 		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
 			disableClose: true,
 			data
@@ -63,7 +63,15 @@ export class ListReferenceModelComponent implements OnInit {
 	delete(referenceModel: ReferenceModel) {
 		this.referenceModelService.delete(referenceModel.idReferenceModel).subscribe(value => {
 			this.list();
-			this.alertService.success('Delete successful', true);
+			this.createSnackBar('Deletado com sucesso', 'success');
+		});
+	}
+
+	private createSnackBar(message: string, panelClass: string): void {
+		this.snackBar.openFromComponent(SnackBarComponent, {
+			data: message,
+			panelClass: [panelClass],
+			duration: 5000
 		});
 	}
 }
