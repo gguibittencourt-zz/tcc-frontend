@@ -80,11 +80,13 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		this.route.params.subscribe(params => {
 			this.idMeasurementFramework = params['idMeasurementFramework'];
 			if (this.idMeasurementFramework) {
+				this.loading = true;
 				this.measurementFrameworkService.get(this.idMeasurementFramework).subscribe((data: MeasurementFramework) => {
 					this.measurementFrameworkForm.setValue(data);
 					this.measurementFramework = data;
 					this.referenceModel = this.getReferenceModel(data.idReferenceModel);
 					this.type = this.types.find(value => value.idTypeQuestion == data.type).idTypeQuestion;
+					this.loading = false;
 				});
 			}
 		});
@@ -194,7 +196,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		return flatten(referenceModel.knowledgeAreas.map(processArea => {
 			return flatten(processArea.processes.map(process => {
 				return process.expectedResults.map(expectedResult => {
-					let question: Question = new Question(Guid.create().toString());
+					const question: Question = new Question(Guid.create().toString());
 					question.idExpectedResult = expectedResult.idExpectedResult;
 					question.name = expectedResult.name + '?';
 					question.idProcess = process.idProcess;

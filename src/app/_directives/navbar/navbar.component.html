@@ -1,19 +1,25 @@
 ﻿<div *ngIf="isLoggedIn$ && isUserIn | async">
 	<mat-toolbar class="col-md-12">
-		<button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Clique para abrir o menu"><i class="fa fa-bars"></i></button>
+		<button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Clique para abrir o menu"><i
+			class="fa fa-bars"></i></button>
 		<mat-menu #menu="matMenu">
 			<button mat-menu-item [routerLink]="['/company', getUser.idCompany]">
 				<i class="icon fa fa-building"></i>
 				<span>Organização</span>
 			</button>
 			<button mat-menu-item *ngIf="getUser.role === 'ADM'"
-					[routerLink]="['/reference-model']">Modelo de Referência
+					[routerLink]="['/reference-model']">
+				<i class="icon fa fa-book"></i>
+				<span>Modelo de Referência</span>
 			</button>
 			<button mat-menu-item *ngIf="getUser.role === 'ADM'"
-					[routerLink]="['/measurement-framework']">Método de Avaliação
+					[routerLink]="['/measurement-framework']">
+				<i class="icon fa fa-clipboard"></i>
+				<span>Método de Avaliação</span>
 			</button>
-			<button mat-menu-item
-					[routerLink]="['/assessment']">Avaliação
+			<button mat-menu-item [routerLink]="['/assessment']">
+				<i class="icon fa fa-tasks"></i>
+				<span>Avaliação</span>
 			</button>
 		</mat-menu>
 		<span>Self-Assessment Tool</span>

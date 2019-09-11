@@ -4,7 +4,7 @@ import {MatDialog, MatTreeNestedDataSource} from "@angular/material";
 import {NestedTreeControl} from "@angular/cdk/tree";
 import {FormBuilder} from "@angular/forms";
 import {QuestionComponent} from "../question";
-import {cloneDeep, isEmpty} from "lodash";
+import {cloneDeep, isEmpty, reject} from "lodash";
 
 @Component({
 	selector: 'tree-node-questions',
@@ -20,6 +20,7 @@ export class TreeNodeQuestionsComponent implements OnInit {
 
 	treeControl = new NestedTreeControl<TreeNode>(node => node.children);
 	dataSource = new MatTreeNestedDataSource<TreeNode>();
+	loading: boolean = false;
 
 	constructor(private formBuilder: FormBuilder, private  dialog: MatDialog) {
 	}
@@ -41,7 +42,7 @@ export class TreeNodeQuestionsComponent implements OnInit {
 	}
 
 	openDialog(node: TreeNode): void {
-		let data = new MatQuestionDialogData();
+		const data = new MatQuestionDialogData();
 		data.node = node;
 		data.type = this.type;
 		data.questions = isEmpty(this.questions) ? [] : cloneDeep(this.getQuestionsByProcess(node.idTreeNode));
@@ -58,18 +59,20 @@ export class TreeNodeQuestionsComponent implements OnInit {
 				if (this.questions == null) {
 					this.questions = [];
 				}
-				let idQuestions: string[] = this.questions.map((question: Question) => question.idQuestion);
+				const idProcess = result[0].idProcess;
+				const idsQuestions: string[] = this.questions.map((question: Question) => question.idQuestion);
 				result.forEach(value => {
-					if (!idQuestions.includes(value.idQuestion)) {
+					if (!idsQuestions.includes(value.idQuestion)) {
 						this.questions.push(value);
 					} else {
-						let actualQuestion = this.questions.find((question: Question) => question.idQuestion === value.idQuestion);
+						const actualQuestion = this.questions.find((question: Question) => question.idQuestion === value.idQuestion);
 						if (actualQuestion !== value) {
 							this.questions.splice(this.questions.indexOf(actualQuestion), 1);
 							this.questions.push(value);
 						}
 					}
 				});
+				this.questions = reject(this.questions, (question => question.idProcess === idProcess && !result.includes(question)));
 				this.onConfirmQuestions.emit(this.questions);
 			}
 		});

@@ -31,7 +31,6 @@ export class ListAssessmentComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.loading = true;
 		this.list();
 	}
 
@@ -40,6 +39,7 @@ export class ListAssessmentComponent implements OnInit {
 	}
 
 	list() {
+		this.loading = true;
 		this.assessmentService.list().subscribe(data => {
 			this.assessments = data as Array<Assessment>;
 			this.listMeasurementFrameworks(this.assessments);
@@ -50,7 +50,7 @@ export class ListAssessmentComponent implements OnInit {
 	}
 
 	openConfirmationDialog(assessment: Assessment) {
-		let data: DialogData = new DialogData(assessment.jsonAssessment.measurementFramework.name, "Deletar avaliação", "Você deseja deletar a avaliação:");
+		const data: DialogData = new DialogData(assessment.jsonAssessment.measurementFramework.name, "Deletar avaliação", "Você deseja deletar a avaliação:");
 		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
 			disableClose: true,
 			data: data

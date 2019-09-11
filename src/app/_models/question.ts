@@ -17,5 +17,6 @@
 
 	constructor(idQuestion: string) {
 		this.idQuestion = idQuestion;
+		this.required = true;
 	}
 }

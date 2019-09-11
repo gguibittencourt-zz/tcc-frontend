@@ -29,7 +29,6 @@ export class ListMeasurementFrameworkComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.loading = true;
 		this.list();
 	}
 
@@ -38,6 +37,7 @@ export class ListMeasurementFrameworkComponent implements OnInit {
 	}
 
 	list() {
+		this.loading = true;
 		this.measurementFrameworkService.list().subscribe(data => {
 			this.measurementFrameworks = data as Array<MeasurementFramework>;
 			this.dataSource = new MatTableDataSource(this.measurementFrameworks);
@@ -47,7 +47,7 @@ export class ListMeasurementFrameworkComponent implements OnInit {
 	}
 
 	openConfirmationDialog(measurementFramework: MeasurementFramework) {
-		let data: DialogData = new DialogData(measurementFramework.name, "Deletar Método de Avaliação", "Você deseja deletar o Método de Avaliação:");
+		const data: DialogData = new DialogData(measurementFramework.name, "Deletar Método de Avaliação", "Você deseja deletar o Método de Avaliação:");
 		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
 			disableClose: true,
 			data: data

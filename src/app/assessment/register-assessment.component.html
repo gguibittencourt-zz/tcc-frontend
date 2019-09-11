@@ -1,4 +1,6 @@
-﻿<h2>Avaliação</h2>
+﻿<loading [isLoading]="loading"></loading>
+
+<h2>Avaliação</h2>
 
 <mat-horizontal-stepper [linear]="true" #stepper>
 	<ng-template matStepperIcon="edit">
@@ -87,12 +89,27 @@
 			</div>
 			<div class="form-group">
 				<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
-				<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
-						class="btn btn-outline-success save-button">Salvar
-				</button>
-				<button mat-raised-button (click)="finish()" [disabled]="loading"
-						class="btn btn-outline-success save-button">Salvar e Finalizar
-				</button>
+				<span *ngIf="!openResult; else buttonNext">
+					<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
+							class="btn btn-outline-success save-button">Salvar
+					</button>
+					<button mat-raised-button (click)="finish(stepper)" [disabled]="loading"
+							class="btn btn-outline-success save-button">Salvar e Finalizar
+					</button>
+				</span>
+				<ng-template #buttonNext>
+					<button mat-raised-button class="mat-raised-button btn btn-outline-secondary" (click)="checkForms()"
+							matStepperNext>Próximo
+					</button>
+				</ng-template>
+			</div>
+		</form>
+	</mat-step>
+	<mat-step [stepControl]="assessmentForm" *ngIf="openResult">
+		<form [formGroup]="assessmentForm">
+			<ng-template matStepLabel>Resultado da avaliação</ng-template>
+			<div class="form-group">
+				Resultado
 			</div>
 		</form>
 	</mat-step>

@@ -20,13 +20,13 @@ import {
 	Process,
 	ProcessAttribute,
 	Question,
-	ReferenceModel,
+	ReferenceModel, Result,
 	ScaleValues,
 	User
 } from "../_models";
 import {flatMap} from "lodash";
 import {Guid} from "guid-typescript";
-import {MatDialog, MatSnackBar} from "@angular/material";
+import {MatDialog, MatHorizontalStepper, MatSnackBar} from "@angular/material";
 import {SnackBarComponent} from "../_directives/snack-bar";
 import {CompanyDialogComponent} from "../_directives/company-dialog";
 
@@ -48,6 +48,7 @@ export class RegisterAssessmentComponent implements OnInit {
 	processes: Process[];
 	processAttributes: ProcessAttribute[];
 	isFinish: boolean = false;
+	openResult: boolean = false;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -91,12 +92,19 @@ export class RegisterAssessmentComponent implements OnInit {
 		this.route.params.subscribe(params => {
 			this.idAssessment = params['idAssessment'];
 			if (this.idAssessment) {
+				this.loading = true;
 				this.assessmentService.get(this.idAssessment).subscribe((data: Assessment) => {
-					this.assessmentForm.patchValue(data);
 					this.assessment = data;
+					const resultsForms = this.getResultFormsByResults(data.jsonAssessment.results, data.jsonAssessment.measurementFramework.questions);
+					this.assessmentForm.patchValue(data);
+					this.getResultForms.setValue(resultsForms);
 					this.measurementFramework = this.assessment.jsonAssessment.measurementFramework;
 					this.referenceModel = this.assessment.jsonAssessment.referenceModel;
 					this.changeTargetLevel(this.assessment.jsonAssessment.targetLevel);
+					if (this.assessment.status === 'finalized') {
+						this.openResult = true;
+					}
+					this.loading = false;
 				});
 			}
 		});
@@ -160,7 +168,7 @@ export class RegisterAssessmentComponent implements OnInit {
 		assessment.jsonAssessment = jsonAssessment;
 	}
 
-	onSubmit(finish?: boolean): void {
+	onSubmit(finish?: boolean, stepper?: MatHorizontalStepper): void {
 		if (this.assessmentForm.invalid) {
 			return;
 		}
@@ -170,10 +178,12 @@ export class RegisterAssessmentComponent implements OnInit {
 		this.finishForm();
 
 		if (finish) {
+			this.openResult = true;
+
 			this.assessmentService.finish(this.assessmentForm.value)
 				.subscribe(data => {
-					this.createSnackBar('Finalizado com sucesso', 'success');
-					this.router.navigate(['/assessment']);
+					this.createSnackBar('Finalizada com sucesso', 'success');
+					stepper.next();
 				}, error => {
 					this.createSnackBar(error.error, 'error');
 					this.loading = false;
@@ -184,33 +194,33 @@ export class RegisterAssessmentComponent implements OnInit {
 		if (this.idAssessment) {
 			this.assessmentService.update(this.assessmentForm.value).subscribe(
 				data => {
-					this.createSnackBar('Atualizado com sucesso', 'success');
+					this.createSnackBar('Atualizada com sucesso', 'success');
 					this.router.navigate(['/assessment']);
 				},
 				error => {
 					this.createSnackBar(error.error, 'error');
 					this.loading = false;
 				});
-		} else {
-			this.assessmentService.register(this.assessmentForm.value).subscribe(
-				data => {
-					this.createSnackBar('Registrado com sucesso', 'success');
-					this.router.navigate(['/assessment']);
-				},
-				error => {
-					this.createSnackBar(error.error, 'error');
-					this.loading = false;
-				});
+			return;
 		}
+		this.assessmentService.register(this.assessmentForm.value).subscribe(
+			data => {
+				this.createSnackBar('Registrada com sucesso', 'success');
+				this.router.navigate(['/assessment']);
+			},
+			error => {
+				this.createSnackBar(error.error, 'error');
+				this.loading = false;
+			});
 	}
 
-	finish(): void {
+	finish(stepper: MatHorizontalStepper): void {
 		this.isFinish = true;
 		if (this.anyResultInvalid()) {
 			this.createSnackBar('Algumas questões obrigatórias não foram preenchidas', 'error');
 			return;
 		}
-		this.onSubmit(true);
+		this.onSubmit(true, stepper);
 	}
 
 	checkForms(): void {
@@ -320,6 +330,29 @@ export class RegisterAssessmentComponent implements OnInit {
 			data: message,
 			panelClass: [panelClass],
 			duration: 5000
+		});
+	}
+
+	private getResultFormsByResults(results: Result[], questions: Question[]): FormGroup[] {
+		return results.map(result => {
+			const question = questions.find(question => question.idQuestion === result.idQuestion);
+			const formGroup: FormGroup = this.formBuilder.group({
+				idResult: [result.idResult],
+				idKnowledgeArea: [result.idKnowledgeArea],
+				idProcess: [result.idProcess],
+				idExpectedResult: [result.idExpectedResult],
+				idQuestion: [result.idQuestion],
+				idProcessAttribute: [result.idProcessAttribute],
+				idProcessAttributeValue: [result.idProcessAttributeValue],
+				value: [result.value]
+			});
+			if (question.required) {
+				formGroup.get('value').setValidators(Validators.required);
+			}
+			if (question.defaultValue && !formGroup.get('value').value) {
+				formGroup.get('value').setValue(String(question.defaultValue));
+			}
+			return formGroup;
 		});
 	}
 }

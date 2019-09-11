@@ -21,6 +21,7 @@ export class QuestionAssessmentComponent implements OnInit {
 	questionsByExpectedResult: any;
 	idsExpectedResults: string[];
 	questionsByIdProcessAttribute: any;
+	readonly REGEX_LINK = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 
 	ngOnInit() {
 		this.questionsByExpectedResult = groupBy(this.questions, 'idExpectedResult');
@@ -61,5 +62,13 @@ export class QuestionAssessmentComponent implements OnInit {
 		return this.resultForms.find(result => {
 			return result.get('idQuestion').value == question.idQuestion;
 		});
+	}
+
+	isLink(tip: string) {
+		return this.REGEX_LINK.test(tip);
+	}
+
+	openLink(tip: string) {
+		window.open(tip, '_blank');
 	}
 }

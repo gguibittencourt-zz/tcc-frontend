@@ -31,10 +31,17 @@
 		<ng-container matColumnDef="actions">
 			<th mat-header-cell *matHeaderCellDef mat-sort-header class="column-action"> Ações</th>
 			<td mat-cell *matCellDef="let element">
-				<button mat-button [routerLink]="['/assessment', element.idAssessment]"
-						class="btn btn-sm" matTooltip="Editar">
-					<i class="fa fa-edit"></i>
+				<button mat-button *ngIf="element.status === 'finalized';else edit"
+						[routerLink]="['/assessment', element.idAssessment]"
+						class="btn btn-sm" matTooltip="Visualizar">
+					<i class="fa fa-eye"></i>
 				</button>
+				<ng-template #edit>
+					<button mat-button [routerLink]="['/assessment', element.idAssessment]"
+							class="btn btn-sm" matTooltip="Editar">
+						<i class="fa fa-edit"></i>
+					</button>
+				</ng-template>
 				<button mat-button (click)="openConfirmationDialog(element)" class="btn btn-sm"
 						matTooltip="Excluir">
 					<i class="fa fa-trash"></i>

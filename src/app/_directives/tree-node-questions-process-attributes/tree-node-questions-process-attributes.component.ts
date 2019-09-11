@@ -4,7 +4,7 @@ import {MatDialog, MatTreeNestedDataSource} from "@angular/material";
 import {NestedTreeControl} from "@angular/cdk/tree";
 import {FormBuilder} from "@angular/forms";
 import {QuestionComponent} from "../question";
-import {cloneDeep, isEmpty} from "lodash";
+import {cloneDeep, isEmpty, reject} from "lodash";
 
 @Component({
 	selector: 'tree-node-questions-process-attributes',
@@ -56,6 +56,7 @@ export class TreeNodeQuestionsProcessAttributesComponent implements OnInit {
 				if (this.questions == null) {
 					this.questions = [];
 				}
+				const idProcessAttribute = result[0].idProcessAttribute;
 				const idQuestions: string[] = this.questions.map((question: Question) => question.idQuestion);
 				result.forEach(value => {
 					if (!idQuestions.includes(value.idQuestion)) {
@@ -68,6 +69,7 @@ export class TreeNodeQuestionsProcessAttributesComponent implements OnInit {
 						}
 					}
 				});
+				this.questions = reject(this.questions, (question => question.idProcessAttribute === idProcessAttribute && !result.includes(question)));
 				this.onConfirmQuestions.emit(this.questions);
 			}
 		});

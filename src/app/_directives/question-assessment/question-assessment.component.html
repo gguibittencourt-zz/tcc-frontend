@@ -6,7 +6,13 @@
 		<div *ngFor="let question of questionsByExpectedResult[idExpectedResult]; let i = index">
 
 			<span>{{i + 1 + '. ' + question.name}}
-				<i *ngIf="question.tip" class="fa fa-info-circle" [matTooltip]="question.tip"></i>
+				<span *ngIf="question.tip">
+					<i *ngIf="isLink(question.tip); else tip" class="fa fa-info-circle link" (click)="openLink(question.tip)"
+					   matTooltip="Clique para abrir"></i>
+				<ng-template #tip>
+					<i *ngIf="question.tip" class="fa fa-info-circle" [matTooltip]="question.tip"></i>
+				</ng-template>
+				</span>
 			</span>
 			<form [formGroup]="getFormByIdQuestion(question)">
 				<div *ngIf="question.type === 'boolean'">
@@ -18,7 +24,8 @@
 							Verdadeiro
 						</mat-radio-button>
 					</mat-radio-group>
-					<mat-error class="error-padding-bottom" *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
+					<mat-error class="error-padding-bottom"
+							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
 						Questão obrigatória
 					</mat-error>
 				</div>
@@ -42,7 +49,8 @@
 							{{scaleValues[4].value}}
 						</mat-radio-button>
 					</mat-radio-group>
-					<mat-error class="error-padding-bottom" *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
+					<mat-error class="error-padding-bottom"
+							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
 						Questão obrigatória
 					</mat-error>
 				</div>
@@ -56,7 +64,8 @@
 						(change)="confirmResult(question)"
 						formControlName="value">
 					</mat-slider>
-					<mat-error class="error-padding-bottom" *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
+					<mat-error class="error-padding-bottom"
+							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
 						Questão obrigatória
 					</mat-error>
 				</div>
@@ -83,7 +92,8 @@
 							Verdadeiro
 						</mat-radio-button>
 					</mat-radio-group>
-					<mat-error class="error-padding-bottom" *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
+					<mat-error class="error-padding-bottom"
+							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
 						Questão obrigatória
 					</mat-error>
 				</div>
@@ -107,7 +117,8 @@
 							{{scaleValues[4].value}}
 						</mat-radio-button>
 					</mat-radio-group>
-					<mat-error class="error-padding-bottom" *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
+					<mat-error class="error-padding-bottom"
+							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
 						Questão obrigatória
 					</mat-error>
 				</div>
@@ -121,7 +132,8 @@
 						(change)="confirmResult(question, true)"
 						formControlName="value">
 					</mat-slider>
-					<mat-error class="error-padding-bottom" *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
+					<mat-error class="error-padding-bottom"
+							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
 						Questão obrigatória
 					</mat-error>
 				</div>
