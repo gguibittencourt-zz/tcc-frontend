@@ -3,6 +3,10 @@
 		<button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Clique para abrir o menu"><i
 			class="fa fa-bars"></i></button>
 		<mat-menu #menu="matMenu">
+			<button mat-menu-item [routerLink]="['/']">
+				<i class="icon fa fa-home"></i>
+				<span>Início</span>
+			</button>
 			<button mat-menu-item [routerLink]="['/company', getUser.idCompany]">
 				<i class="icon fa fa-building"></i>
 				<span>Organização</span>

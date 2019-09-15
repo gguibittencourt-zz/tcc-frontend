@@ -39,9 +39,10 @@
 					<mat-select placeholder="Nível Alvo" formControlName="targetLevel"
 								(selectionChange)="changeTargetLevel($event.value)" [disabled]="!!idAssessment">
 						<div *ngIf="!idAssessment">
-							<mat-option *ngFor="let classification of measurementFramework.classifications"
-										[value]="classification">
-								{{classification.name}}
+							<mat-option
+								*ngFor="let classification of measurementFramework.classifications; let indexClassification = index"
+								[value]="classification">
+								{{indexClassification + 1 + '. ' + classification.name}}
 							</mat-option>
 						</div>
 						<mat-option *ngIf="idAssessment && classification" [value]="classification" disabled>
@@ -75,7 +76,7 @@
 							<div class="purpose">{{process.purpose}}</div>
 							<question-assessment [resultForms]="getResultForms.value"
 												 [questions]="getQuestions(process)"
-												 [prefix]="process.prefix"
+												 [process]="process"
 												 [finish]="isFinish"
 												 [scaleValues]="scaleValues">
 							</question-assessment>
@@ -107,22 +108,51 @@
 		<form [formGroup]="assessmentForm" *ngIf="assessment?.jsonAssessment?.levelResults">
 			<ng-template matStepLabel>Resultado da avaliação</ng-template>
 			<div class="form-group">
-				Resultado
+				<mat-card>
+					<mat-card-title class="title-card">
+						Dados da avaliação
+					</mat-card-title>
+					<mat-card-content>
+						<div class="label">Data da Avaliação: {{getDate | date:'dd/MM/yyyy HH:mm:ss'}}</div>
+						<div class="label">Método de Avaliação: {{measurementFramework.name}}</div>
+						<div class="display-flex">
+							<div class="label flex">Nome da Organização: {{getCompany.name}}</div>
+							<div class="label">Área de Atuação: {{getCompany.occupationArea}}</div>
+						</div>
+						<div class="display-flex">
+							<div class="label flex">Quantidade de Colaboradores: {{getCompany.contributors}}</div>
+							<div class="label">Quantidade de projetos: {{getCompany.projects}}</div>
+						</div>
+						<div class="label">Resultado da Avaliação:</div>
+					</mat-card-content>
+				</mat-card>
 
 				<mat-card *ngFor="let levelResult of assessment.jsonAssessment.levelResults">
 					<mat-card-title class="title-card">
 						{{levelResult.classification.name}}
 					</mat-card-title>
 					<mat-card-content>
-						<div *ngFor="let processResult of levelResult.processes">
-							<div class="col-md-12 content-card">
-								<div class="col-md-8 border-right">{{processResult.process.name}}</div>
-								<div class="col-md-4">{{processResult.result}}</div>
-							</div>
-
-						</div>
+						<mat-accordion>
+							<mat-expansion-panel *ngFor="let processResult of levelResult.processes">
+								<mat-expansion-panel-header class="expansion-panel-header">
+									<div class="col-md-12 content-card">
+										<div
+											class="col-md-8 border-right">{{processResult.process.prefix + ' - ' + processResult.process.name}}</div>
+										<div class="col-md-4">{{processResult.result}}</div>
+									</div>
+								</mat-expansion-panel-header>
+								<div *ngFor="let resultWithError of processResult.resultsWithError; let indexError = index" class="col-md-12 content-card result-error">
+									<div class="col-md-8 border-right result-with-error">{{indexError + 1 + '. ' + getNameByResult(resultWithError, processResult.process)}}</div>
+									<div class="col-md-4">{{getResultValue(resultWithError)}}</div>
+								</div>
+							</mat-expansion-panel>
+						</mat-accordion>
 					</mat-card-content>
 				</mat-card>
+			</div>
+			<div class="form-group">
+				<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
+				<button mat-raised-button [routerLink]="['/assessment']" class="btn btn-outline-danger">Cancelar</button>
 			</div>
 		</form>
 	</mat-step>

@@ -1,5 +1,5 @@
-﻿import {Component, Input, OnInit} from '@angular/core';
-import {ExpectedResult, ProcessAttribute, Question, Result, ScaleValues} from '../../_models';
+﻿import {Component, Input} from '@angular/core';
+import {Process, Question, Result, ScaleValues} from '../../_models';
 import {FormGroup} from '@angular/forms';
 
 @Component({
@@ -10,14 +10,14 @@ import {FormGroup} from '@angular/forms';
 
 export class QuestionAssessmentComponent {
 	@Input('questions') questions: Question[];
-	@Input('prefix') prefix: string;
+	@Input('process') process: Process;
 	@Input('finish') finish: boolean;
 	@Input('scaleValues') scaleValues: ScaleValues[];
 	@Input('resultForms') resultForms: FormGroup[];
 	readonly REGEX_LINK = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 
-	confirmResult(question: Question, isProcessAttribute: boolean = false) {
-		const value: Result = this.getFormByIdQuestion(question, isProcessAttribute).value;
+	confirmResult(question: Question) {
+		const value: Result = this.getFormByIdQuestion(question).value;
 		const questions: Question[] = this.questions.filter(question => {
 				return question.dependsOnAnyQuestion && question.idDependentQuestion == value.idQuestion && value.value == String(question.dependentValue.value);
 			});
@@ -31,13 +31,9 @@ export class QuestionAssessmentComponent {
 		});
 	}
 
-	getFormByIdQuestion(question: Question, isProcessAttribute: boolean = false) {
+	getFormByIdQuestion(question: Question) {
 		return this.resultForms.find(result => {
-			if (isProcessAttribute) {
-				return result.get('idQuestion').value == question.idQuestion &&
-					result.get('idProcessAttribute').value == question.idProcessAttribute;
-			}
-			return result.get('idQuestion').value == question.idQuestion;
+			return result.get('idQuestion').value == question.idQuestion && this.process.idProcess == result.get('idProcess').value;
 		});
 	}
 

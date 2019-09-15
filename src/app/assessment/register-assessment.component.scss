@@ -44,18 +44,40 @@
 		font-weight: bold;
 	}
 
+	.result-error{
+		margin-top: 10px;
+	}
+
 	.content-card {
 		display: flex;
-		border: 1px solid #dee2e6 !important;
 		padding-left: 0;
-		border-radius: 4px;
+		color: #8f8f8f;
 
 		.border-right {
+			padding-left: 0 !important;
 			border-right: 1px solid #dee2e6 !important;
 		}
+
 	}
 
 	.mat-card-content > div:not(:first-child) > div {
 		border-top: none !important;
+	}
+
+	.label {
+		color: #8f8f8f;
+		padding-right: 5px;
+	}
+
+	.flex {
+		flex: 1;
+	}
+
+	.result-with-error {
+		padding-left: 0 !important;
+	}
+
+	.expansion-panel-header {
+		padding: 0 15px 0 24px !important;
 	}
 }

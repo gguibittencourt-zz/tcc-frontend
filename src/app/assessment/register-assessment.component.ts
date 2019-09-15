@@ -13,18 +13,18 @@ import {
 	Assessment,
 	Classification,
 	Company,
-	ExpectedResult,
 	JsonAssessment,
 	KnowledgeArea,
 	MeasurementFramework,
 	Process,
 	ProcessAttribute,
 	Question,
-	ReferenceModel, Result,
+	ReferenceModel,
+	Result,
 	ScaleValues,
 	User
 } from "../_models";
-import {flatMap} from "lodash";
+import {flatMap, isEmpty, uniqBy} from "lodash";
 import {Guid} from "guid-typescript";
 import {MatDialog, MatHorizontalStepper, MatSnackBar} from "@angular/material";
 import {SnackBarComponent} from "../_directives/snack-bar";
@@ -44,6 +44,7 @@ export class RegisterAssessmentComponent implements OnInit {
 	referenceModel: ReferenceModel;
 	measurementFrameworks: MeasurementFramework[] = [];
 	measurementFramework: MeasurementFramework;
+	classifications: Classification[];
 	classification: Classification;
 	processes: Process[];
 	processAttributes: ProcessAttribute[];
@@ -127,6 +128,14 @@ export class RegisterAssessmentComponent implements OnInit {
 		return this.assessmentForm.get('jsonAssessment').get('results');
 	}
 
+	get getCompany(): Company {
+		return this.assessmentForm.get('jsonAssessment').get('company').value;
+	}
+
+	get getDate() {
+		return this.formatDate(this.assessmentForm.get('date').value);
+	}
+
 	get f() {
 		return this.assessmentForm.controls;
 	}
@@ -138,6 +147,8 @@ export class RegisterAssessmentComponent implements OnInit {
 
 	changeTargetLevel(classification: Classification): void {
 		this.classification = classification;
+		const index = this.measurementFramework.classifications.map(value => value.idClassification).indexOf(classification.idClassification);
+		this.classifications = this.measurementFramework.classifications.filter(value => this.measurementFramework.classifications.indexOf(value) <= index);
 		this.processes = this.getProcesses();
 		this.processAttributes = this.getProcessAttributes();
 	}
@@ -177,6 +188,7 @@ export class RegisterAssessmentComponent implements OnInit {
 			this.assessmentService.finish(this.assessmentForm.value)
 				.subscribe((data: Assessment) => {
 					this.assessment = data;
+					this.assessmentForm.get('date').setValue(data.date);
 					this.createSnackBar('Finalizada com sucesso', 'success');
 					stepper.next();
 					this.loading = false;
@@ -223,8 +235,31 @@ export class RegisterAssessmentComponent implements OnInit {
 		this.submitted = true;
 	}
 
-	getExpectedResults(): ExpectedResult[] {
-		return flatMap(this.processes, (value => value.expectedResults));
+	isLastProcess(indexProcess: number) {
+		return (indexProcess + 1) === this.processes.length;
+	}
+
+	getNameByResult(resultWithError: Result, process: Process) {
+		if (isEmpty(resultWithError.idExpectedResult)) {
+			const processAttribute: ProcessAttribute = this.processAttributes.find(processAttribute => processAttribute.idProcessAttribute === resultWithError.idProcessAttribute);
+			const processAttributeValue = processAttribute.values.find(value => value.idProcessAttributeValue === resultWithError.idProcessAttributeValue);
+			return processAttributeValue.name;
+		}
+		const expectedResult = process.expectedResults.find(expectedResult => expectedResult.idExpectedResult === resultWithError.idExpectedResult);
+		return expectedResult.name;
+	}
+
+	getResultValue(resultWithError: Result): string {
+		const question = this.measurementFramework.questions.find(question => question.idQuestion == resultWithError.idQuestion);
+		switch (question.type) {
+			case 'boolean':
+				return 'Falso';
+			case 'scale-nominal':
+				return this.measurementFramework.scaleValues.find(scaleValue => scaleValue.id == resultWithError.value).value;
+			case 'scale-numeric':
+				return resultWithError.value;
+		}
+		return
 	}
 
 	private createResults(knowledgeArea: KnowledgeArea) {
@@ -280,19 +315,6 @@ export class RegisterAssessmentComponent implements OnInit {
 		return formGroup;
 	}
 
-	private existResult(idKnowledgeArea: string, idProcess: string, idQuestion: string, idExpectedResult: string,
-						idProcessAttribute: string, idProcessAttributeValue: string): boolean {
-		if (!this.getResultForms.value) {
-			return false;
-		}
-		return this.getResultForms.value.some((formGroup: FormGroup) => {
-			const value = formGroup.value;
-			return value.idQuestion == idQuestion && value.idProcess
-				&& (value.idKnowledgeArea == idKnowledgeArea && value.idProcess == idProcess && idExpectedResult == value.idExpectedResult)
-				|| (value.idProcessAttribute && value.idProcessAttribute == idProcessAttribute && value.idProcessAttributeValue == idProcessAttributeValue);
-		});
-	}
-
 	private getReferenceModel(idReferenceModel: number): void {
 		this.referenceModelService.get(idReferenceModel).subscribe((value: ReferenceModel) => {
 			this.referenceModel = value;
@@ -306,16 +328,25 @@ export class RegisterAssessmentComponent implements OnInit {
 	}
 
 	private getProcesses(): Process[] {
-		return flatMap(this.classification.levels, (level => {
-			const knowledgeAreas = this.referenceModel.knowledgeAreas.filter(knowledgeArea => knowledgeArea.idKnowledgeArea === level.idProcessArea);
-			return flatMap(knowledgeAreas, knowledgeArea => knowledgeArea.processes.filter(process => level.values.includes(process.idProcess)));
+		return flatMap(this.classifications, (classification => {
+			return flatMap(classification.levels, (level => {
+				const knowledgeAreas = this.referenceModel.knowledgeAreas.filter(knowledgeArea => knowledgeArea.idKnowledgeArea === level.idProcessArea);
+				return flatMap(knowledgeAreas, knowledgeArea => knowledgeArea.processes.filter(process => level.values.includes(process.idProcess)));
+			}));
 		}));
 	}
 
 	private getProcessAttributes(): ProcessAttribute[] {
-		const processAttributes = flatMap(this.classification.processAttributes, (value => {
-			return this.measurementFramework.processAttributes.filter(processAttribute => value === processAttribute.idProcessAttribute && processAttribute.generateQuestions);
+		let processAttributes = flatMap(this.classifications, (classification => {
+			return flatMap(classification.processAttributes, (value => {
+				return this.measurementFramework.processAttributes.filter(processAttribute => value === processAttribute.idProcessAttribute && processAttribute.generateQuestions);
+			}));
 		}));
+
+		processAttributes = uniqBy(processAttributes, (processAttribute) => {
+			return processAttribute.idProcessAttribute
+		});
+
 		this.createResultsProcessAttributes(processAttributes);
 		return processAttributes;
 	}
@@ -374,7 +405,7 @@ export class RegisterAssessmentComponent implements OnInit {
 		});
 	}
 
-	isLastProcess(indexProcess: number) {
-		return (indexProcess + 1) === this.processes.length;
+	private formatDate(date: any): Date {
+		return new Date(date.date.year, date.date.month, date.date.day, date.time.hour, date.time.minute, date.time.second);
 	}
 }

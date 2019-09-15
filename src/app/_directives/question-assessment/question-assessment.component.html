@@ -47,7 +47,7 @@
 						</mat-radio-button>
 					</mat-radio-group>
 					<mat-error class="error-padding-bottom"
-							   *ngIf="finish && getFormByIdQuestion(question, true).controls.value.errors?.required">
+							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
 						Questão obrigatória
 					</mat-error>
 				</form>
