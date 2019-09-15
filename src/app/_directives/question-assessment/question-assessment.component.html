@@ -1,144 +1,59 @@
-﻿<mat-card *ngFor="let idExpectedResult of idsExpectedResults; let indexExpectedResult = index">
-	<mat-card-title class="title-card">
-		{{getExpectedResultName(idExpectedResult, indexExpectedResult + 1)}}
-	</mat-card-title>
+﻿<mat-card>
 	<mat-card-content>
-		<div *ngFor="let question of questionsByExpectedResult[idExpectedResult]; let i = index">
-
-			<span>{{i + 1 + '. ' + question.name}}
+		<div class="header-group">
+			<div class="header">{{scaleValues[0].value}}</div>
+			<div class="header">{{scaleValues[1].value}}</div>
+			<div class="header">{{scaleValues[2].value}}</div>
+			<div class="header">{{scaleValues[3].value}}</div>
+			<div class="header">{{scaleValues[4].value}}</div>
+		</div>
+		<div *ngFor="let question of questions; let i = index" class="display-flex">
+			<div class="question-name">
+				{{i + 1 + '. ' + question.name}}
 				<span *ngIf="question.tip">
-					<i *ngIf="isLink(question.tip); else tip" class="fa fa-info-circle link" (click)="openLink(question.tip)"
+					<i *ngIf="isLink(question.tip); else tip" class="fa fa-info-circle link"
+					   (click)="openLink(question.tip)"
 					   matTooltip="Clique para abrir"></i>
 				<ng-template #tip>
 					<i *ngIf="question.tip" class="fa fa-info-circle" [matTooltip]="question.tip"></i>
 				</ng-template>
 				</span>
-			</span>
-			<form [formGroup]="getFormByIdQuestion(question)">
-				<div *ngIf="question.type === 'boolean'">
-					<mat-radio-group formControlName="value" (change)="confirmResult(question)">
-						<mat-radio-button value="1" class="padding-right">
-							Falso
-						</mat-radio-button>
-						<mat-radio-button value="5">
-							Verdadeiro
-						</mat-radio-button>
-					</mat-radio-group>
-					<mat-error class="error-padding-bottom"
-							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
-						Questão obrigatória
-					</mat-error>
-				</div>
-				<div *ngIf="question.type === 'scale-nominal' && scaleValues">
+			</div>
+			<div style="width: 50%; text-align: end;">
+				<form [formGroup]="getFormByIdQuestion(question)">
+
 					<mat-radio-group formControlName="value"
 									 (change)="confirmResult(question)"
 									 class="example-radio-group">
-						<mat-radio-button class="example-radio-button" value="1">
-							{{scaleValues[0].value}}
+						<mat-radio-button class="example-radio-button label-padding-left-20" value="1" [matTooltip]="getFirstTooltip(question)">
 						</mat-radio-button>
-						<mat-radio-button class="example-radio-button" value="2">
-							{{scaleValues[1].value}}
+						<mat-radio-button class="example-radio-button label-padding-left-20" value="2"
+										  [matTooltip]="question.type === 'scale-numeric' ? '2' : scaleValues[1].value"
+										  [matTooltipDisabled]="question.type === 'boolean'"
+										  [disabled]="question.type === 'boolean'">
 						</mat-radio-button>
-						<mat-radio-button class="example-radio-button" value="3">
-							{{scaleValues[2].value}}
+						<mat-radio-button class="example-radio-button label-padding-left-20" value="3"
+										  [matTooltip]="question.type === 'scale-numeric' ? '3' : scaleValues[1].value"
+										  [matTooltipDisabled]="question.type === 'boolean'"
+										  [disabled]="question.type === 'boolean'">
 						</mat-radio-button>
-						<mat-radio-button class="example-radio-button" value="4">
-							{{scaleValues[3].value}}
+						<mat-radio-button class="example-radio-button label-padding-left-20" value="4"
+										  [matTooltip]="question.type === 'scale-numeric' ? '4' : scaleValues[1].value"
+										  [matTooltipDisabled]="question.type === 'boolean'"
+										  [disabled]="question.type === 'boolean'">
 						</mat-radio-button>
-						<mat-radio-button class="example-radio-button" value="5">
-							{{scaleValues[4].value}}
+						<mat-radio-button class="example-radio-button label-padding-left-20" value="5"
+										  [matTooltip]="getLastTooltip(question)">
 						</mat-radio-button>
 					</mat-radio-group>
 					<mat-error class="error-padding-bottom"
-							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
+							   *ngIf="finish && getFormByIdQuestion(question, true).controls.value.errors?.required">
 						Questão obrigatória
 					</mat-error>
-				</div>
-				<div *ngIf="question.type === 'scale-numeric'">
-					<mat-slider
-						[max]="5"
-						[min]="1"
-						[step]="1"
-						[thumbLabel]="true"
-						[tickInterval]="1"
-						(change)="confirmResult(question)"
-						formControlName="value">
-					</mat-slider>
-					<mat-error class="error-padding-bottom"
-							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
-						Questão obrigatória
-					</mat-error>
-				</div>
-			</form>
+				</form>
+			</div>
+
+			<mat-divider class="question-divider"></mat-divider>
 		</div>
 	</mat-card-content>
 </mat-card>
-
-<mat-card *ngFor="let processAttribute of processAttributes">
-	<mat-card-title class="title-card">
-		{{processAttribute.name}}
-	</mat-card-title>
-	<mat-card-content>
-		<div *ngFor="let question of questionsByIdProcessAttribute[processAttribute.idProcessAttribute]; let i = index">
-
-			<span>{{i + 1 + '. ' + question.name}}</span>
-			<form [formGroup]="getFormByIdQuestion(question)">
-				<div *ngIf="question.type === 'boolean'">
-					<mat-radio-group formControlName="value" (change)="confirmResult(question, true)">
-						<mat-radio-button value="1" class="padding-right">
-							Falso
-						</mat-radio-button>
-						<mat-radio-button value="5">
-							Verdadeiro
-						</mat-radio-button>
-					</mat-radio-group>
-					<mat-error class="error-padding-bottom"
-							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
-						Questão obrigatória
-					</mat-error>
-				</div>
-				<div *ngIf="question.type === 'scale-nominal' && scaleValues">
-					<mat-radio-group formControlName="value"
-									 (change)="confirmResult(question, true)"
-									 class="example-radio-group">
-						<mat-radio-button class="example-radio-button" value="1">
-							{{scaleValues[0].value}}
-						</mat-radio-button>
-						<mat-radio-button class="example-radio-button" value="2">
-							{{scaleValues[1].value}}
-						</mat-radio-button>
-						<mat-radio-button class="example-radio-button" value="3">
-							{{scaleValues[2].value}}
-						</mat-radio-button>
-						<mat-radio-button class="example-radio-button" value="4">
-							{{scaleValues[3].value}}
-						</mat-radio-button>
-						<mat-radio-button class="example-radio-button" value="5">
-							{{scaleValues[4].value}}
-						</mat-radio-button>
-					</mat-radio-group>
-					<mat-error class="error-padding-bottom"
-							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
-						Questão obrigatória
-					</mat-error>
-				</div>
-				<div *ngIf="question.type === 'scale-numeric'">
-					<mat-slider
-						[max]="5"
-						[min]="1"
-						[step]="1"
-						[thumbLabel]="true"
-						[tickInterval]="1"
-						(change)="confirmResult(question, true)"
-						formControlName="value">
-					</mat-slider>
-					<mat-error class="error-padding-bottom"
-							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
-						Questão obrigatória
-					</mat-error>
-				</div>
-			</form>
-		</div>
-	</mat-card-content>
-</mat-card>
-

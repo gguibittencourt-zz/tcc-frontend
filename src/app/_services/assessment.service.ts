@@ -10,8 +10,8 @@ export class AssessmentService {
         return this.http.get(`${config.apiUrl}/assessments/` + id);
     }
 
-    list() {
-		return this.http.get(`${config.apiUrl}/assessments`);
+    list(id: number) {
+		return this.http.get(`${config.apiUrl}/assessments/list/` + id);
 	}
 
 	register(assessment: Assessment) {

@@ -79,14 +79,17 @@ export class RegisterAssessmentComponent implements OnInit {
 				measurementFramework: [, Validators.required],
 				referenceModel: [],
 				results: [],
-				targetLevel: [, Validators.required]
+				targetLevel: [, Validators.required],
+				levelResults: []
 			})
 		});
 
 		this.companyService.get(this.getUser.idCompany).subscribe((company: Company) => {
 			if (company && !company.name) {
 				this.openDialog(company);
+				return;
 			}
+			this.assessmentForm.get('jsonAssessment').get('company').setValue(company);
 		});
 
 		this.route.params.subscribe(params => {
@@ -107,13 +110,6 @@ export class RegisterAssessmentComponent implements OnInit {
 					this.loading = false;
 				});
 			}
-		});
-	}
-
-	openDialog(company: Company): void {
-		this.dialog.open(CompanyDialogComponent, {
-			data: company,
-			disableClose: true
 		});
 	}
 
@@ -150,15 +146,13 @@ export class RegisterAssessmentComponent implements OnInit {
 		return this.measurementFramework.questions.some(question => process.idProcess === question.idProcess);
 	}
 
-	getQuestionsByProcess(process: Process): Question[] {
-		return this.measurementFramework.questions.filter(question => question.idProcess == process.idProcess);
-	}
-
-	getQuestionsByProcessAttribute() {
-		const idsProcessAttributes = this.processAttributes.map(value => value.idProcessAttribute);
-		return this.measurementFramework.questions.filter(question => {
-			return idsProcessAttributes.includes(question.idProcessAttribute);
-		});
+	getQuestions(process: Process): Question[] {
+		const questions = this.measurementFramework.questions.filter(question => question.idProcess == process.idProcess);
+		if (!this.processAttributes) {
+			return questions;
+		}
+		const questionsByProcessAttribute = this.getQuestionsByProcessAttribute();
+		return questions.concat(questionsByProcessAttribute);
 	}
 
 	finishForm(): void {
@@ -181,9 +175,11 @@ export class RegisterAssessmentComponent implements OnInit {
 			this.openResult = true;
 
 			this.assessmentService.finish(this.assessmentForm.value)
-				.subscribe(data => {
+				.subscribe((data: Assessment) => {
+					this.assessment = data;
 					this.createSnackBar('Finalizada com sucesso', 'success');
 					stepper.next();
+					this.loading = false;
 				}, error => {
 					this.createSnackBar(error.error, 'error');
 					this.loading = false;
@@ -233,45 +229,28 @@ export class RegisterAssessmentComponent implements OnInit {
 
 	private createResults(knowledgeArea: KnowledgeArea) {
 		knowledgeArea.processes.forEach(process => {
-			const questions = this.getQuestionsByProcess(process);
+			const questions = this.getQuestions(process);
 			if (questions.length) {
-				this.createResultForms(questions, knowledgeArea.idKnowledgeArea);
+				this.createResultForms(questions, knowledgeArea.idKnowledgeArea, process.idProcess);
 			}
 		});
 	}
 
 	private createResultsProcessAttributes(processAttributes: ProcessAttribute[]) {
-		processAttributes.forEach(processAttribute => {
-			const questions = this.measurementFramework.questions.filter(question => {
-				return processAttribute.idProcessAttribute == question.idProcessAttribute;
-			});
-			if (questions.length) {
-				this.createResultForms(questions, '');
-			}
-		})
+		this.processes.forEach(process => {
+			processAttributes.forEach(processAttribute => {
+				const questions = this.measurementFramework.questions.filter(question => {
+					return processAttribute.idProcessAttribute == question.idProcessAttribute;
+				});
+				if (questions.length) {
+					this.createResultForms(questions, '', process.idProcess);
+				}
+			})
+		});
 	}
 
-	private createResultForms(questions: Question[], idProcessArea: string) {
-		const forms: FormGroup[] = questions.filter(value => !this.existResult(idProcessArea, value.idProcess, value.idQuestion, value.idExpectedResult, value.idProcessAttribute, value.idProcessAttributeValue))
-			.map(question => {
-				const formGroup: FormGroup = this.formBuilder.group({
-					idResult: [Guid.create().toString()],
-					idKnowledgeArea: [idProcessArea],
-					idProcess: [question.idProcess],
-					idExpectedResult: [question.idExpectedResult],
-					idQuestion: [question.idQuestion],
-					idProcessAttribute: [question.idProcessAttribute],
-					idProcessAttributeValue: [question.idProcessAttributeValue],
-					value: ['']
-				});
-				if (question.required) {
-					formGroup.get('value').setValidators(Validators.required);
-				}
-				if (question.defaultValue && !formGroup.get('value').value) {
-					formGroup.get('value').setValue(String(question.defaultValue));
-				}
-				return formGroup;
-			});
+	private createResultForms(questions: Question[], idProcessArea: string, idProcess: string) {
+		const forms: FormGroup[] = questions.map(question => this.createFormGroup(idProcessArea, idProcess, question));
 		const valueForm: FormGroup[] = this.getResultForms.value;
 		if (!valueForm) {
 			this.getResultForms.setValue(forms);
@@ -281,6 +260,26 @@ export class RegisterAssessmentComponent implements OnInit {
 		}
 	}
 
+	private createFormGroup(idProcessArea: string, idProcess: string, question: Question): FormGroup {
+		const formGroup: FormGroup = this.formBuilder.group({
+			idResult: [Guid.create().toString()],
+			idKnowledgeArea: [idProcessArea],
+			idProcess: [idProcess],
+			idExpectedResult: [question.idExpectedResult],
+			idQuestion: [question.idQuestion],
+			idProcessAttribute: [question.idProcessAttribute],
+			idProcessAttributeValue: [question.idProcessAttributeValue],
+			value: ['']
+		});
+		if (question.required) {
+			formGroup.get('value').setValidators(Validators.required);
+		}
+		if (question.defaultValue && !formGroup.get('value').value) {
+			formGroup.get('value').setValue(String(question.defaultValue));
+		}
+		return formGroup;
+	}
+
 	private existResult(idKnowledgeArea: string, idProcess: string, idQuestion: string, idExpectedResult: string,
 						idProcessAttribute: string, idProcessAttributeValue: string): boolean {
 		if (!this.getResultForms.value) {
@@ -288,8 +287,8 @@ export class RegisterAssessmentComponent implements OnInit {
 		}
 		return this.getResultForms.value.some((formGroup: FormGroup) => {
 			const value = formGroup.value;
-			return value.idQuestion == idQuestion
-				&& (value.idProcess && value.idKnowledgeArea == idKnowledgeArea && value.idProcess == idProcess && idExpectedResult == value.idExpectedResult)
+			return value.idQuestion == idQuestion && value.idProcess
+				&& (value.idKnowledgeArea == idKnowledgeArea && value.idProcess == idProcess && idExpectedResult == value.idExpectedResult)
 				|| (value.idProcessAttribute && value.idProcessAttribute == idProcessAttribute && value.idProcessAttributeValue == idProcessAttributeValue);
 		});
 	}
@@ -354,5 +353,28 @@ export class RegisterAssessmentComponent implements OnInit {
 			}
 			return formGroup;
 		});
+	}
+
+	private openDialog(company: Company): void {
+		const dialogRef = this.dialog.open(CompanyDialogComponent, {
+			data: company,
+			disableClose: true
+		});
+		dialogRef.afterClosed().subscribe((result: any) => {
+			if (result) {
+				this.assessmentForm.get('jsonAssessment').get('company').setValue(result);
+			}
+		});
+	}
+
+	private getQuestionsByProcessAttribute(): Question[] {
+		const idsProcessAttributes = this.processAttributes.map(value => value.idProcessAttribute);
+		return this.measurementFramework.questions.filter(question => {
+			return idsProcessAttributes.includes(question.idProcessAttribute);
+		});
+	}
+
+	isLastProcess(indexProcess: number) {
+		return (indexProcess + 1) === this.processes.length;
 	}
 }

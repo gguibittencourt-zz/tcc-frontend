@@ -22,3 +22,5 @@ export * from './level';
 export * from './scale-values';
 export * from './process-attribute';
 export * from './capacity-dialog';
+export * from './level-result';
+export * from './process-result';

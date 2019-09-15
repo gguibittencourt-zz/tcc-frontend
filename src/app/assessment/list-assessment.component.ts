@@ -1,10 +1,10 @@
 ﻿import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
-import {AssessmentService, MeasurementFrameworkService} from '../_services';
+import {AssessmentService, AuthenticationService, MeasurementFrameworkService} from '../_services';
 import {MatDialog, MatPaginator, MatSnackBar, MatTableDataSource} from "@angular/material";
 import {ConfirmDialogComponent} from "../_directives/confirm-dialog";
-import {Assessment, DialogData, MeasurementFramework} from "../_models";
+import {Assessment, DialogData, MeasurementFramework, User} from "../_models";
 import {SnackBarComponent} from "../_directives/snack-bar";
 
 @Component({
@@ -26,8 +26,15 @@ export class ListAssessmentComponent implements OnInit {
 		private router: Router,
 		private assessmentService: AssessmentService,
 		private measurementFrameworkService: MeasurementFrameworkService,
+		private authenticationService: AuthenticationService,
 		private dialog: MatDialog,
 		private snackBar: MatSnackBar) {
+	}
+
+	get getUser(): User {
+		let user = null;
+		this.authenticationService.isUserIn.subscribe(currentUser => user = currentUser);
+		return user;
 	}
 
 	ngOnInit() {
@@ -40,7 +47,7 @@ export class ListAssessmentComponent implements OnInit {
 
 	list() {
 		this.loading = true;
-		this.assessmentService.list().subscribe(data => {
+		this.assessmentService.list(this.getUser.idUser).subscribe(data => {
 			this.assessments = data as Array<Assessment>;
 			this.listMeasurementFrameworks(this.assessments);
 			this.dataSource = new MatTableDataSource(this.assessments);

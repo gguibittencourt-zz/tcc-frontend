@@ -64,7 +64,7 @@ export class CompanyComponent implements OnInit {
 			.subscribe(
 				data => {
 					if (this.company) {
-						this.dialogRef.close(false);
+						this.dialogRef.close(this.company);
 					} else {
 						this.createSnackBar('Organização atualizada', 'success');
 						this.router.navigate(['/home']);
@@ -77,10 +77,6 @@ export class CompanyComponent implements OnInit {
 	}
 
 	cancel(): void {
-		if (this.company) {
-			this.dialogRef.close(false);
-			return;
-		}
 		this.router.navigate(['/home']);
 	}
 

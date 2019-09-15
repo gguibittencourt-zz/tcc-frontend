@@ -2,7 +2,7 @@
 
 <h2>Avaliação</h2>
 
-<mat-horizontal-stepper [linear]="true" #stepper>
+<mat-horizontal-stepper [linear]="true" #stepper class="register-assessment">
 	<ng-template matStepperIcon="edit">
 		<i class="fa fa-edit"></i>
 	</ng-template>
@@ -64,32 +64,27 @@
 			</div>
 		</form>
 	</mat-step>
-	<mat-step [stepControl]="assessmentForm">
-		<form [formGroup]="assessmentForm">
-			<ng-template matStepLabel>Preencha as questões</ng-template>
-			<div class="form-group" *ngIf="measurementFramework && referenceModel && processes && processAttributes">
-				<mat-tab-group mat-stretch-tabs class="example-stretched-tabs mat-elevation-z4">
-					<mat-tab *ngFor="let process of processes" label="{{process.name}}">
-						<mat-card *ngIf="hasQuestions(process)" class="card-process">
-							<mat-card-content>
-								<div class="purpose">{{process.purpose}}</div>
-								<question-assessment [resultForms]="getResultForms.value"
-													 [questions]="getQuestionsByProcess(process)"
-													 [questionsProcessAttributes]="getQuestionsByProcessAttribute()"
-													 [prefix]="process.prefix"
-													 [finish]="isFinish"
-													 [scaleValues]="scaleValues"
-													 [expectedResults]="getExpectedResults()"
-													 [processAttributes]="processAttributes">
-								</question-assessment>
-							</mat-card-content>
-						</mat-card>
-					</mat-tab>
-				</mat-tab-group>
-			</div>
-			<div class="form-group">
-				<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
-				<span *ngIf="!openResult; else buttonNext">
+	<div *ngIf="measurementFramework && referenceModel && processes && processAttributes">
+		<mat-step [stepControl]="assessmentForm" *ngFor="let process of processes; let indexProcess = index">
+			<form [formGroup]="assessmentForm">
+				<ng-template matStepLabel>{{process.name}}</ng-template>
+				<div class="form-group">
+					<mat-card *ngIf="hasQuestions(process)" class="card-process">
+						<mat-card-content>
+							<div class="process-title">{{process.name}}</div>
+							<div class="purpose">{{process.purpose}}</div>
+							<question-assessment [resultForms]="getResultForms.value"
+												 [questions]="getQuestions(process)"
+												 [prefix]="process.prefix"
+												 [finish]="isFinish"
+												 [scaleValues]="scaleValues">
+							</question-assessment>
+						</mat-card-content>
+					</mat-card>
+				</div>
+				<div class="form-group">
+					<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
+					<span *ngIf="!openResult && isLastProcess(indexProcess); else buttonNext">
 					<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
 							class="btn btn-outline-success save-button">Salvar
 					</button>
@@ -97,19 +92,37 @@
 							class="btn btn-outline-success save-button">Salvar e Finalizar
 					</button>
 				</span>
-				<ng-template #buttonNext>
-					<button mat-raised-button class="mat-raised-button btn btn-outline-secondary" (click)="checkForms()"
-							matStepperNext>Próximo
-					</button>
-				</ng-template>
-			</div>
-		</form>
-	</mat-step>
+					<ng-template #buttonNext>
+						<button mat-raised-button class="mat-raised-button btn btn-outline-secondary"
+								(click)="checkForms()"
+								matStepperNext>Próximo
+						</button>
+					</ng-template>
+				</div>
+			</form>
+		</mat-step>
+	</div>
+
 	<mat-step [stepControl]="assessmentForm" *ngIf="openResult">
-		<form [formGroup]="assessmentForm">
+		<form [formGroup]="assessmentForm" *ngIf="assessment?.jsonAssessment?.levelResults">
 			<ng-template matStepLabel>Resultado da avaliação</ng-template>
 			<div class="form-group">
 				Resultado
+
+				<mat-card *ngFor="let levelResult of assessment.jsonAssessment.levelResults">
+					<mat-card-title class="title-card">
+						{{levelResult.classification.name}}
+					</mat-card-title>
+					<mat-card-content>
+						<div *ngFor="let processResult of levelResult.processes">
+							<div class="col-md-12 content-card">
+								<div class="col-md-8 border-right">{{processResult.process.name}}</div>
+								<div class="col-md-4">{{processResult.result}}</div>
+							</div>
+
+						</div>
+					</mat-card-content>
+				</mat-card>
 			</div>
 		</form>
 	</mat-step>

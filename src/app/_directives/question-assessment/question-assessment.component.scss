@@ -19,7 +19,25 @@
 }
 
 .example-radio-button {
-	margin: 5px;
+	width: 20%;
+	text-align: center;
+
+	.mat-radio-outer-circle, .mat-radio-inner-circle {
+		height: 15px;
+		width: 15px;
+	}
+}
+
+.label-padding-left-15 {
+	.mat-radio-label {
+		padding-left: 20px;
+	}
+}
+
+.label-padding-left-20 {
+	.mat-radio-label {
+		padding-left: 20px;
+	}
 }
 
 .title-card {
@@ -35,4 +53,26 @@
 .link {
 	cursor: pointer;
 	color: #17a2b8;
+}
+
+.header-group {
+	width: 100%;
+	display: flex;
+	margin-left: 67%;
+	padding-bottom: 10px;
+
+	.header {
+		width: 7%;
+		font-size: 10px;
+	}
+}
+
+.question-name {
+	width: 100%;
+	text-align: justify;
+	font-size: 13px;
+}
+
+.question-divider {
+	margin-top: -2px !important;
 }
