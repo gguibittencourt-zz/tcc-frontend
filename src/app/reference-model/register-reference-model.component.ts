@@ -67,7 +67,7 @@ export class RegisterReferenceModelComponent implements OnInit {
 						this.router.navigate(['/reference-model']);
 					},
 					error => {
-						this.createSnackBar(error.error, 'error');
+						this.createSnackBar(error, 'error');
 						this.loading = false;
 					});
 		} else {
@@ -78,7 +78,7 @@ export class RegisterReferenceModelComponent implements OnInit {
 						this.router.navigate(['/reference-model']);
 					},
 					error => {
-						this.createSnackBar(error.error, 'error');
+						this.createSnackBar(error, 'error');
 						this.loading = false;
 					});
 		}

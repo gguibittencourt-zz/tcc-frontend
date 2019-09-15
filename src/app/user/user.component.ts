@@ -63,7 +63,7 @@ export class UserComponent implements OnInit {
 						this.router.navigate(['/home']);
 					},
 					error => {
-						this.createSnackBar(error.error, 'error');
+						this.createSnackBar(error, 'error');
 						this.loading = false;
 					});
 		} else {
@@ -74,7 +74,7 @@ export class UserComponent implements OnInit {
 						this.router.navigate(['/login']);
 					},
 					error => {
-						this.createSnackBar(error.error, 'error');
+						this.createSnackBar(error, 'error');
 						this.loading = false;
 					});
 		}

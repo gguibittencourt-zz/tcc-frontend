@@ -150,7 +150,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 						this.router.navigate(['/measurement-framework']);
 					},
 					error => {
-						this.createSnackBar(error.error, 'error');
+						this.createSnackBar(error, 'error');
 						this.loading = false;
 					});
 		} else {
@@ -161,7 +161,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 						this.router.navigate(['/measurement-framework']);
 					},
 					error => {
-						this.createSnackBar(error.error, 'error');
+						this.createSnackBar(error, 'error');
 						this.loading = false;
 					});
 		}

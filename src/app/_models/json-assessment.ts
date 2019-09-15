@@ -12,4 +12,5 @@ export class JsonAssessment {
 	referenceModel: ReferenceModel;
 	levelResults: LevelResult[];
 	company: Company;
+	assessmentResult: string;
 }

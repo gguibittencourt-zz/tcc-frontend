@@ -71,7 +71,7 @@ export class CompanyComponent implements OnInit {
 					}
 				},
 				error => {
-					this.createSnackBar(error.error, 'error');
+					this.createSnackBar(error, 'error');
 					this.loading = false;
 				});
 	}

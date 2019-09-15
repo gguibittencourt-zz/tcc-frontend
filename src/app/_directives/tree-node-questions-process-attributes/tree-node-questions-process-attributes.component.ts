@@ -42,6 +42,7 @@ export class TreeNodeQuestionsProcessAttributesComponent implements OnInit {
 		const data = new MatQuestionDialogData();
 		data.node = node;
 		data.type = this.type;
+		data.isProcessAttribute = true;
 		data.questions = isEmpty(this.questions) ? [] : cloneDeep(this.getQuestiosByNode(node.idTreeNode));
 		const dialogRef = this.dialog.open(QuestionComponent, {
 			height: '95%',

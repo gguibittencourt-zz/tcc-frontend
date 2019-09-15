@@ -109,7 +109,7 @@ export class QuestionComponent {
 			idQuestion: [idQuestion, Validators.required],
 			idProcess: [idTreeNode, Validators.required],
 			idExpectedResult: ['', Validators.required],
-			idProcessAttribute: [idTreeNode],
+			idProcessAttribute: [this.data.isProcessAttribute ? idTreeNode : ''],
 			idProcessAttributeValue: [''],
 			name: ['', Validators.required],
 			tip: ['', Validators.maxLength(255)],

@@ -81,7 +81,8 @@ export class RegisterAssessmentComponent implements OnInit {
 				referenceModel: [],
 				results: [],
 				targetLevel: [, Validators.required],
-				levelResults: []
+				levelResults: [],
+				assessmentResult: ['']
 			})
 		});
 
@@ -130,6 +131,10 @@ export class RegisterAssessmentComponent implements OnInit {
 
 	get getCompany(): Company {
 		return this.assessmentForm.get('jsonAssessment').get('company').value;
+	}
+
+	get getAssessmentResult(): string {
+		return this.assessmentForm.get('jsonAssessment').get('assessmentResult').value;
 	}
 
 	get getDate() {
@@ -189,11 +194,12 @@ export class RegisterAssessmentComponent implements OnInit {
 				.subscribe((data: Assessment) => {
 					this.assessment = data;
 					this.assessmentForm.get('date').setValue(data.date);
+					this.assessmentForm.get('jsonAssessment').get('assessmentResult').setValue(data.jsonAssessment.assessmentResult);
 					this.createSnackBar('Finalizada com sucesso', 'success');
 					stepper.next();
 					this.loading = false;
 				}, error => {
-					this.createSnackBar(error.error, 'error');
+					this.createSnackBar(error, 'error');
 					this.loading = false;
 				});
 			return;
@@ -206,7 +212,7 @@ export class RegisterAssessmentComponent implements OnInit {
 					this.router.navigate(['/assessment']);
 				},
 				error => {
-					this.createSnackBar(error.error, 'error');
+					this.createSnackBar(error, 'error');
 					this.loading = false;
 				});
 			return;
@@ -217,7 +223,7 @@ export class RegisterAssessmentComponent implements OnInit {
 				this.router.navigate(['/assessment']);
 			},
 			error => {
-				this.createSnackBar(error.error, 'error');
+				this.createSnackBar(error, 'error');
 				this.loading = false;
 			});
 	}

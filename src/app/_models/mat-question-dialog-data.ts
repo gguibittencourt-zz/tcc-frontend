@@ -6,4 +6,5 @@ export class MatQuestionDialogData {
 	questions: Question[];
 	node: TreeNode;
 	type: string;
+	isProcessAttribute: boolean;
 }
