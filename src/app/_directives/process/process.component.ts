@@ -13,7 +13,7 @@ import {Guid} from "guid-typescript";
 export class ProcessComponent implements OnInit {
 
 	processForms: FormGroup[] = [];
-	mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
+	submitted = false;
 	private _isPossibleConfirm: boolean = true;
 
 	constructor(private dialogRef: MatDialogRef<ProcessComponent>,
@@ -26,14 +26,13 @@ export class ProcessComponent implements OnInit {
 			const form = this.formBuilder.group({
 				idProcess: ['', Validators.required],
 				name: ['', Validators.required],
-				prefix: [''],
-				purpose: ['', Validators.required],
+				prefix: ['', Validators.required],
+				purpose: [''],
 				expectedResults: [[]]
 			});
 
 			form.patchValue(this.data[index]);
 			this.processForms[index] = form;
-			this.mapCloseAccordion.set(index, false);
 		});
 	}
 
@@ -46,11 +45,12 @@ export class ProcessComponent implements OnInit {
 	}
 
 	confirmProcess(index: number) {
+		this.submitted = true;
 		if (this.processForms[index].invalid) {
 			return;
 		}
+		this.submitted = false;
 		this._isPossibleConfirm = true;
-		this.mapCloseAccordion.set(index, false);
 		this.data[index] = this.processForms[index].value;
 	}
 

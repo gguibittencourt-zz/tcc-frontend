@@ -14,9 +14,9 @@
 		</div>
 		<div class="process-body">
 			<mat-accordion>
-				<mat-expansion-panel *ngFor="let process of data; let i = index" [expanded]="mapCloseAccordion.get(i)">
-					<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-						<input matInput value="{{process.name}}" disabled placeholder="Processo"/>
+				<mat-expansion-panel *ngFor="let process of data; let i = index" #met>
+					<mat-expansion-panel-header>
+						<input matInput value="{{(i + 1) + '. '+ (process.name ? process.name : '')}}" disabled placeholder="Processo"/>
 						<button mat-icon-button type="button" (click)="deleteProcess(i)"
 								class="mat-icon-button active">
 							<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
@@ -41,9 +41,12 @@
 											   (blur)="createPrefix($event.target.value, i)"
 											   placeholder="Nome"/>
 									</mat-form-field>
-									<div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-										<div *ngIf="f.name.errors.required">Nome é obrigatório</div>
-									</div>
+									<mat-error *ngIf="submitted && processForms[i].controls.name.errors">Nome é obrigatório</mat-error>
+									<mat-form-field class="col-md-12">
+										<input matInput formControlName="prefix"
+											   placeholder="Identificador"/>
+									</mat-form-field>
+									<mat-error *ngIf="submitted && processForms[i].controls.prefix.errors">Identificador é obrigatório</mat-error>
 									<mat-form-field class="padding-top col-md-12">
 										<textarea matInput
 												  cdkTextareaAutosize
@@ -52,12 +55,9 @@
 												  formControlName="purpose"
 												  placeholder="Objetivo"></textarea>
 									</mat-form-field>
-									<div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-										<div *ngIf="f.name.errors.required">Objetivo é obrigatório</div>
-									</div>
 								</div>
 								<div class="form-group">
-									<button mat-raised-button [disabled]="loading"
+									<button mat-raised-button (click)="met.close()"
 											class="btn btn-outline-danger">
 										Cancelar
 									</button>
@@ -78,7 +78,7 @@
 
 							<div class="form-group">
 								<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
-								<button mat-raised-button (click)="confirmProcess(i)" [disabled]="loading"
+								<button mat-raised-button (click)="confirmProcess(i)"
 										class="btn btn-outline-success save-button">Salvar
 								</button>
 							</div>

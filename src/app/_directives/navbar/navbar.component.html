@@ -1,4 +1,4 @@
-﻿<div *ngIf="isLoggedIn$ && isUserIn | async">
+﻿<div *ngIf="isLoggedIn$ && isUserIn | async" class="menubar">
 	<mat-toolbar class="col-md-12">
 		<button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="Clique para abrir o menu"><i
 			class="fa fa-bars"></i></button>
@@ -26,7 +26,7 @@
 				<span>Avaliação</span>
 			</button>
 		</mat-menu>
-		<span>Self-Assessment Tool</span>
+		<span>Generic Self-Assessment Tool</span>
 		<span class="example-fill-remaining-space"></span>
 		<span>{{getUser.name}}</span>
 		<button mat-icon-button [matMenuTriggerFor]="matMenu">

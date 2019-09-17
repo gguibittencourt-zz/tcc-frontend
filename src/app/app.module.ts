@@ -2,8 +2,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-
-
+import { HighchartsChartComponent } from 'highcharts-angular';
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
 import {AuthGuard} from './_guards';
@@ -94,7 +93,8 @@ import {CompanyDialogComponent} from "./_directives/company-dialog";
 		ScaleValuesDialogComponent,
 		CapacityDialogComponent,
 		CompanyDialogComponent,
-		SnackBarComponent
+		SnackBarComponent,
+		HighchartsChartComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

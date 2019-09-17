@@ -16,7 +16,7 @@
 			<mat-expansion-panel *ngFor="let knowledgeArea of knowledgeAreas; let i = index"
 								 [expanded]="mapCloseAccordion.get(i)">
 				<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-					<input matInput value="{{knowledgeArea.name}}" disabled placeholder="Área de Processo"/>
+					<input matInput value="{{knowledgeArea.name}}" disabled placeholder="Grupo de Processo"/>
 					<button mat-icon-button type="button" (click)="deleteKnowledgeArea(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
