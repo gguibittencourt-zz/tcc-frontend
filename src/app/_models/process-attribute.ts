@@ -5,6 +5,7 @@ import {Rating} from "./rating";
 export class ProcessAttribute {
 	idProcessAttribute: string;
 	name: string;
+	prefix: string;
 	description: string;
 	generateQuestions: boolean;
 	values: ProcessAttributeValue[];

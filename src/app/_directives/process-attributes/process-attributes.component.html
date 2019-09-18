@@ -3,18 +3,16 @@
 		<div class="padding-bottom div-label">
 			<span class="label">Atributos de Processo</span>
 		</div>
-		<button mat-stroked-button type="button" (click)="addProcessAttribute()" class="mat-stroked-button">
-			<span class="mat-button-wrapper">
-				Adicionar atributo de processo
-				<i class="fa fa-plus"></i>
-			</span>
+		<button mat-stroked-button type="button" (click)="addProcessAttribute()" class="btn btn-outline-secondary btn-sm">
+			Adicionar atributo de processo
+			<i class="fa fa-plus"></i>
 		</button>
 	</div>
 	<div class="process-attributes-body col-md-12">
 		<mat-accordion>
 			<mat-expansion-panel *ngFor="let processAttribute of processAttributes; let i = index">
 				<mat-expansion-panel-header>
-					<input matInput value="{{processAttribute.name}}" disabled placeholder="Nome"/>
+					<input matInput value="{{processAttribute.prefix ? processAttribute.prefix + ' ' + processAttribute.name : ''}}" disabled placeholder="Nome"/>
 					<button mat-icon-button type="button" (click)="deleteProcessAttribute(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
@@ -24,9 +22,20 @@
 				</mat-expansion-panel-header>
 
 				<form [formGroup]="getProcessAttributeForm(i)" (ngSubmit)="confirmProcessAttribute(i)">
-					<mat-form-field class="col-md-12">
-						<input matInput formControlName="name" placeholder="Nome"/>
-					</mat-form-field>
+					<div class="display-flex">
+						<mat-form-field class="col-md-2">
+							<input matInput formControlName="prefix" placeholder="Identificador"/>
+						</mat-form-field>
+						<mat-error *ngIf="submitted && getProcessAttributeForm(i).controls.prefix.errors">Identificador é
+							obrigatório
+						</mat-error>
+						<mat-form-field class="col-md-10">
+							<input matInput formControlName="name" placeholder="Nome"/>
+						</mat-form-field>
+						<mat-error *ngIf="submitted && getProcessAttributeForm(i).controls.name.errors">Nome é
+							obrigatório
+						</mat-error>
+					</div>
 					<mat-form-field class="col-md-12">
 					<textarea matInput
 							  cdkTextareaAutosize
@@ -50,11 +59,11 @@
 					</process-attribute-value>
 
 					<mat-action-row class="action-row">
-						<button mat-raised-button class="btn btn-outline-danger">
+						<button mat-raised-button class="btn btn-outline-secondary btn-sm">
 							Cancelar
 						</button>
 						<button mat-raised-button
-								class="btn btn-outline-success confirm-button">
+								class="btn btn-outline-secondary btn-sm confirm-button">
 							Confirmar
 						</button>
 					</mat-action-row>

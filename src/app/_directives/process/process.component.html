@@ -16,7 +16,8 @@
 			<mat-accordion>
 				<mat-expansion-panel *ngFor="let process of data; let i = index" #met>
 					<mat-expansion-panel-header>
-						<input matInput value="{{(i + 1) + '. '+ (process.name ? process.name : '')}}" disabled placeholder="Processo"/>
+						<input matInput value="{{(i + 1) + '. '+ (process.name ? process.name : '')}}" disabled
+							   placeholder="Processo"/>
 						<button mat-icon-button type="button" (click)="deleteProcess(i)"
 								class="mat-icon-button active">
 							<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
@@ -36,17 +37,24 @@
 							<form [formGroup]="processForms[i]">
 								<ng-template matStepLabel>Preencha o nome e o objetivo</ng-template>
 								<div class="form-group">
-									<mat-form-field class="col-md-12">
-										<input matInput formControlName="name"
-											   (blur)="createPrefix($event.target.value, i)"
-											   placeholder="Nome"/>
-									</mat-form-field>
-									<mat-error *ngIf="submitted && processForms[i].controls.name.errors">Nome é obrigatório</mat-error>
-									<mat-form-field class="col-md-12">
-										<input matInput formControlName="prefix"
-											   placeholder="Identificador"/>
-									</mat-form-field>
-									<mat-error *ngIf="submitted && processForms[i].controls.prefix.errors">Identificador é obrigatório</mat-error>
+									<div class="display-flex">
+										<mat-form-field class="col-md-2">
+											<input matInput formControlName="prefix"
+												   placeholder="Identificador"/>
+										</mat-form-field>
+										<mat-error *ngIf="submitted && processForms[i].controls.prefix.errors">
+											Identificador é obrigatório
+										</mat-error>
+										<mat-form-field class="col-md-10">
+											<input matInput formControlName="name"
+												   (blur)="createPrefix($event.target.value, i)"
+												   placeholder="Nome"/>
+										</mat-form-field>
+										<mat-error *ngIf="submitted && processForms[i].controls.name.errors">Nome é
+											obrigatório
+										</mat-error>
+									</div>
+
 									<mat-form-field class="padding-top col-md-12">
 										<textarea matInput
 												  cdkTextareaAutosize
@@ -61,7 +69,8 @@
 											class="btn btn-outline-danger">
 										Cancelar
 									</button>
-									<button mat-raised-button class="btn btn-outline-secondary" matStepperNext>Próximo</button>
+									<button mat-raised-button class="btn btn-outline-secondary" matStepperNext>Próximo
+									</button>
 								</div>
 							</form>
 						</mat-step>
@@ -77,7 +86,8 @@
 							</form>
 
 							<div class="form-group">
-								<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
+								<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar
+								</button>
 								<button mat-raised-button (click)="confirmProcess(i)"
 										class="btn btn-outline-success save-button">Salvar
 								</button>

@@ -76,14 +76,14 @@
 		<div class="form-group">
 			<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
 			<button mat-raised-button class="btn btn-outline-secondary save-button" matStepperNext
-					(click)="nextProcessAttributes()">Próximo</button>
+					(click)="nextCapabilityLevels()">Próximo</button>
 		</div>
 	</mat-step>
 	<mat-step [stepControl]="measurementFrameworkForm">
 		<ng-template matStepLabel>Definição da Maturidade</ng-template>
 
 		<form [formGroup]="measurementFrameworkForm">
-			<classification-scale-nominal *ngIf="referenceModel && enableProcessAttributes"
+			<classification-scale-nominal *ngIf="referenceModel && enableCapabilityLevels"
 										  formArrayName="classifications"
 										  [classifications]="measurementFramework.classifications"
 										  [goals]="measurementFramework.goals"
@@ -94,7 +94,7 @@
 		</form>
 		<div class="form-group">
 			<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious
-					(click)="backProcessAttributes()">Voltar</button>
+					(click)="backCapabilityLevels()">Voltar</button>
 			<button mat-raised-button class="btn btn-outline-secondary" mat-button matStepperNext>Próximo</button>
 		</div>
 
@@ -118,8 +118,8 @@
 				<mat-tab label="Questões de Atributos de Processos">
 					<mat-card class="full-width-card">
 						<mat-card-content>
-							<tree-node-questions-process-attributes *ngIf="referenceModel && enableProcessAttributes"
-																	[processAttributes]="measurementFramework.processAttributes"
+							<tree-node-questions-process-attributes *ngIf="referenceModel && enableCapabilityLevels"
+																	[processAttributes]="getProcessAttributes()"
 																	[questions]="measurementFramework.questions"
 																	[type]="type"
 																	(onConfirmQuestions)="confirmQuestions($event)">

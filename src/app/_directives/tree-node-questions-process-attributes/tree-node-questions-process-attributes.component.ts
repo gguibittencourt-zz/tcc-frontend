@@ -33,6 +33,7 @@ export class TreeNodeQuestionsProcessAttributesComponent implements OnInit {
 				const treeNode: TreeNode = new TreeNode();
 				treeNode.idTreeNode = processAttribute.idProcessAttribute;
 				treeNode.name = processAttribute.name;
+				treeNode.prefix = processAttribute.prefix;
 				treeNode.processAttributeValues = processAttribute.values;
 				return treeNode;
 			});
@@ -43,7 +44,7 @@ export class TreeNodeQuestionsProcessAttributesComponent implements OnInit {
 		data.node = node;
 		data.type = this.type;
 		data.isProcessAttribute = true;
-		data.questions = isEmpty(this.questions) ? [] : cloneDeep(this.getQuestiosByNode(node.idTreeNode));
+		data.questions = isEmpty(this.questions) ? [] : cloneDeep(this.getQuestionsByNode(node.idTreeNode));
 		const dialogRef = this.dialog.open(QuestionComponent, {
 			height: '95%',
 			width: '95%',
@@ -76,7 +77,7 @@ export class TreeNodeQuestionsProcessAttributesComponent implements OnInit {
 		});
 	}
 
-	getQuestiosByNode(idNode: string) {
+	getQuestionsByNode(idNode: string) {
 		return this.questions ? this.questions.filter(value => value.idProcessAttribute === idNode) : [];
 	}
 }

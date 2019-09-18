@@ -37,18 +37,18 @@
 									<mat-select *ngIf="data.node.expectedResults"
 												placeholder="Resultado Esperado" formControlName="idExpectedResult"
 												[ngClass]="{ 'is-invalid': submitted && f.idExpectedResult.errors }">
-										<mat-option *ngFor="let expectedResult of data.node.expectedResults"
+										<mat-option *ngFor="let expectedResult of data.node.expectedResults; let i = index"
 													[value]="expectedResult.idExpectedResult">
-											{{expectedResult.name}}
+											{{data.node.prefix + ' ' + (i + 1) + '. ' + expectedResult.name}}
 										</mat-option>
 									</mat-select>
 									<mat-select *ngIf="data.node.processAttributeValues"
 												placeholder="Resultado do atributo de processo"
 												formControlName="idProcessAttributeValue">
 										<mat-option
-											*ngFor="let processAttributeValue of data.node.processAttributeValues"
+											*ngFor="let processAttributeValue of data.node.processAttributeValues; let i = index"
 											[value]="processAttributeValue.idProcessAttributeValue">
-											{{processAttributeValue.name}}
+											{{data.node.prefix + '.' + (i + 1) + '. ' + processAttributeValue.name}}
 										</mat-option>
 									</mat-select>
 								</mat-form-field>

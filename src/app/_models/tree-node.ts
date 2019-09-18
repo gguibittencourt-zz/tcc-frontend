@@ -4,7 +4,8 @@ import {ProcessAttributeValue} from "./process-attribute-value";
 
 export class TreeNode {
     idTreeNode: string;
-    name: string;
+	name: string;
+	prefix: string;
     children?: TreeNode[];
     expectedResults?: ExpectedResult[];
     processAttributeValues?: ProcessAttributeValue[];

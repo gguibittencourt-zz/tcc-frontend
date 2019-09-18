@@ -11,7 +11,6 @@ import {
 	MeasurementFramework,
 	ProcessAttribute,
 	Question,
-	Rating,
 	ReferenceModel,
 	ScaleValues,
 	TypeQuestion
@@ -19,7 +18,7 @@ import {
 import {MatDialog, MatSelectChange, MatSnackBar} from "@angular/material";
 import {ScaleValuesDialogComponent} from "../_directives/scale-values-dialog";
 import {Guid} from "guid-typescript";
-import {flatten, isEmpty} from 'lodash';
+import {flatten, isEmpty, flatMap} from 'lodash';
 import {SnackBarComponent} from "../_directives/snack-bar";
 
 @Component({
@@ -36,7 +35,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 	referenceModel: ReferenceModel;
 	types: TypeQuestion[] = [];
 	type: string;
-	enableProcessAttributes: boolean = false;
+	enableCapabilityLevels: boolean = false;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -222,17 +221,24 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		}));
 	}
 
-	//TODO capacityLevels
-	nextProcessAttributes() {
-		this.enableProcessAttributes = true;
-		// let questions: Question[] = this.createQuestionsByProcessAttributes(this.measurementFramework.processAttributes);
-		// questions = questions.concat(this.f["questions"].value);
-		// this.f['questions'].setValue(questions);
-		// this.measurementFramework.questions = questions;
+	getProcessAttributes(): ProcessAttribute[] {
+		return flatMap(this.measurementFramework.capacityLevels, (capabilityLevel => {
+			return capabilityLevel.processAttributes;
+		}));
 	}
 
-	backProcessAttributes() {
-		this.enableProcessAttributes = false;
+	nextCapabilityLevels() {
+		this.enableCapabilityLevels = true;
+		const processAttributes = this.getProcessAttributes();
+
+		let questions: Question[] = this.createQuestionsByProcessAttributes(processAttributes);
+		questions = questions.concat(this.f["questions"].value);
+		this.f['questions'].setValue(questions);
+		this.measurementFramework.questions = questions;
+	}
+
+	backCapabilityLevels() {
+		this.enableCapabilityLevels = false;
 	}
 
 	private createQuestionsByProcessAttributes(processAttributes: ProcessAttribute[]): Question[] {

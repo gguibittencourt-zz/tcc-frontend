@@ -26,7 +26,8 @@ export class CapacityLevelComponent implements OnInit {
 			const capacityLevel = new CapacityLevel();
 			capacityLevel.name = 'Nível 1';
 			const processAttribute = new ProcessAttribute();
-			processAttribute.name = 'AP 1.1 O processo é executado';
+			processAttribute.name = 'O processo é executado';
+			processAttribute.prefix = 'AP 1.1';
 			processAttribute.values = CapacityLevelComponent.createValue();
 			processAttribute.ratings = ["4"];
 			processAttribute.generateQuestions = false;

@@ -14,14 +14,17 @@ export class ProcessAttributesComponent {
 	@Input('ratings') ratings: Rating[];
 	@Output() onConfirmProcessAttribute: EventEmitter<any> = new EventEmitter();
 	private processAttributeForms: FormGroup[] = [];
+	submitted = false;
 
 	constructor(private formBuilder: FormBuilder) {
 	}
 
 	confirmProcessAttribute(index: number) {
+		this.submitted = true;
 		if (this.processAttributeForms[index].invalid) {
 			return;
 		}
+		this.submitted = false;
 		this.processAttributes[index] = this.processAttributeForms[index].value;
 		this.onConfirmProcessAttribute.emit(this.processAttributes);
 	}
@@ -50,6 +53,7 @@ export class ProcessAttributesComponent {
 			form = this.formBuilder.group({
 				idProcessAttribute: [Guid.create().toString()],
 				name: ['', Validators.required],
+				prefix: ['', Validators.required],
 				generateQuestions: [],
 				description: [''],
 				values: this.formBuilder.array([]),

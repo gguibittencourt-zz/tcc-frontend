@@ -34,6 +34,7 @@ export class TreeNodeQuestionsComponent implements OnInit {
 				let treeNodeChildren: TreeNode = new TreeNode();
 				treeNodeChildren.idTreeNode = process.idProcess;
 				treeNodeChildren.name = process.name;
+				treeNodeChildren.prefix = process.prefix;
 				treeNodeChildren.expectedResults = process.expectedResults;
 				return treeNodeChildren;
 			});
