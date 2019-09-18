@@ -1,22 +1,21 @@
 ﻿<div class="process-attributes">
-
-	<div class="process-attributes-header">
-		<div class="process-attributes-header-title">
-			<div class="process-attributes-header-title-spacer">Atributos de Processo</div>
-			<button mat-stroked-button type="button" (click)="addProcessAttribute()" class="mat-stroked-button">
+	<div class="col-md-12 display-flex div-button-label">
+		<div class="padding-bottom div-label">
+			<span class="label">Atributos de Processo</span>
+		</div>
+		<button mat-stroked-button type="button" (click)="addProcessAttribute()" class="mat-stroked-button">
 			<span class="mat-button-wrapper">
-				Adicionar
+				Adicionar atributo de processo
 				<i class="fa fa-plus"></i>
 			</span>
-			</button>
-		</div>
+		</button>
 	</div>
-	<div class="process-attributes-body">
+	<div class="process-attributes-body col-md-12">
 		<mat-accordion>
 			<mat-expansion-panel *ngFor="let processAttribute of processAttributes; let i = index">
 				<mat-expansion-panel-header>
 					<input matInput value="{{processAttribute.name}}" disabled placeholder="Nome"/>
-					<button mat-icon-button type="button" *ngIf="i > 0" (click)="deleteProcessAttribute(i)"
+					<button mat-icon-button type="button" (click)="deleteProcessAttribute(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
 							<i class="fa fa-trash"></i>
@@ -36,22 +35,25 @@
 							  formControlName="description"
 							  placeholder="Descrição"></textarea>
 					</mat-form-field>
-					<div *ngIf="i === 0" class="col-md-12 padding-bottom">
-						<span class="label">Capacidade</span>
-						<button class="btn btn-outline-secondary btn-sm" type="button"
-								(click)="openDialog()">
-							Mapear valores de capacidade
-						</button>
-					</div>
+
+					<mat-form-field class="col-md-12">
+						<mat-select [(ngModel)]="processAttribute.ratings" placeholder="Avaliação" multiple
+									[ngModelOptions]="{standalone: true}">
+							<mat-option *ngFor="let rating of ratings" [value]="rating.id">
+								{{rating.name}}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+
 					<process-attribute-value [formGroup]="getProcessAttributeForm(i)"
 											 [values]="processAttribute.values">
 					</process-attribute-value>
 
 					<mat-action-row class="action-row">
-						<button mat-raised-button [disabled]="loading" class="btn btn-outline-danger">
+						<button mat-raised-button class="btn btn-outline-danger">
 							Cancelar
 						</button>
-						<button mat-raised-button [disabled]="loading"
+						<button mat-raised-button
 								class="btn btn-outline-success confirm-button">
 							Confirmar
 						</button>

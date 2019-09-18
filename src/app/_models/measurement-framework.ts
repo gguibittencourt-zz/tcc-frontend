@@ -3,7 +3,8 @@ import {GoalBoolean} from "./goal-boolean";
 import {GoalScale} from "./goal-scale";
 import {Classification} from "./classification";
 import {ScaleValues} from "./scale-values";
-import {ProcessAttribute} from "./process-attribute";
+import {CapacityLevel} from "./capacity-level";
+import {Rating} from "./rating";
 
 export class MeasurementFramework {
     idMeasurementFramework: number;
@@ -13,6 +14,7 @@ export class MeasurementFramework {
     scaleValues: ScaleValues[];
 	questions?: Question[];
 	goals?: GoalBoolean[] | GoalScale[];
-	processAttributes?: ProcessAttribute[];
+	ratings?: Rating[];
+	capacityLevels?: CapacityLevel[];
 	classifications?: Classification[];
 }

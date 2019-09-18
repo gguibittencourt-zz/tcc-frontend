@@ -1,6 +1,6 @@
 ﻿<loading [isLoading]="loading"></loading>
 
-<h2>Método de Avaliação</h2>
+<h2>Modelo de Avaliação</h2>
 
 <mat-horizontal-stepper [linear]="true" #stepper>
 	<ng-template matStepperIcon="edit">
@@ -66,12 +66,11 @@
 		<ng-template matStepLabel>Definição da Capacidade/Atributos de processo</ng-template>
 
 		<form [formGroup]="measurementFrameworkForm">
-			<process-attributes *ngIf="referenceModel"
-								[goals]="measurementFramework.goals"
-								[knowledgeAreas]="referenceModel.knowledgeAreas"
-								[processAttributes]="measurementFramework.processAttributes"
-								(onConfirmProcessAttribute)="confirmProcessAttributes($event)">
-			</process-attributes>
+			<capacity-level *ngIf="measurementFramework.ratings"
+								[ratings]="measurementFramework.ratings"
+								[capacityLevels]="measurementFramework.capacityLevels"
+								(onConfirmCapacityLevels)="confirmCapacityLevels($event)">
+			</capacity-level>
 		</form>
 
 		<div class="form-group">
@@ -88,7 +87,7 @@
 										  formArrayName="classifications"
 										  [classifications]="measurementFramework.classifications"
 										  [goals]="measurementFramework.goals"
-										  [processAttributes]="measurementFramework.processAttributes"
+										  [capacityLevels]="measurementFramework.capacityLevels"
 										  [knowledgeAreas]="referenceModel.knowledgeAreas"
 										  (onConfirmClassification)="confirmClassifications($event)">
 			</classification-scale-nominal>

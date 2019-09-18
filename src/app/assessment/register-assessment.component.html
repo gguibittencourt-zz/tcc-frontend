@@ -11,10 +11,10 @@
 	</ng-template>
 	<mat-step [stepControl]="assessmentForm">
 		<form [formGroup]="assessmentForm">
-			<ng-template matStepLabel>Selecione um método de avaliação</ng-template>
+			<ng-template matStepLabel>Selecione um modelo de avaliação</ng-template>
 			<div class="form-group" formGroupName="jsonAssessment">
 				<mat-form-field class="full-width-input">
-					<mat-select placeholder="Método de Avaliação" formControlName="measurementFramework"
+					<mat-select placeholder="Modelo de Avaliação" formControlName="measurementFramework"
 								(selectionChange)="changeMeasurementFramework($event.value)"
 								[disabled]="!!idAssessment">
 						<div *ngIf="!idAssessment">
@@ -30,7 +30,7 @@
 					</mat-select>
 				</mat-form-field>
 				<mat-error *ngIf="submitted && f.jsonAssessment.controls.measurementFramework.errors?.required">
-					Método de Avaliação é obrigatório
+					Modelo de Avaliação é obrigatório
 				</mat-error>
 			</div>
 
@@ -114,7 +114,7 @@
 					</mat-card-title>
 					<mat-card-content>
 						<div class="label">Data da Avaliação: {{getDate | date:'dd/MM/yyyy HH:mm:ss'}}</div>
-						<div class="label">Método de Avaliação: {{measurementFramework.name}}</div>
+						<div class="label">Modelo de Avaliação: {{measurementFramework.name}}</div>
 						<div class="display-flex">
 							<div class="label flex">Nome da Organização: {{getCompany.name}}</div>
 							<div class="label">Área de Atuação: {{getCompany.occupationArea}}</div>

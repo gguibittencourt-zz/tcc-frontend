@@ -29,7 +29,7 @@ export class KnowledgeAreaComponent implements OnInit {
 			this.knowledgeAreaForms[index] = this.formBuilder.group({
 				idKnowledgeArea: [],
 				name: ['', Validators.required],
-				purpose: ['', Validators.required],
+				purpose: [''],
 				processes: [[]]
 
 			});
@@ -82,7 +82,7 @@ export class KnowledgeAreaComponent implements OnInit {
 			form = this.formBuilder.group({
 				idKnowledgeArea: [Guid.create().toString()],
 				name: ['', Validators.required],
-				purpose: ['', Validators.required],
+				purpose: [''],
 				processes: [[]]
 			});
 			form.patchValue(this.knowledgeAreas[index]);

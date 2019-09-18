@@ -47,7 +47,7 @@ export class ListMeasurementFrameworkComponent implements OnInit {
 	}
 
 	openConfirmationDialog(measurementFramework: MeasurementFramework) {
-		const data: DialogData = new DialogData(measurementFramework.name, "Deletar Método de Avaliação", "Você deseja deletar o Método de Avaliação:");
+		const data: DialogData = new DialogData(measurementFramework.name, "Deletar Modelo de Avaliação", "Você deseja deletar o Método de Avaliação:");
 		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
 			disableClose: true,
 			data: data

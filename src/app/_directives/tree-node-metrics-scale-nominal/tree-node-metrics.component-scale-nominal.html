@@ -19,12 +19,6 @@
 		<li class="mat-tree-node">
 			<button mat-icon-button disabled></button>
 			{{node.name}}
-			<div class="display-grid">
-				<span>Métrica</span>
-				<mat-slide-toggle [disabled]="!allChildrensHasMetric(node)" [checked]="node.hasMetricScale"
-								  (change)="toggleHasMetricScale($event, node, true)">
-				</mat-slide-toggle>
-			</div>
 			<div *ngIf="node.hasMetricScale">
 				<button mat-icon-button (click)="openMetricScaleDialog(node, true)">
 					<i class="fa fa-edit"></i>

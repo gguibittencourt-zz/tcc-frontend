@@ -1,7 +1,8 @@
 ﻿import {Component, OnInit} from '@angular/core';
 
-import {ReferenceModel, User} from '../_models';
-import {ReferenceModelService} from "../_services";
+import {Assessment, ReferenceModel, User} from '../_models';
+import {AssessmentService, ReferenceModelService} from "../_services";
+import {groupBy, keys} from 'lodash';
 import Highcharts = require('highcharts');
 
 @Component({
@@ -12,45 +13,49 @@ export class HomeComponent implements OnInit {
 	currentUser: User;
 	referenceModels: ReferenceModel[];
 	highcharts = Highcharts;
-	chartOptions = {
-		chart: {
-			type: "spline"
-		},
-		series: [
-			{
-				name: 'Tokyo',
-				data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2,26.5, 23.3, 18.3, 13.9, 9.6]
-			},
-			{
-				name: 'New York',
-				data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8,24.1, 20.1, 14.1, 8.6, 2.5]
-			},
-			{
-				name: 'Berlin',
-				data: [-0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0]
-			},
-			{
-				name: 'London',
-				data: [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8]
-			}
-		],
-		yAxis: {
-			title:{
-				text:"Temperature °C"
-			}
-		},
-		xAxis:{
-			categories:["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-		},
-	};
+	chartOptions: any;
+	loading: boolean = false;
 
-	constructor(private referenceModelService: ReferenceModelService) {
+	constructor(private referenceModelService: ReferenceModelService,
+				private assessmentService: AssessmentService) {
 		this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
 	}
 
 	ngOnInit() {
+		this.loading = true;
 		this.referenceModelService.list().subscribe((value: ReferenceModel[]) => {
 			this.referenceModels = value;
 		});
+
+		this.assessmentService.list(this.currentUser.idUser).subscribe((assessments: Assessment[]) => {
+			const assessmentByDate = groupBy(assessments, (assessment: Assessment) => {
+				return this.formatDate(assessment.date);
+			});
+
+			const series = assessments.map(value => {
+				return {name: value.jsonAssessment.measurementFramework.name, data: []}
+			});
+
+			this.chartOptions = {
+				chart: {
+					type: "spline"
+				},
+				series: series,
+				yAxis: {
+					title: {
+						text: "Níveis de Maturidade"
+					}
+				},
+				xAxis: {
+					categories: keys(assessmentByDate)
+				},
+			};
+			this.loading = false;
+		});
+	}
+
+	private formatDate(date: any): string {
+		const dateFormat = new Date(date.date.year, date.date.month, date.date.day);
+		return [dateFormat.getDate(), dateFormat.getMonth(), dateFormat.getFullYear()].join('/');
 	}
 }

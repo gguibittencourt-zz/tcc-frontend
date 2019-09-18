@@ -63,7 +63,7 @@ export class ProcessComponent implements OnInit {
 				idProcess: [Guid.create().toString()],
 				prefix: [''],
 				name: ['', Validators.required],
-				purpose: ['', Validators.required],
+				purpose: [''],
 				expectedResults: [[]]
 			});
 		}

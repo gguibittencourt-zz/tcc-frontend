@@ -4,12 +4,14 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MeasurementFrameworkService, ReferenceModelService} from '../_services';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {
+	CapacityLevel,
 	Classification,
 	GoalBoolean,
 	GoalScale,
 	MeasurementFramework,
 	ProcessAttribute,
 	Question,
+	Rating,
 	ReferenceModel,
 	ScaleValues,
 	TypeQuestion
@@ -52,16 +54,6 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.measurementFramework = new MeasurementFramework();
-		this.createScaleValues(this.measurementFramework);
-		this.referenceModelService.list().subscribe((data: ReferenceModel[]) => {
-			this.referenceModels = data;
-		});
-
-		this.types = [
-			{idTypeQuestion: 'scale-nominal', name: 'Escala Ordinal'},
-			{idTypeQuestion: 'scale-numeric', name: 'Escala Numérica'},
-			{idTypeQuestion: 'boolean', name: 'Verdadeiro/Falso'},
-		];
 
 		this.measurementFrameworkForm = this.formBuilder.group({
 			idMeasurementFramework: [],
@@ -71,11 +63,22 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			scaleValues: [[]],
 			questions: [[]],
 			goals: [[]],
-			processAttributes: [[]],
+			ratings: [[]],
+			capacityLevels: [[]],
 			classifications: [[]],
 		});
 
-		this.f['scaleValues'].setValue(this.measurementFramework.scaleValues);
+		this.createScaleValues(this.measurementFramework);
+		this.createRatings(this.measurementFramework);
+		this.referenceModelService.list().subscribe((data: ReferenceModel[]) => {
+			this.referenceModels = data;
+		});
+
+		this.types = [
+			{idTypeQuestion: 'scale-nominal', name: 'Escala Ordinal'},
+			{idTypeQuestion: 'scale-numeric', name: 'Escala Numérica'},
+			{idTypeQuestion: 'boolean', name: 'Verdadeiro/Falso'},
+		];
 
 		this.route.params.subscribe(params => {
 			this.idMeasurementFramework = params['idMeasurementFramework'];
@@ -114,9 +117,9 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		this.measurementFramework.goals = goals;
 	}
 
-	confirmProcessAttributes(processAttributes: ProcessAttribute[]) {
-		this.f["processAttributes"].setValue(processAttributes);
-		this.measurementFramework.processAttributes = processAttributes;
+	confirmCapacityLevels(capacityLevels: CapacityLevel[]) {
+		this.f["capacityLevels"].setValue(capacityLevels);
+		this.measurementFramework.capacityLevels = capacityLevels;
 	}
 
 	confirmClassifications(classifications: Classification[]) {
@@ -190,6 +193,18 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			{id: '4', value: 'Concordo parcialmente', mappedValue: 'Largamente implementado'},
 			{id: '5', value: 'Concordo totalmente', mappedValue: 'Totalmente implementado'},
 		];
+
+		this.f['scaleValues'].setValue(measurementFramework.scaleValues);
+	}
+
+	private createRatings(measurementFramework: MeasurementFramework) {
+		measurementFramework.ratings = [
+			{id: '1', name: 'Não atingido'},
+			{id: '2', name: 'Parcialmente atingido'},
+			{id: '3', name: 'Amplamente atingido'},
+			{id: '4', name: 'Completamente atingido'}
+		];
+		this.f['ratings'].setValue(measurementFramework.ratings);
 	}
 
 	private createQuestionsByExpectedResults(referenceModel: ReferenceModel): Question[] {
@@ -207,12 +222,13 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		}));
 	}
 
+	//TODO capacityLevels
 	nextProcessAttributes() {
 		this.enableProcessAttributes = true;
-		let questions: Question[] = this.createQuestionsByProcessAttributes(this.measurementFramework.processAttributes);
-		questions = questions.concat(this.f["questions"].value);
-		this.f['questions'].setValue(questions);
-		this.measurementFramework.questions = questions;
+		// let questions: Question[] = this.createQuestionsByProcessAttributes(this.measurementFramework.processAttributes);
+		// questions = questions.concat(this.f["questions"].value);
+		// this.f['questions'].setValue(questions);
+		// this.measurementFramework.questions = questions;
 	}
 
 	backProcessAttributes() {

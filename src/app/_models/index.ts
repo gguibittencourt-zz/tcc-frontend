@@ -24,3 +24,5 @@ export * from './process-attribute';
 export * from './capacity-dialog';
 export * from './level-result';
 export * from './process-result';
+export * from './capacity-level';
+export * from './rating';

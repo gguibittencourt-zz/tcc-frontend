@@ -342,19 +342,21 @@ export class RegisterAssessmentComponent implements OnInit {
 		}));
 	}
 
+	//TODO capacityLevels
 	private getProcessAttributes(): ProcessAttribute[] {
-		let processAttributes = flatMap(this.classifications, (classification => {
-			return flatMap(classification.processAttributes, (value => {
-				return this.measurementFramework.processAttributes.filter(processAttribute => value === processAttribute.idProcessAttribute && processAttribute.generateQuestions);
-			}));
-		}));
-
-		processAttributes = uniqBy(processAttributes, (processAttribute) => {
-			return processAttribute.idProcessAttribute
-		});
-
-		this.createResultsProcessAttributes(processAttributes);
-		return processAttributes;
+		return [];
+		// let processAttributes = flatMap(this.classifications, (classification => {
+		// 	return flatMap(classification.processAttributes, (value => {
+		// 		return this.measurementFramework.processAttributes.filter(processAttribute => value === processAttribute.idProcessAttribute && processAttribute.generateQuestions);
+		// 	}));
+		// }));
+		//
+		// processAttributes = uniqBy(processAttributes, (processAttribute) => {
+		// 	return processAttribute.idProcessAttribute
+		// });
+		//
+		// this.createResultsProcessAttributes(processAttributes);
+		// return processAttributes;
 	}
 
 	private anyResultInvalid() {

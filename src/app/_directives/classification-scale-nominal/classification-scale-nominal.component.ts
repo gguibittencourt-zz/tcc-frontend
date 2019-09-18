@@ -1,5 +1,13 @@
 ﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Classification, GoalScale, KnowledgeArea, Level, MetricScale, ProcessAttribute} from '../../_models';
+import {
+	CapacityLevel,
+	Classification,
+	GoalScale,
+	KnowledgeArea,
+	Level,
+	MetricScale,
+	ProcessAttribute
+} from '../../_models';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {isNil} from "lodash";
 import {Guid} from "guid-typescript";
@@ -15,7 +23,7 @@ export class ClassificationScaleNominalComponent implements OnInit {
 	@Input('knowledgeAreas') knowledgeAreas: KnowledgeArea[];
 	@Input('classifications') classifications: Classification[];
 	@Input('goals') goals: GoalScale[];
-	@Input('processAttributes') processAttributes: ProcessAttribute[];
+	@Input('capacityLevels') capacityLevels: CapacityLevel[];
 	@Output() onConfirmClassification: EventEmitter<any> = new EventEmitter();
 	levelValues: Map<string, MetricScale[]> = new Map();
 	private classificationForms: FormGroup[] = [];
@@ -70,16 +78,6 @@ export class ClassificationScaleNominalComponent implements OnInit {
 		this.classificationForms[index].controls['levels'].patchValue(event);
 	}
 
-	//TODO classificação de area de processo por metrica
-	afterExpand(classification: Classification) {
-		classification.levels.forEach(level => {
-			const goal = this.goals.find(goal => goal.idReference === String(level.idProcessArea));
-			if (goal) {
-				this.levelValues.set(String(level.idProcessArea), goal.metrics);
-			}
-		});
-	}
-
 	cancelClassification(index: number) {
 		this.mapCloseAccordion.set(index, false);
 	}
@@ -90,7 +88,7 @@ export class ClassificationScaleNominalComponent implements OnInit {
 			form = this.formBuilder.group({
 				idClassification: [Guid.create().toString()],
 				name: ['', Validators.required],
-				processAttributes: [[]],
+				capacityLevels: [[]],
 				levels: [this.formBuilder.group({
 					idProcessArea: [],
 					values: [[], EmptyListValidator.listaVaziaValidator()],

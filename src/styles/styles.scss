@@ -64,3 +64,7 @@ mat-expansion-panel-header {
 	display: block;
 	padding-left: 15px;
 }
+
+mat-step-header {
+	pointer-events: none;
+}

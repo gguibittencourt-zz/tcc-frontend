@@ -2,7 +2,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import { HighchartsChartComponent } from 'highcharts-angular';
+import {HighchartsChartComponent} from 'highcharts-angular';
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
 import {AuthGuard} from './_guards';
@@ -48,6 +48,7 @@ import {ProcessAttributeValueComponent} from "./_directives/process-attribute-va
 import {CapacityDialogComponent} from "./_directives/capacity-dialog";
 import {SnackBarComponent} from "./_directives/snack-bar";
 import {CompanyDialogComponent} from "./_directives/company-dialog";
+import {CapacityLevelComponent} from "./_directives/capacity-level";
 
 @NgModule({
 	imports: [
@@ -94,7 +95,8 @@ import {CompanyDialogComponent} from "./_directives/company-dialog";
 		CapacityDialogComponent,
 		CompanyDialogComponent,
 		SnackBarComponent,
-		HighchartsChartComponent
+		HighchartsChartComponent,
+		CapacityLevelComponent,
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -117,7 +119,7 @@ import {CompanyDialogComponent} from "./_directives/company-dialog";
 		CapacityDialogComponent,
 		SnackBarComponent,
 		CompanyDialogComponent,
-		CompanyComponent
+		CompanyComponent,
 	],
 	bootstrap: [AppComponent]
 })

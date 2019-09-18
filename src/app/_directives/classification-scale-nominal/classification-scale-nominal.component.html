@@ -13,11 +13,10 @@
 	</div>
 	<div class="classification-scale-nominal-body">
 		<mat-accordion>
-			<mat-expansion-panel *ngFor="let classification of classifications; let i = index"
-								 [expanded]="mapCloseAccordion.get(i)"
-								 (afterExpand)="afterExpand(classification)">
-				<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-					<input matInput value="{{(i + 1) + '. ' + (classification.name ? classification.name : '')}}" disabled placeholder="Nome"/>
+			<mat-expansion-panel *ngFor="let classification of classifications; let i = index">
+				<mat-expansion-panel-header>
+					<input matInput value="{{(i + 1) + '. ' + (classification.name ? classification.name : '')}}"
+						   disabled placeholder="Nome"/>
 					<button mat-icon-button type="button" (click)="deleteClassification(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
@@ -33,9 +32,10 @@
 					</mat-form-field>
 
 					<mat-form-field class="col-md-12">
-						<mat-select placeholder="Atributos de Processo" multiple formControlName="processAttributes">
-							<mat-option *ngFor="let processAttribute of processAttributes" [value]="processAttribute.idProcessAttribute">
-								{{processAttribute.name}}
+						<mat-select placeholder="Níveis de Capacidade" multiple formControlName="capacityLevels">
+							<mat-option *ngFor="let capacityLevel of capacityLevels"
+										[value]="capacityLevel.idCapacityLevel">
+								{{capacityLevel.name}}
 							</mat-option>
 						</mat-select>
 					</mat-form-field>
@@ -44,19 +44,12 @@
 										 [levels]="classification.levels"
 										 (onUpdateLevels)="updateLevels($event, classification, i)">
 					</level-scale-ordinal>
-<!--					TODO Classificação por area de processo-->
-<!--					<level-scale-nominal [knowledgeAreas]="knowledgeAreas"-->
-<!--										 [goals]="goals"-->
-<!--										 [levels]="classification.levels"-->
-<!--										 [levelValues]="levelValues"-->
-<!--										 (onUpdateLevels)="updateLevels($event, classification, i)">-->
-<!--					</level-scale-nominal>-->
 					<mat-action-row class="action-row">
-						<button mat-raised-button [disabled]="loading" (click)="cancelClassification(i)"
+						<button mat-raised-button (click)="cancelClassification(i)"
 								class="btn btn-outline-danger">
 							Cancelar
 						</button>
-						<button mat-raised-button [disabled]="loading"
+						<button mat-raised-button
 								class="btn btn-outline-success confirm-button">
 							Confirmar
 						</button>

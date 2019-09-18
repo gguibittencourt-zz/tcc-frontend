@@ -1,11 +1,7 @@
-﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {CapacityDialog, GoalScale, KnowledgeArea, ProcessAttribute} from '../../_models';
+﻿import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {ProcessAttribute, Rating} from '../../_models';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {isEmpty} from "lodash";
 import {Guid} from "guid-typescript";
-import {MatDialog} from "@angular/material";
-import {CapacityDialogComponent} from "../capacity-dialog";
-import {ProcessAttributeValue} from "../../_models/process-attribute-value";
 
 @Component({
 	selector: 'process-attributes',
@@ -13,26 +9,13 @@ import {ProcessAttributeValue} from "../../_models/process-attribute-value";
 	styleUrls: ['process-attributes.component.scss']
 })
 
-export class ProcessAttributesComponent implements OnInit {
-	@Input('knowledgeAreas') knowledgeAreas: KnowledgeArea[];
+export class ProcessAttributesComponent {
 	@Input('processAttributes') processAttributes: ProcessAttribute[];
-	@Input('goals') goals: GoalScale[];
+	@Input('ratings') ratings: Rating[];
 	@Output() onConfirmProcessAttribute: EventEmitter<any> = new EventEmitter();
 	private processAttributeForms: FormGroup[] = [];
 
-	constructor(private formBuilder: FormBuilder, private dialog: MatDialog) {
-	}
-
-	ngOnInit() {
-		if (isEmpty(this.processAttributes)) {
-			this.processAttributes = [];
-			const processAttribute = new ProcessAttribute();
-			processAttribute.name = 'AP 1.1 O processo é executado';
-			processAttribute.values = ProcessAttributesComponent.createValue();
-			processAttribute.generateQuestions = false;
-			this.processAttributes.push(processAttribute);
-			this.onConfirmProcessAttribute.emit(this.processAttributes);
-		}
+	constructor(private formBuilder: FormBuilder) {
 	}
 
 	confirmProcessAttribute(index: number) {
@@ -69,31 +52,12 @@ export class ProcessAttributesComponent implements OnInit {
 				name: ['', Validators.required],
 				generateQuestions: [],
 				description: [''],
-				values: this.formBuilder.array([])
+				values: this.formBuilder.array([]),
+				ratings: [[]]
 			});
 		}
 		form.patchValue(this.processAttributes[index]);
 		this.processAttributeForms[index] = form;
 		return form;
-	}
-
-	openDialog(): void {
-		const capacityDialog: CapacityDialog = {goals: this.goals, knowledgeAreas: this.knowledgeAreas};
-		const dialogRef = this.dialog.open(CapacityDialogComponent, {
-			minWidth: '300px',
-			data: capacityDialog,
-			disableClose: true
-		});
-
-		dialogRef.afterClosed().subscribe((result: CapacityDialog) => {
-			if (result) {
-			}
-		});
-	}
-
-	private static createValue(): ProcessAttributeValue[] {
-		const processAttributeValue = new ProcessAttributeValue();
-		processAttributeValue.name = 'O processo produz os resultados definidos.';
-		return [processAttributeValue];
 	}
 }

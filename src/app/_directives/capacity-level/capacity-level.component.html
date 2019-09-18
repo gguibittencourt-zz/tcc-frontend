@@ -1,0 +1,49 @@
+﻿<div class="capacity-level">
+
+	<div class="capacity-level-header">
+		<div class="capacity-level-header-title">
+			<div class="capacity-level-header-title-spacer">Níveis de Capacidade</div>
+			<button mat-stroked-button type="button" (click)="addCapacityLevel()" class="mat-stroked-button">
+			<span class="mat-button-wrapper">
+				Adicionar
+				<i class="fa fa-plus"></i>
+			</span>
+			</button>
+		</div>
+	</div>
+	<div class="capacity-level-body">
+		<mat-accordion>
+			<mat-expansion-panel *ngFor="let capacityLevel of capacityLevels; let i = index">
+				<mat-expansion-panel-header>
+					<input matInput value="{{capacityLevel.name}}" disabled placeholder="Nome"/>
+					<button mat-icon-button type="button" (click)="deleteCapacityLevel(i)"
+							class="mat-icon-button active">
+						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
+							<i class="fa fa-trash"></i>
+						</mat-icon>
+					</button>
+				</mat-expansion-panel-header>
+
+				<form [formGroup]="getCapacityLevelForm(i)" (ngSubmit)="confirmCapacityLevel(i)">
+					<mat-form-field class="col-md-12">
+						<input matInput formControlName="name" placeholder="Nome"/>
+					</mat-form-field>
+					<process-attributes [ratings]="ratings"
+										[processAttributes]="capacityLevel.processAttributes"
+										(onConfirmProcessAttribute)="confirmProcessAttributes($event, i)">
+					</process-attributes>
+
+					<mat-action-row class="action-row">
+						<button mat-raised-button class="btn btn-outline-danger">
+							Cancelar
+						</button>
+						<button mat-raised-button
+								class="btn btn-outline-success confirm-button">
+							Confirmar
+						</button>
+					</mat-action-row>
+				</form>
+			</mat-expansion-panel>
+		</mat-accordion>
+	</div>
+</div>
