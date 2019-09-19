@@ -32,8 +32,8 @@
 								  cdkAutosizeMinRows="1"
 								  cdkAutosizeMaxRows="5"
 								  formControlName="name"
-								  (change)="formChange(i)"
-								  placeholder="Nome"></textarea>
+								  placeholder="Nome" (change)="formChange(i)">
+						</textarea>
 					</mat-form-field>
 					<div *ngIf="submitted && getControlsByForm(expectedResultForms[i]).name.errors?.required"
 						 class="invalid-feedback"
