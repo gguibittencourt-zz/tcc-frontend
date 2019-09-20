@@ -1,11 +1,10 @@
 ﻿<mat-card>
 	<mat-card-content>
 		<div class="header-group">
-			<div class="header">{{scaleValues[0].value}}</div>
-			<div class="header">{{scaleValues[1].value}}</div>
-			<div class="header">{{scaleValues[2].value}}</div>
-			<div class="header">{{scaleValues[3].value}}</div>
-			<div class="header">{{scaleValues[4].value}}</div>
+			<div class="header">{{ratings[0].mappedName}}</div>
+			<div class="header">{{ratings[1].mappedName}}</div>
+			<div class="header">{{ratings[2].mappedName}}</div>
+			<div class="header">{{ratings[3].mappedName}}</div>
 		</div>
 		<div *ngFor="let question of questions; let i = index" class="display-flex">
 			<div class="question-name">
@@ -28,17 +27,12 @@
 						<mat-radio-button class="example-radio-button label-padding-left-20" value="1" [matTooltip]="getFirstTooltip(question)">
 						</mat-radio-button>
 						<mat-radio-button class="example-radio-button label-padding-left-20" value="2"
-										  [matTooltip]="question.type === 'scale-numeric' ? '2' : scaleValues[1].value"
-										  [matTooltipDisabled]="question.type === 'boolean'"
-										  [disabled]="question.type === 'boolean'">
-						</mat-radio-button>
-						<mat-radio-button class="example-radio-button label-padding-left-20" value="3"
-										  [matTooltip]="question.type === 'scale-numeric' ? '3' : scaleValues[1].value"
+										  [matTooltip]="ratings[1].mappedName"
 										  [matTooltipDisabled]="question.type === 'boolean'"
 										  [disabled]="question.type === 'boolean'">
 						</mat-radio-button>
 						<mat-radio-button class="example-radio-button label-padding-left-20" value="4"
-										  [matTooltip]="question.type === 'scale-numeric' ? '4' : scaleValues[1].value"
+										  [matTooltip]="ratings[2].mappedName"
 										  [matTooltipDisabled]="question.type === 'boolean'"
 										  [disabled]="question.type === 'boolean'">
 						</mat-radio-button>

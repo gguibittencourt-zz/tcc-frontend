@@ -6,7 +6,7 @@
 
 				<div class="form-group">
 					<mat-form-field class="full-width-input">
-						<input matInput formControlName="username" class="form-control" placeholder="Usuário"
+						<input matInput spellcheck="false" formControlName="username" class="form-control" placeholder="Usuário"
 							   [ngClass]="{ 'is-invalid': submitted && f.username.errors }"/>
 					</mat-form-field>
 					<div *ngIf="submitted && f.password.errors" class="invalid-feedback">
@@ -14,7 +14,7 @@
 					</div>
 
 					<mat-form-field class="full-width-input">
-						<input matInput type="password" placeholder="Senha" formControlName="password"
+						<input matInput spellcheck="false" type="password" placeholder="Senha" formControlName="password"
 							   [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
 					</mat-form-field>
 					<div *ngIf="submitted && f.password.errors" class="invalid-feedback">

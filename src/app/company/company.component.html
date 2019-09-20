@@ -6,7 +6,7 @@
 		<form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
 			<div class="form-group">
 				<mat-form-field class="full-width-input">
-					<input matInput formControlName="name" class="form-control" placeholder="Nome"
+					<input spellcheck="false" matInput formControlName="name" class="form-control" placeholder="Nome"
 						   [ngClass]="{ 'is-invalid': submitted && f.name.errors }"/>
 				</mat-form-field>
 				<div *ngIf="submitted && f.name.errors" class="invalid-feedback">
@@ -31,7 +31,7 @@
 				</div>
 
 				<mat-form-field class="full-width-input">
-					<input matInput placeholder="Área" formControlName="occupationArea"
+					<input matInput spellcheck="false" placeholder="Área" formControlName="occupationArea"
 						   [ngClass]="{ 'is-invalid': submitted && f.occupationArea.errors }">
 				</mat-form-field>
 				<div *ngIf="submitted && f.occupationArea.errors" class="invalid-feedback">

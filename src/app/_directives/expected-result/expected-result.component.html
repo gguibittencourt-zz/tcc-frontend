@@ -16,7 +16,7 @@
 			<mat-expansion-panel *ngFor="let expectedResult of expectedResults; let i = index"
 								 [expanded]="mapCloseAccordion.get(i)">
 				<mat-expansion-panel-header [ngClass]="mapCloseAccordion.get(i) ? 'not-active' : ''">
-					<input matInput value="{{prefix + '. ' + (i + 1) + ' ' + (expectedResult.name ? expectedResult.name : '')}}" disabled/>
+					<input matInput spellcheck="false" value="{{prefix + '. ' + (i + 1) + ' ' + (expectedResult.name ? expectedResult.name : '')}}" disabled/>
 					<button mat-icon-button type="button" (click)="deleteExpectedResult(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">

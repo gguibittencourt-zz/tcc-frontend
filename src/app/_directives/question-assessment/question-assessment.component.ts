@@ -1,5 +1,5 @@
 ﻿import {Component, Input} from '@angular/core';
-import {Process, Question, Result, ScaleValues} from '../../_models';
+import {Process, Question, Rating, Result, ScaleValues} from '../../_models';
 import {FormGroup} from '@angular/forms';
 
 @Component({
@@ -12,7 +12,7 @@ export class QuestionAssessmentComponent {
 	@Input('questions') questions: Question[];
 	@Input('process') process: Process;
 	@Input('finish') finish: boolean;
-	@Input('scaleValues') scaleValues: ScaleValues[];
+	@Input('ratings') ratings: Rating[];
 	@Input('resultForms') resultForms: FormGroup[];
 	readonly REGEX_LINK = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
 
@@ -50,10 +50,7 @@ export class QuestionAssessmentComponent {
 			return 'Falso';
 		}
 		if (question.type === 'scale-nominal') {
-			return this.scaleValues[0].value;
-		}
-		if (question.type === 'scale-numeric') {
-			return '1';
+			return this.ratings[0].mappedName;
 		}
 	}
 
@@ -62,10 +59,7 @@ export class QuestionAssessmentComponent {
 			return 'Verdadeiro';
 		}
 		if (question.type === 'scale-nominal') {
-			return this.scaleValues[4].value;
-		}
-		if (question.type === 'scale-numeric') {
-			return '5';
+			return this.ratings[3].mappedName;
 		}
 	}
 }

@@ -4,7 +4,7 @@
 
 <div>
 	<mat-form-field class="col-md-10">
-		<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtro">
+		<input matInput spellcheck="false" (keyup)="applyFilter($event.target.value)" placeholder="Filtro">
 	</mat-form-field>
 
 	<a [routerLink]="['/assessment/register']" class="btn btn-sm mat-raised-button col-md-2">

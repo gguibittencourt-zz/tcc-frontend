@@ -35,7 +35,6 @@ import {QuestionComponent} from "./_directives/question";
 import {LoadingComponent} from "./_directives/loading";
 import {TreeNodeMetricsComponentBoolean} from "./_directives/tree-node-metrics-boolean";
 import {TreeNodeMetricsComponentScaleNominal} from "./_directives/tree-node-metrics-scale-nominal";
-import {TreeNodeMetricsComponentScaleNumeric} from "./_directives/tree-node-metrics-scale-numeric";
 import {ClassificationScaleNominalComponent} from "./_directives/classification-scale-nominal";
 import {ListAssessmentComponent, RegisterAssessmentComponent} from "./assessment";
 import {QuestionAssessmentComponent} from "./_directives/question-assessment";
@@ -80,7 +79,6 @@ import {CapacityLevelComponent} from "./_directives/capacity-level";
 		TreeNodeQuestionsProcessAttributesComponent,
 		TreeNodeMetricsComponentBoolean,
 		TreeNodeMetricsComponentScaleNominal,
-		TreeNodeMetricsComponentScaleNumeric,
 		QuestionComponent,
 		LoadingComponent,
 		ListAssessmentComponent,

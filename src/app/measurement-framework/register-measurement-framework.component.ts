@@ -6,19 +6,17 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {
 	CapacityLevel,
 	Classification,
-	GoalBoolean,
-	GoalScale,
 	MeasurementFramework,
 	ProcessAttribute,
 	Question,
+	Rating,
 	ReferenceModel,
-	ScaleValues,
 	TypeQuestion
 } from "../_models";
 import {MatDialog, MatSelectChange, MatSnackBar} from "@angular/material";
 import {ScaleValuesDialogComponent} from "../_directives/scale-values-dialog";
 import {Guid} from "guid-typescript";
-import {flatten, isEmpty, flatMap} from 'lodash';
+import {flatMap, flatten, isEmpty} from 'lodash';
 import {SnackBarComponent} from "../_directives/snack-bar";
 
 @Component({
@@ -59,7 +57,6 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			name: ['', Validators.required],
 			idReferenceModel: [, Validators.required],
 			type: ['', Validators.required],
-			scaleValues: [[]],
 			questions: [[]],
 			goals: [[]],
 			ratings: [[]],
@@ -67,7 +64,6 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			classifications: [[]],
 		});
 
-		this.createScaleValues(this.measurementFramework);
 		this.createRatings(this.measurementFramework);
 		this.referenceModelService.list().subscribe((data: ReferenceModel[]) => {
 			this.referenceModels = data;
@@ -75,7 +71,6 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 
 		this.types = [
 			{idTypeQuestion: 'scale-nominal', name: 'Escala Ordinal'},
-			{idTypeQuestion: 'scale-numeric', name: 'Escala Numérica'},
 			{idTypeQuestion: 'boolean', name: 'Verdadeiro/Falso'},
 		];
 
@@ -109,11 +104,6 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 	confirmQuestions(questions: Question[]) {
 		this.f["questions"].setValue(questions);
 		this.measurementFramework.questions = questions;
-	}
-
-	confirmGoals(goals: GoalBoolean[] | GoalScale[]) {
-		this.f["goals"].setValue(goals);
-		this.measurementFramework.goals = goals;
 	}
 
 	confirmCapacityLevels(capacityLevels: CapacityLevel[]) {
@@ -169,39 +159,27 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		}
 	}
 
-	openDialog(scaleValues: ScaleValues[]): void {
+	openDialog(ratings: Rating[]): void {
 		const dialogRef = this.dialog.open(ScaleValuesDialogComponent, {
-			width: '500px',
-			data: scaleValues,
+			maxWidth: '60%',
+			data: ratings,
 			disableClose: true
 		});
 
-		dialogRef.afterClosed().subscribe((result: ScaleValues[]) => {
+		dialogRef.afterClosed().subscribe((result: Rating[]) => {
 			if (result) {
-				this.f['scaleValues'].setValue(result);
-				this.measurementFramework.scaleValues = result;
+				this.f['ratings'].setValue(result);
+				this.measurementFramework.ratings = result;
 			}
 		});
 	}
 
-	private createScaleValues(measurementFramework: MeasurementFramework): void {
-		measurementFramework.scaleValues = [
-			{id: '1', value: 'Discordo totalmente', mappedValue: 'Não implementado'},
-			{id: '2', value: 'Discordo parcialmente', mappedValue: 'Parcialmente implementado'},
-			{id: '3', value: 'Não concordo, nem discordo', mappedValue: 'Não avaliado'},
-			{id: '4', value: 'Concordo parcialmente', mappedValue: 'Largamente implementado'},
-			{id: '5', value: 'Concordo totalmente', mappedValue: 'Totalmente implementado'},
-		];
-
-		this.f['scaleValues'].setValue(measurementFramework.scaleValues);
-	}
-
 	private createRatings(measurementFramework: MeasurementFramework) {
 		measurementFramework.ratings = [
-			{id: '1', name: 'Não atingido'},
-			{id: '2', name: 'Parcialmente atingido'},
-			{id: '3', name: 'Amplamente atingido'},
-			{id: '4', name: 'Completamente atingido'}
+			{id: '1', name: 'Não atingido', mappedName: 'Discordo totalmente', minValue: 0, maxValue: 15},
+			{id: '2', name: 'Parcialmente atingido', mappedName: 'Discordo parcialmente', minValue: 15, maxValue: 50},
+			{id: '3', name: 'Amplamente atingido', mappedName: 'Concordo parcialmente', minValue: 50, maxValue: 85},
+			{id: '4', name: 'Completamente atingido', mappedName: 'Concordo totalmente', minValue: 85, maxValue: 100}
 		];
 		this.f['ratings'].setValue(measurementFramework.ratings);
 	}

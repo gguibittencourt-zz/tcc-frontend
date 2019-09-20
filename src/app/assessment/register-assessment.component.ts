@@ -19,9 +19,9 @@ import {
 	Process,
 	ProcessAttribute,
 	Question,
+	Rating,
 	ReferenceModel,
 	Result,
-	ScaleValues,
 	User
 } from "../_models";
 import {flatMap, isEmpty, uniqBy} from "lodash";
@@ -121,8 +121,8 @@ export class RegisterAssessmentComponent implements OnInit {
 		return user;
 	}
 
-	get scaleValues(): ScaleValues[] {
-		return this.measurementFramework ? this.measurementFramework.scaleValues : [];
+	get ratings(): Rating[] {
+		return this.measurementFramework ? this.measurementFramework.ratings : [];
 	}
 
 	get getResultForms(): AbstractControl {
@@ -261,11 +261,9 @@ export class RegisterAssessmentComponent implements OnInit {
 			case 'boolean':
 				return 'Falso';
 			case 'scale-nominal':
-				return this.measurementFramework.scaleValues.find(scaleValue => scaleValue.id == resultWithError.value).value;
-			case 'scale-numeric':
-				return resultWithError.value;
+				return this.measurementFramework.ratings.find(rating => rating.id == resultWithError.value).mappedName;
 		}
-		return
+		return;
 	}
 
 	private createResults(knowledgeArea: KnowledgeArea) {
@@ -334,29 +332,30 @@ export class RegisterAssessmentComponent implements OnInit {
 	}
 
 	private getProcesses(): Process[] {
-		return flatMap(this.classifications, (classification => {
+		const processes = flatMap(this.classifications, (classification => {
 			return flatMap(classification.levels, (level => {
 				const knowledgeAreas = this.referenceModel.knowledgeAreas.filter(knowledgeArea => knowledgeArea.idKnowledgeArea === level.idProcessArea);
 				return flatMap(knowledgeAreas, knowledgeArea => knowledgeArea.processes.filter(process => level.values.includes(process.idProcess)));
 			}));
 		}));
+
+		return uniqBy(processes, (process => process.idProcess));
 	}
 
-	//TODO capacityLevels
 	private getProcessAttributes(): ProcessAttribute[] {
-		return [];
-		// let processAttributes = flatMap(this.classifications, (classification => {
-		// 	return flatMap(classification.processAttributes, (value => {
-		// 		return this.measurementFramework.processAttributes.filter(processAttribute => value === processAttribute.idProcessAttribute && processAttribute.generateQuestions);
-		// 	}));
-		// }));
-		//
-		// processAttributes = uniqBy(processAttributes, (processAttribute) => {
-		// 	return processAttribute.idProcessAttribute
-		// });
-		//
-		// this.createResultsProcessAttributes(processAttributes);
-		// return processAttributes;
+		let processAttributes = flatMap(this.classifications, (classification => {
+			const capacityLevels = this.measurementFramework.capacityLevels.filter(value => classification.capacityLevels.includes(value.idCapacityLevel));
+			return flatMap(capacityLevels, (capacityLevel => {
+				return capacityLevel.processAttributes.filter(processAttribute => processAttribute.generateQuestions);
+			}));
+		}));
+
+		processAttributes = uniqBy(processAttributes, (processAttribute) => {
+			return processAttribute.idProcessAttribute
+		});
+
+		this.createResultsProcessAttributes(processAttributes);
+		return processAttributes;
 	}
 
 	private anyResultInvalid() {

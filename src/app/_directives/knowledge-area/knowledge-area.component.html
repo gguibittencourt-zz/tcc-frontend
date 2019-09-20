@@ -16,7 +16,7 @@
 			<mat-expansion-panel *ngFor="let knowledgeArea of knowledgeAreas; let i = index"
 								 [expanded]="mapCloseAccordion.get(i)">
 				<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-					<input matInput value="{{knowledgeArea.name}}" disabled placeholder="Grupo de Processo"/>
+					<input matInput spellcheck="false" value="{{knowledgeArea.name}}" disabled placeholder="Grupo de Processo"/>
 					<button mat-icon-button type="button" (click)="deleteKnowledgeArea(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
@@ -27,7 +27,7 @@
 
 				<form [formGroup]="getKnowledgeAreaForm(i)" (ngSubmit)="confirmKnowledgeArea(i)">
 					<mat-form-field class="col-md-12">
-						<input matInput formControlName="name"
+						<input matInput spellcheck="false" formControlName="name"
 							   (change)="formChange(i)" placeholder="Nome"/>
 					</mat-form-field>
 					<mat-form-field class="padding-top col-md-12">

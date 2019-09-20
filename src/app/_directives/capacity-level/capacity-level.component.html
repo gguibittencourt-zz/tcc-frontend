@@ -15,7 +15,7 @@
 		<mat-accordion>
 			<mat-expansion-panel *ngFor="let capacityLevel of capacityLevels; let i = index">
 				<mat-expansion-panel-header>
-					<input matInput value="{{capacityLevel.name}}" disabled placeholder="Nome"/>
+					<input spellcheck="false" matInput value="{{capacityLevel.name}}" disabled placeholder="Nome"/>
 					<button mat-icon-button type="button" (click)="deleteCapacityLevel(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
@@ -26,7 +26,7 @@
 
 				<form [formGroup]="getCapacityLevelForm(i)" (ngSubmit)="confirmCapacityLevel(i)">
 					<mat-form-field class="col-md-12">
-						<input matInput formControlName="name" placeholder="Nome"/>
+						<input spellcheck="false" matInput formControlName="name" placeholder="Nome"/>
 					</mat-form-field>
 					<process-attributes [ratings]="ratings"
 										[processAttributes]="capacityLevel.processAttributes"

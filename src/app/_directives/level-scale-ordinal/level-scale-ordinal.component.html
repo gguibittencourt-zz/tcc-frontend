@@ -4,7 +4,7 @@
 		<mat-optgroup *ngFor="let knowledgeArea of knowledgeAreas" [label]="knowledgeArea.name">
 			<mat-option *ngFor="let process of knowledgeArea.processes" [value]="process.idProcess"
 						(onSelectionChange)="updateLevel($event, knowledgeArea.idKnowledgeArea)">
-				{{process.name}}
+				{{process.prefix + '. ' + process.name}}
 			</mat-option>
 		</mat-optgroup>
 	</mat-select>

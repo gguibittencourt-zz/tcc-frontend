@@ -15,7 +15,7 @@
 		<mat-accordion>
 			<mat-expansion-panel *ngFor="let classification of classifications; let i = index">
 				<mat-expansion-panel-header>
-					<input matInput value="{{(i + 1) + '. ' + (classification.name ? classification.name : '')}}"
+					<input matInput spellcheck="false" value="{{(i + 1) + '. ' + (classification.name ? classification.name : '')}}"
 						   disabled placeholder="Nome"/>
 					<button mat-icon-button type="button" (click)="deleteClassification(i)"
 							class="mat-icon-button active">
@@ -27,7 +27,7 @@
 
 				<form [formGroup]="getClassificationForm(i)" (ngSubmit)="confirmClassification(i)">
 					<mat-form-field class="col-md-12">
-						<input matInput formControlName="name"
+						<input matInput formControlName="name" spellcheck="false"
 							   (change)="formChange(i)" placeholder="Nome"/>
 					</mat-form-field>
 

@@ -4,7 +4,7 @@
 			<button mat-icon-button disabled></button>
 			{{node.name}}
 			<mat-form-field>
-				<input matInput type="number" placeholder="Métrica" [value]="node.percentage"
+				<input matInput type="number" spellcheck="false" placeholder="Métrica" [value]="node.percentage"
 					   (blur)="addGoal($event.target.value, node)"/>
 				<div *ngIf="node.isInvalid" class="invalid-feedback display-grid">
 					O valor total deve ser de 100
@@ -23,7 +23,7 @@
 				</button>
 				{{node.name}}
 				<mat-form-field>
-					<input matInput type="number" placeholder="Métrica" [value]="node.percentage"
+					<input matInput type="number" spellcheck="false" placeholder="Métrica" [value]="node.percentage"
 						   (blur)="addGoal($event.target.value, node)"/>
 					<div *ngIf="node.isInvalid" class="invalid-feedback display-grid">
 						O valor total deve ser de 100

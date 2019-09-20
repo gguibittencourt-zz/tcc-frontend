@@ -16,7 +16,8 @@
 			<mat-accordion>
 				<mat-expansion-panel *ngFor="let process of data; let i = index" #met>
 					<mat-expansion-panel-header>
-						<input matInput value="{{(i + 1) + '. '+ (process.name ? process.name : '')}}" disabled
+						<input spellcheck="false" matInput
+							   value="{{(i + 1) + '. '+ (process.name ? process.name : '')}}" disabled
 							   placeholder="Processo"/>
 						<button mat-icon-button type="button" (click)="deleteProcess(i)"
 								class="mat-icon-button active">
@@ -39,14 +40,14 @@
 								<div class="form-group">
 									<div class="display-flex">
 										<mat-form-field class="col-md-2">
-											<input matInput formControlName="prefix"
+											<input matInput spellcheck="false" formControlName="prefix"
 												   placeholder="Identificador"/>
 										</mat-form-field>
 										<mat-error *ngIf="submitted && processForms[i].controls.prefix.errors">
 											Identificador é obrigatório
 										</mat-error>
 										<mat-form-field class="col-md-10">
-											<input matInput formControlName="name"
+											<input matInput spellcheck="false" formControlName="name"
 												   (blur)="createPrefix($event.target.value, i)"
 												   placeholder="Nome"/>
 										</mat-form-field>

@@ -18,7 +18,7 @@
 				<mat-expansion-panel *ngFor="let question of data.questions; let i = index"
 									 [expanded]="mapCloseAccordion.get(i)">
 					<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-						<input matInput value="{{i + 1 + '. ' + (question.name ? question.name : '')}}" disabled/>
+						<input matInput spellcheck="false" value="{{i + 1 + '. ' + (question.name ? question.name : '')}}" disabled/>
 						<button mat-icon-button type="button" (click)="deleteQuestion(i)"
 								class="mat-icon-button active">
 							<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
@@ -53,11 +53,11 @@
 									</mat-select>
 								</mat-form-field>
 								<mat-form-field class="col-md-12">
-									<input matInput formControlName="name"
+									<input matInput spellcheck="false" formControlName="name"
 										   (change)="formChange(i)" placeholder="Texto da questão"/>
 								</mat-form-field>
 								<mat-form-field class="col-md-12">
-									<input matInput formControlName="tip"
+									<input matInput spellcheck="false" formControlName="tip"
 										   (change)="formChange(i)"
 										   placeholder="Dica"/>
 								</mat-form-field>
@@ -65,7 +65,6 @@
 								<mat-form-field class="col-md-12">
 									<mat-select placeholder="Tipo" formControlName="type">
 										<mat-option value="scale-nominal">Escala Ordinal</mat-option>
-										<mat-option value="scale-numeric">Escala Numérica</mat-option>
 										<mat-option value="boolean">Verdadeiro/Falso</mat-option>
 									</mat-select>
 								</mat-form-field>

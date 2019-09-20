@@ -1,9 +1,21 @@
-<h1 mat-dialog-title>Valores Escala Ordinal</h1>
+<h1 mat-dialog-title>Valores Avaliação</h1>
 <div mat-dialog-content>
+	<div class="col-md-12 display-flex padding-left-zero">
+		<div class="col-md-4 padding-zero">Nome</div>
+		<div class="col-md-4 padding-left-one">Nome mapeado na avaliação</div>
+		<div class="col-md-2">Mínimo</div>
+		<div class="col-md-2">Máximo</div>
+	</div>
 	<div class="content">
-		<div class="scale-value" *ngFor="let scaleValue of data">
-			<input class="input-value" spellcheck="false" [(ngModel)]="scaleValue.value" required/>
-			<input class="input-value" spellcheck="false" [value]="scaleValue.mappedValue" disabled/>
+		<div class="scale-value col-md-12" *ngFor="let rating of data">
+			<input class="input-value col-md-4" spellcheck="false" [(ngModel)]="rating.name" required/>
+			<input class="input-value col-md-4" spellcheck="false" [(ngModel)]="rating.mappedName" required/>
+			<input class="value col-md-1 text-center" spellcheck="false" type="number"
+				   [(ngModel)]="rating.minValue" required/>
+			<input value="%" class="col-md-1 text-center padding-zero percentage" disabled/>
+			<input class="value col-md-1 text-center" spellcheck="false" type="number"
+				   [(ngModel)]="rating.maxValue" required/>
+			<input value="%" class="col-md-1 text-center padding-zero percentage" disabled/>
 		</div>
 	</div>
 </div>

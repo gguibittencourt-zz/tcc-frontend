@@ -151,14 +151,6 @@ export class QuestionComponent {
 				this.newDependentValue('Largamente implementado', 4),
 				this.newDependentValue('Totalmente implementado', 5),
 			];
-		} else if (type === 'scale-numeric') {
-			return [
-				this.newDependentValue('1', 1),
-				this.newDependentValue('2', 2),
-				this.newDependentValue('3', 3),
-				this.newDependentValue('4', 4),
-				this.newDependentValue('5', 5),
-			];
 		}
 	}
 

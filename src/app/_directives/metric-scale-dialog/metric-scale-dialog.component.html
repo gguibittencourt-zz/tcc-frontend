@@ -1,10 +1,10 @@
-<h1 mat-dialog-title><input matInput placeholder="Métricas" disabled/></h1>
+<h1 mat-dialog-title><input matInput spellcheck="false" placeholder="Métricas" disabled/></h1>
 <div mat-dialog-content>
 	<div [formGroup]="metricScaleForm" *ngFor="let metricScaleForm of metricScaleForms; let i = index"
 		 class="display-flex">
 		<div class="metric-scale padding-right ">
 			<mat-form-field>
-				<input matInput formControlName="name" placeholder="Nome"/>
+				<input matInput spellcheck="false" formControlName="name" placeholder="Nome"/>
 			</mat-form-field>
 			<mat-error *ngIf="submitted && hasError('name', metricScaleForm)">Nome é obrigatório</mat-error>
 		</div>

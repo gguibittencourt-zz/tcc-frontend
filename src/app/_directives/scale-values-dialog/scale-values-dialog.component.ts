@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {ScaleValues} from "../../_models";
+import {Rating} from "../../_models";
 
 @Component({
 	selector: 'scale-values',
@@ -11,7 +11,7 @@ import {ScaleValues} from "../../_models";
 export class ScaleValuesDialogComponent {
 
 	constructor(private dialogRef: MatDialogRef<ScaleValuesDialogComponent>,
-				@Inject(MAT_DIALOG_DATA) public data: ScaleValues[]) {
+				@Inject(MAT_DIALOG_DATA) public data: Rating[]) {
 	}
 
 	onNoClick(): void {
