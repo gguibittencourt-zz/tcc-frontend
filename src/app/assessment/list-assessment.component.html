@@ -3,16 +3,13 @@
 <h2>Avaliações</h2>
 
 <div>
-	<mat-form-field class="col-md-10">
+	<a [routerLink]="['/assessment/register']" class="btn btn btn-outline-secondary col-md-3">
+		Nova Avaliação
+		<i class="fa fa-plus"></i>
+	</a>
+	<mat-form-field class="col-md-9">
 		<input matInput spellcheck="false" (keyup)="applyFilter($event.target.value)" placeholder="Filtro">
 	</mat-form-field>
-
-	<a [routerLink]="['/assessment/register']" class="btn btn-sm mat-raised-button col-md-2">
-		<span class="mat-button-wrapper">
-				Adicionar
-				<i class="fa fa-plus"></i>
-		</span>
-	</a>
 
 	<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 

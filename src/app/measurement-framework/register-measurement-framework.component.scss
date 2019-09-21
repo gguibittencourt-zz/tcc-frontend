@@ -14,3 +14,49 @@
 	margin: 0;
 	max-width: 100%;
 }
+
+.rating-value {
+	font-size: 10px;
+}
+
+.process-attribute-name {
+	font-size: 10px;
+	word-break: break-word;
+	width: 115px;
+	height: 50%;
+}
+
+.level-result {
+	text-align: center;
+	display: flex;
+	padding-right: 2px;
+
+	.rating-process-attribute {
+		.border-rating {
+			width: 115px;
+			height: 30px;
+			border: 1px solid #909090;
+			border-radius: 3px;
+			margin-bottom: 5px;
+		}
+	}
+
+	.rating-process-attribute:nth-last-child(n + 2) {
+		.border-rating {
+			border-right: 0 !important;
+		}
+	}
+}
+
+.processes {
+	padding-top: 80px;
+
+	.level-result-process {
+		.process-name {
+			width: 170px;
+			height: 35px;
+			font-size: 10px;
+			word-break: break-word;
+		}
+	}
+}

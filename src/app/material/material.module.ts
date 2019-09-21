@@ -7,7 +7,7 @@ import {
 	MatDialogModule,
 	MatDividerModule,
 	MatExpansionModule,
-	MatFormFieldModule,
+	MatFormFieldModule, MatGridListModule,
 	MatIconModule,
 	MatInputModule,
 	MatListModule,
@@ -59,7 +59,8 @@ import {
 		MatRadioModule,
 		MatSliderModule,
 		MatDividerModule,
-		MatSnackBarModule
+		MatSnackBarModule,
+		MatGridListModule
 	],
 })
 export class CustomMaterialModule {

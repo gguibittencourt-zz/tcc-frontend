@@ -14,17 +14,19 @@ import {
 	Classification,
 	Company,
 	JsonAssessment,
-	KnowledgeArea,
+	KnowledgeArea, LevelResult,
 	MeasurementFramework,
 	Process,
 	ProcessAttribute,
+	ProcessAttributeResult,
+	ProcessResult,
 	Question,
 	Rating,
 	ReferenceModel,
 	Result,
 	User
 } from "../_models";
-import {flatMap, isEmpty, uniqBy} from "lodash";
+import {flatMap, groupBy, isEmpty, uniqBy} from "lodash";
 import {Guid} from "guid-typescript";
 import {MatDialog, MatHorizontalStepper, MatSnackBar} from "@angular/material";
 import {SnackBarComponent} from "../_directives/snack-bar";
@@ -245,6 +247,29 @@ export class RegisterAssessmentComponent implements OnInit {
 		return (indexProcess + 1) === this.processes.length;
 	}
 
+	getRatingsByProcessAttribute(levelResult: LevelResult): any[] {
+		const processAttributeResults: ProcessAttributeResult[] = flatMap(levelResult.processes, (processResult => {
+			return flatMap(processResult.capacityResults, (capacityResult => {
+				return capacityResult.processAttributeResults;
+			}));
+		}));
+		const dictionary = groupBy(processAttributeResults, (processAttributeResult: ProcessAttributeResult) => {
+			return processAttributeResult.processAttribute.idProcessAttribute;
+		});
+
+		const ratingByProcessAttribute = [];
+		for (let key in dictionary) {
+			if (dictionary.hasOwnProperty(key)) {
+				ratingByProcessAttribute.push({
+					processAttribute: dictionary[key][0].processAttribute,
+					ratings: dictionary[key].map((processAttributeResult: ProcessAttributeResult) => processAttributeResult.rating)
+				});
+			}
+		}
+		levelResult.ratingByProcessAttribute = ratingByProcessAttribute;
+		return ratingByProcessAttribute;
+	}
+
 	getNameByResult(resultWithError: Result, process: Process) {
 		if (isEmpty(resultWithError.idExpectedResult)) {
 			const processAttribute: ProcessAttribute = this.processAttributes.find(processAttribute => processAttribute.idProcessAttribute === resultWithError.idProcessAttribute);
@@ -414,5 +439,11 @@ export class RegisterAssessmentComponent implements OnInit {
 
 	private formatDate(date: any): Date {
 		return new Date(date.date.year, date.date.month, date.date.day, date.time.hour, date.time.minute, date.time.second);
+	}
+
+	getLevelResultProcesses(processes: ProcessResult[]) {
+		return processes.map(processResult => {
+			return processResult.process;
+		})
 	}
 }

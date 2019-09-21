@@ -1,4 +1,5 @@
 ﻿import {ExpectedResult} from "./expected-result";
+import {Rating} from "./rating";
 
 export class Process {
     idProcess: string;
@@ -6,4 +7,5 @@ export class Process {
 	prefix: string;
     purpose: string;
     expectedResults: ExpectedResult[];
+    ratingExpectedResult: Rating;
 }

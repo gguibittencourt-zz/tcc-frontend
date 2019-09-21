@@ -123,7 +123,8 @@
 							<div class="label flex">Quantidade de Colaboradores: {{getCompany.contributors}}</div>
 							<div class="label">Quantidade de projetos: {{getCompany.projects}}</div>
 						</div>
-						<div class="label justify">Resultado da Avaliação: <span class="result">{{getAssessmentResult}}</span></div>
+						<div class="label justify">Resultado da Avaliação: <span
+							class="result">{{getAssessmentResult}}</span></div>
 					</mat-card-content>
 				</mat-card>
 
@@ -136,23 +137,47 @@
 							<mat-expansion-panel *ngFor="let processResult of levelResult.processes">
 								<mat-expansion-panel-header class="expansion-panel-header">
 									<div class="col-md-12 content-card">
-										<div
-											class="col-md-8 border-right">{{processResult.process.prefix + ' - ' + processResult.process.name}}</div>
-										<div class="col-md-4">{{processResult.result}}</div>
+										<div class="col-md-8 border-right">
+											{{processResult.process.prefix + ' - ' + processResult.process.name}}
+										</div>
+										<!--										<div class="col-md-4">{{processResult.}}</div>-->
 									</div>
 								</mat-expansion-panel-header>
-								<div *ngFor="let resultWithError of processResult.resultsWithError; let indexError = index" class="col-md-12 content-card result-error">
-									<div class="col-md-8 border-right result-with-error">{{indexError + 1 + '. ' + getNameByResult(resultWithError, processResult.process)}}</div>
-									<div class="col-md-4">{{getResultValue(resultWithError)}}</div>
-								</div>
 							</mat-expansion-panel>
 						</mat-accordion>
 					</mat-card-content>
 				</mat-card>
+
+				<div class="display-flex col-md-12">
+					<div
+						*ngFor="let levelResult of assessment.jsonAssessment.levelResults; let indexLevelResult = index"
+						class="level-result">
+						<div *ngIf="indexLevelResult == 0" class="processes">
+							<div *ngFor="let process of getLevelResultProcesses(levelResult.processes)" class="level-result-process">
+								<div class="process-name">{{process.prefix + '. ' + process.name}}</div>
+							</div>
+						</div>
+						<div>
+							{{levelResult.classification.name}}
+							<div class="display-flex">
+								<div class="rating-process-attribute"
+									 *ngFor="let ratingsByProcessAttribute of getRatingsByProcessAttribute(levelResult); let i = index">
+									<div class="process-attribute-name">
+										{{ratingsByProcessAttribute.processAttribute.prefix + " " + ratingsByProcessAttribute.processAttribute.name}}
+									</div>
+									<div *ngFor="let rating of ratingsByProcessAttribute.ratings" class="border-rating">
+										<span class="rating-value">{{rating.name}}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="form-group">
 				<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
-				<button mat-raised-button [routerLink]="['/assessment']" class="btn btn-outline-danger">Cancelar</button>
+				<button mat-raised-button [routerLink]="['/assessment']" class="btn btn-outline-danger">Cancelar
+				</button>
 			</div>
 		</form>
 	</mat-step>

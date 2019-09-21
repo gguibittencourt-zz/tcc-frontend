@@ -3,5 +3,6 @@ import {ProcessResult} from "./process-result";
 
 export class LevelResult {
 	processes: ProcessResult[];
-	classification: Classification
+	classification: Classification;
+	ratingByProcessAttribute: any[];
 }

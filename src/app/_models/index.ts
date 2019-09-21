@@ -26,3 +26,5 @@ export * from './level-result';
 export * from './process-result';
 export * from './capacity-level';
 export * from './rating';
+export * from './process-attribute-result';
+export * from './capacity-result';
