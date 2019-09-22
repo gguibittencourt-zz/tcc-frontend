@@ -140,7 +140,7 @@
 										<div class="col-md-8 border-right">
 											{{processResult.process.prefix + ' - ' + processResult.process.name}}
 										</div>
-										<!--										<div class="col-md-4">{{processResult.}}</div>-->
+										<div class="col-md-4">{{processResult.result}}</div>
 									</div>
 								</mat-expansion-panel-header>
 							</mat-expansion-panel>
@@ -153,7 +153,8 @@
 						*ngFor="let levelResult of assessment.jsonAssessment.levelResults; let indexLevelResult = index"
 						class="level-result">
 						<div *ngIf="indexLevelResult == 0" class="processes">
-							<div *ngFor="let process of getLevelResultProcesses(levelResult.processes)" class="level-result-process">
+							<div *ngFor="let process of getLevelResultProcesses(levelResult.processes)"
+								 class="level-result-process">
 								<div class="process-name">{{process.prefix + '. ' + process.name}}</div>
 							</div>
 						</div>
