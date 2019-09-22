@@ -25,7 +25,6 @@ export class ClassificationScaleNominalComponent implements OnInit {
 	@Input('goals') goals: GoalScale[];
 	@Input('capacityLevels') capacityLevels: CapacityLevel[];
 	@Output() onConfirmClassification: EventEmitter<any> = new EventEmitter();
-	levelValues: Map<string, MetricScale[]> = new Map();
 	private classificationForms: FormGroup[] = [];
 	private mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
 

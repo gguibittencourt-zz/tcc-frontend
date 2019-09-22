@@ -14,23 +14,26 @@ import {
 	Classification,
 	Company,
 	JsonAssessment,
-	KnowledgeArea, LevelResult,
+	KnowledgeArea,
+	LevelResult,
 	MeasurementFramework,
 	Process,
 	ProcessAttribute,
 	ProcessAttributeResult,
 	ProcessResult,
+	ProcessResultDialogData,
 	Question,
 	Rating,
 	ReferenceModel,
 	Result,
 	User
 } from "../_models";
-import {flatMap, groupBy, isEmpty, uniqBy} from "lodash";
+import {flatMap, groupBy, indexOf, uniqBy} from "lodash";
 import {Guid} from "guid-typescript";
 import {MatDialog, MatHorizontalStepper, MatSnackBar} from "@angular/material";
 import {SnackBarComponent} from "../_directives/snack-bar";
 import {CompanyDialogComponent} from "../_directives/company-dialog";
+import {ProcessResultDialogComponent} from "../_directives/process-result-dialog";
 
 @Component({
 	templateUrl: './register-assessment.component.html',
@@ -270,25 +273,27 @@ export class RegisterAssessmentComponent implements OnInit {
 		return ratingByProcessAttribute;
 	}
 
-	getNameByResult(resultWithError: Result, process: Process) {
-		if (isEmpty(resultWithError.idExpectedResult)) {
-			const processAttribute: ProcessAttribute = this.processAttributes.find(processAttribute => processAttribute.idProcessAttribute === resultWithError.idProcessAttribute);
-			const processAttributeValue = processAttribute.values.find(value => value.idProcessAttributeValue === resultWithError.idProcessAttributeValue);
-			return processAttributeValue.name;
-		}
-		const expectedResult = process.expectedResults.find(expectedResult => expectedResult.idExpectedResult === resultWithError.idExpectedResult);
-		return expectedResult.name;
+	getLevelResultProcesses(processes: ProcessResult[]) {
+		return processes.map(processResult => {
+			return processResult.process;
+		})
 	}
 
-	getResultValue(resultWithError: Result): string {
-		const question = this.measurementFramework.questions.find(question => question.idQuestion == resultWithError.idQuestion);
-		switch (question.type) {
-			case 'boolean':
-				return 'Falso';
-			case 'scale-nominal':
-				return this.measurementFramework.ratings.find(rating => rating.id == resultWithError.value).mappedName;
-		}
-		return;
+	openResultDialog(levelResult: LevelResult, processResult: ProcessResult) {
+		const processResultDialogData = new ProcessResultDialogData();
+		const processes: ProcessResult[] = flatMap(this.assessment.jsonAssessment.levelResults.filter(value => {
+			return indexOf(this.assessment.jsonAssessment.levelResults, value) <=
+				indexOf(this.assessment.jsonAssessment.levelResults, levelResult);
+		}), (levelResult => {
+			return levelResult.processes.filter(value => value.process.idProcess == processResult.process.idProcess);
+		}));
+		processResultDialogData.process = processResult.process;
+		processResultDialogData.processResults = processes;
+		this.dialog.open(ProcessResultDialogComponent, {
+			data: processResultDialogData,
+			width: '95%',
+			disableClose: true
+		});
 	}
 
 	private createResults(knowledgeArea: KnowledgeArea) {
@@ -439,11 +444,5 @@ export class RegisterAssessmentComponent implements OnInit {
 
 	private formatDate(date: any): Date {
 		return new Date(date.date.year, date.date.month, date.date.day, date.time.hour, date.time.minute, date.time.second);
-	}
-
-	getLevelResultProcesses(processes: ProcessResult[]) {
-		return processes.map(processResult => {
-			return processResult.process;
-		})
 	}
 }

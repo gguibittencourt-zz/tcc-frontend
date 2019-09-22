@@ -1,0 +1,51 @@
+<h1 mat-dialog-title>Resultados do Processo {{data.process.prefix + '. ' + data.process.name}}</h1>
+<div mat-dialog-content class="process-result-dialog">
+	<div class="col-md-8 border-right text-justify">
+		Nível de Capacidade: 	</div>
+	<div *ngFor="let processResult of data.processResults">
+		<mat-card *ngFor="let capacityResult of processResult.capacityResults" class="card-expected-result">
+			{{capacityResult.capacityLevel.name}}
+			<mat-accordion>
+				<mat-expansion-panel
+					*ngFor="let processAttributeResult of capacityResult.processAttributeResults; let i = index">
+					<mat-expansion-panel-header class="col-md-12 display-flex font-size">
+						<div class="col-md-8 border-right text-justify">
+							{{processAttributeResult.processAttribute.prefix + ' ' + processAttributeResult.processAttribute.name}}
+						</div>
+						<div class="col-md-4">{{processAttributeResult.rating.name}}</div>
+					</mat-expansion-panel-header>
+					<div *ngIf="processAttributeResult.processAttribute.generateQuestions;else expectedResults">
+						<div *ngFor="let value of processAttributeResult.processAttribute.values; let indexValue = index">
+							<mat-card class="card-expected-result"
+									  *ngIf="expectedResultNotSatisfied(processAttributeResult.processAttribute.ratings, value.ratingAssessment)">
+								<div class="col-md-12 content-card display-flex font-size">
+									<div class="col-md-8 border-right text-justify">
+										{{processAttributeResult.processAttribute.prefix + ' ' + (indexValue + 1) + '. ' + value.name}}
+									</div>
+									<div class="col-md-4">{{value.ratingAssessment.name}}</div>
+								</div>
+							</mat-card>
+						</div>
+					</div>
+					<ng-template #expectedResults>
+						<div *ngFor="let expectedResult of data.process.expectedResults; let i = index">
+							<mat-card class="card-expected-result"
+									  *ngIf="expectedResultNotSatisfied(processAttributeResult.processAttribute.ratings, expectedResult.ratingAssessment)">
+								<div class="col-md-12 content-card display-flex font-size">
+									<div class="col-md-8 border-right text-justify">
+										{{data.process.prefix + ' ' + (i + 1) + '. ' + expectedResult.name}}
+									</div>
+									<div class="col-md-4">{{expectedResult.ratingAssessment.name}}</div>
+								</div>
+							</mat-card>
+						</div>
+					</ng-template>
+				</mat-expansion-panel>
+			</mat-accordion>
+		</mat-card>
+	</div>
+</div>
+
+<div mat-dialog-actions>
+	<button mat-button (click)="onNoClick()">Fechar</button>
+</div>

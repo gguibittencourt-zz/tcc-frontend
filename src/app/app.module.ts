@@ -48,6 +48,7 @@ import {CapacityDialogComponent} from "./_directives/capacity-dialog";
 import {SnackBarComponent} from "./_directives/snack-bar";
 import {CompanyDialogComponent} from "./_directives/company-dialog";
 import {CapacityLevelComponent} from "./_directives/capacity-level";
+import {ProcessResultDialogComponent} from "./_directives/process-result-dialog";
 
 @NgModule({
 	imports: [
@@ -95,6 +96,7 @@ import {CapacityLevelComponent} from "./_directives/capacity-level";
 		SnackBarComponent,
 		HighchartsChartComponent,
 		CapacityLevelComponent,
+		ProcessResultDialogComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -118,6 +120,7 @@ import {CapacityLevelComponent} from "./_directives/capacity-level";
 		SnackBarComponent,
 		CompanyDialogComponent,
 		CompanyComponent,
+		ProcessResultDialogComponent
 	],
 	bootstrap: [AppComponent]
 })

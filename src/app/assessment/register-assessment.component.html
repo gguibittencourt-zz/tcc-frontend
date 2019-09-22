@@ -134,16 +134,16 @@
 					</mat-card-title>
 					<mat-card-content>
 						<mat-accordion>
-							<mat-expansion-panel *ngFor="let processResult of levelResult.processes">
-								<mat-expansion-panel-header class="expansion-panel-header">
-									<div class="col-md-12 content-card">
+							<mat-card *ngFor="let processResult of levelResult.processes" class="card-process-result">
+								<mat-card-header class="expansion-panel-header">
+									<div class="col-md-12 content-card" (click)="openResultDialog(levelResult, processResult)">
 										<div class="col-md-8 border-right">
 											{{processResult.process.prefix + ' - ' + processResult.process.name}}
 										</div>
 										<div class="col-md-4">{{processResult.result}}</div>
 									</div>
-								</mat-expansion-panel-header>
-							</mat-expansion-panel>
+								</mat-card-header>
+							</mat-card>
 						</mat-accordion>
 					</mat-card-content>
 				</mat-card>
