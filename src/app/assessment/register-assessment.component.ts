@@ -34,6 +34,7 @@ import {MatDialog, MatHorizontalStepper, MatSnackBar} from "@angular/material";
 import {SnackBarComponent} from "../_directives/snack-bar";
 import {CompanyDialogComponent} from "../_directives/company-dialog";
 import {ProcessResultDialogComponent} from "../_directives/process-result-dialog";
+import Highcharts = require('highcharts');
 
 @Component({
 	templateUrl: './register-assessment.component.html',
@@ -55,6 +56,8 @@ export class RegisterAssessmentComponent implements OnInit {
 	processAttributes: ProcessAttribute[];
 	isFinish: boolean = false;
 	openResult: boolean = false;
+	highcharts = Highcharts;
+	chartOptions: any;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -113,6 +116,7 @@ export class RegisterAssessmentComponent implements OnInit {
 					this.changeTargetLevel(this.assessment.jsonAssessment.targetLevel);
 					if (this.assessment.status === 'finalized') {
 						this.openResult = true;
+						this.createHighchartOptions(this.assessment.jsonAssessment);
 					}
 					this.loading = false;
 				});
@@ -200,6 +204,7 @@ export class RegisterAssessmentComponent implements OnInit {
 					this.assessment = data;
 					this.assessmentForm.get('date').setValue(data.date);
 					this.assessmentForm.get('jsonAssessment').get('assessmentResult').setValue(data.jsonAssessment.assessmentResult);
+					this.createHighchartOptions(this.assessment.jsonAssessment);
 					this.createSnackBar('Finalizada com sucesso', 'success');
 					stepper.next();
 					this.loading = false;
@@ -248,6 +253,29 @@ export class RegisterAssessmentComponent implements OnInit {
 
 	isLastProcess(indexProcess: number) {
 		return (indexProcess + 1) === this.processes.length;
+	}
+
+	static getRatingsByProcessAttribute(levelResult: LevelResult): any[] {
+		const processAttributeResults: ProcessAttributeResult[] = flatMap(levelResult.processes, (processResult => {
+			return flatMap(processResult.capacityResults, (capacityResult => {
+				return capacityResult.processAttributeResults;
+			}));
+		}));
+		const dictionary = groupBy(processAttributeResults, (processAttributeResult: ProcessAttributeResult) => {
+			return processAttributeResult.processAttribute.idProcessAttribute;
+		});
+
+		const ratingByProcessAttribute = [];
+		for (let key in dictionary) {
+			if (dictionary.hasOwnProperty(key)) {
+				ratingByProcessAttribute.push({
+					processAttribute: dictionary[key][0].processAttribute,
+					ratings: dictionary[key].map((processAttributeResult: ProcessAttributeResult) => processAttributeResult.rating)
+				});
+			}
+		}
+		levelResult.ratingByProcessAttribute = ratingByProcessAttribute;
+		return ratingByProcessAttribute;
 	}
 
 	getRatingsByProcessAttribute(levelResult: LevelResult): any[] {
@@ -444,5 +472,95 @@ export class RegisterAssessmentComponent implements OnInit {
 
 	private formatDate(date: any): Date {
 		return new Date(date.date.year, date.date.month, date.date.day, date.time.hour, date.time.minute, date.time.second);
+	}
+
+	private createHighchartOptions(jsonAssessment: JsonAssessment) {
+		const classifications: Classification[] = jsonAssessment.measurementFramework.classifications.filter(classification => {
+			const index = jsonAssessment.measurementFramework.classifications.findIndex(value => value.idClassification == jsonAssessment.targetLevel.idClassification);
+			return indexOf(jsonAssessment.measurementFramework.classifications, classification) <= index;
+		});
+		const processAttributes: ProcessAttribute[] = uniqBy(flatMap(classifications, (classification => {
+			const capacityLevels = jsonAssessment.measurementFramework.capacityLevels.filter(value => classification.capacityLevels.includes(value.idCapacityLevel));
+			return flatMap(capacityLevels, (capacityLevel => capacityLevel.processAttributes));
+		})), (processAttribute => processAttribute.idProcessAttribute));
+
+		const processes = uniqBy(flatMap(jsonAssessment.levelResults, (levelResult => {
+			return flatMap(levelResult.processes, (processResult => {
+				return processResult.process;
+			}));
+		})), (process => process.idProcess));
+
+		this.chartOptions = {
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: 'Capacidade dos processos'
+			},
+			xAxis: {
+				categories: processes.map(process => process.name),
+				title: {
+					text: 'Processos'
+				},
+			},
+			yAxis: {
+				min: 0,
+				tickInterval: 1,
+				max: processAttributes.length,
+				title: {
+					text: 'Atributos de processo'
+				},
+				labels: {
+					formatter: function () {
+						if (this.value == 0) {
+							return '';
+						}
+
+						if (processAttributes[this.value - 1]) {
+							return processAttributes[this.value - 1].prefix;
+						}
+					}
+				},
+			},
+			tooltip: {enabled: false},
+			plotOptions: {
+				series: {
+					stacking: "normal",
+					animation: false,
+					dataLabels: {
+						enabled: true,
+						formatter: function () {
+							const indexProcess: number = this.point.x;
+							const indexProcessAttribute: number = this.point.stackY - 1;
+							const map = flatMap(jsonAssessment.levelResults, (levelResult => {
+								return RegisterAssessmentComponent.getRatingsByProcessAttribute(levelResult);
+							}));
+							if (map[indexProcessAttribute]) {
+								return map[indexProcessAttribute].ratings[indexProcess].name[0];
+							}
+							return '';
+						},
+						style: {
+							fontSize: 10,
+							color: 'white'
+						}
+					},
+					pointPadding: 0
+				}
+			},
+			series: this.generateSeries(processes, jsonAssessment),
+			legend: {
+				enabled: false
+			},
+			credits: {enabled: false},
+		};
+	}
+
+	private generateSeries(processes: Process[], jsonAssessment: JsonAssessment) {
+		return jsonAssessment.measurementFramework.ratings.map(rating => {
+			return {
+				name: rating.name, data: processes.map(value => 1), color: '#a8a8a8'
+			};
+		});
 	}
 }

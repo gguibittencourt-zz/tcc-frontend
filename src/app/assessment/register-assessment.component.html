@@ -128,27 +128,7 @@
 					</mat-card-content>
 				</mat-card>
 
-				<mat-card *ngFor="let levelResult of assessment.jsonAssessment.levelResults">
-					<mat-card-title class="title-card">
-						{{levelResult.classification.name}}
-					</mat-card-title>
-					<mat-card-content>
-						<mat-accordion>
-							<mat-card *ngFor="let processResult of levelResult.processes" class="card-process-result">
-								<mat-card-header class="expansion-panel-header">
-									<div class="col-md-12 content-card" (click)="openResultDialog(levelResult, processResult)">
-										<div class="col-md-8 border-right">
-											{{processResult.process.prefix + ' - ' + processResult.process.name}}
-										</div>
-										<div class="col-md-4">{{processResult.result}}</div>
-									</div>
-								</mat-card-header>
-							</mat-card>
-						</mat-accordion>
-					</mat-card-content>
-				</mat-card>
-
-				<div class="display-flex col-md-12">
+				<div class="display-flex col-md-12 box-shadow">
 					<div
 						*ngFor="let levelResult of assessment.jsonAssessment.levelResults; let indexLevelResult = index"
 						class="level-result">
@@ -174,6 +154,42 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="display-flex col-md-12 box-shadow" *ngIf="highcharts && chartOptions">
+					<div class="col-md-9">
+						<highcharts-chart update
+										  [Highcharts]="highcharts"
+										  [options]="chartOptions">
+						</highcharts-chart>
+					</div>
+					<div class="col-md-3 box-shadow rating-legend">
+						<div *ngFor="let rating of assessment.jsonAssessment.measurementFramework.ratings">
+							{{rating.name[0] + ' - ' + rating.name}}
+						</div>
+					</div>
+				</div>
+
+				<mat-card *ngFor="let levelResult of assessment.jsonAssessment.levelResults">
+					<mat-card-title class="title-card">
+						{{levelResult.classification.name}}
+					</mat-card-title>
+					<mat-card-content>
+						<mat-accordion>
+							<mat-card *ngFor="let processResult of levelResult.processes" class="card-process-result"
+									  [matTooltip]="'Clique para abrir os resultados do processo: ' +processResult.process.prefix + ' - ' + processResult.process.name  "
+									  (click)="openResultDialog(levelResult, processResult)">
+								<mat-card-header class="expansion-panel-header">
+									<div class="col-md-12 content-card">
+										<div class="col-md-8 border-right">
+											{{processResult.process.prefix + ' - ' + processResult.process.name}}
+										</div>
+										<div class="col-md-4">{{processResult.result}}</div>
+									</div>
+								</mat-card-header>
+							</mat-card>
+						</mat-accordion>
+					</mat-card-content>
+				</mat-card>
 			</div>
 			<div class="form-group">
 				<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
