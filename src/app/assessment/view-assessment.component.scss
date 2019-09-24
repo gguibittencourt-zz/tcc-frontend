@@ -1,0 +1,92 @@
+.title-card-maturity {
+	text-align: center;
+	padding-bottom: 10px;
+}
+
+.padding-right {
+	padding-right: 10px;
+}
+
+.process-title {
+	text-align: center;
+	font-size: 20px;
+	color: #808080;
+}
+
+.mat-card {
+	margin: 0 0 10px;
+	max-width: 100%;
+
+	.mat-card-content {
+		text-align: left;
+	}
+}
+
+.card-process {
+	margin: 0 0 0 !important;
+}
+
+.tab-group {
+	.mat-tab-body-content {
+		overflow: initial;
+	}
+}
+
+.title-card {
+	text-align: center;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.result-error {
+	margin-top: 10px;
+}
+
+.content-card {
+	display: flex;
+	padding-left: 0;
+	color: #8f8f8f;
+
+	.border-right {
+		padding-left: 0 !important;
+		border-right: 1px solid #dee2e6 !important;
+	}
+
+}
+
+.mat-card-content > div:not(:first-child) > div {
+	border-top: none !important;
+}
+
+.label {
+	color: #8f8f8f;
+	padding-right: 5px;
+}
+
+.flex {
+	flex: 1;
+}
+
+.result-with-error {
+	padding-left: 0 !important;
+}
+
+.expansion-panel-header {
+	padding: 0 15px 0 24px !important;
+}
+
+.justify {
+	text-align: justify;
+}
+
+.result {
+	font-weight: bold;
+}
+
+.green {
+	background-color: limegreen;
+}
+
+.red {
+	background-color: #ff00008c;
+}

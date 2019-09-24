@@ -8,8 +8,9 @@
 		</div>
 		<div *ngFor="let question of questions; let i = index" class="display-flex">
 			<div class="question-name">
-				{{i + 1 + '. ' + question.name}}
-				<span *ngIf="question.tip">
+				<span>
+					{{i + 1 + '. ' + question.name}}
+					<span *ngIf="question.tip">
 					<i *ngIf="isLink(question.tip); else tip" class="fa fa-info-circle link"
 					   (click)="openLink(question.tip)"
 					   matTooltip="Clique para abrir"></i>
@@ -17,29 +18,32 @@
 					<i *ngIf="question.tip" class="fa fa-info-circle" [matTooltip]="question.tip"></i>
 				</ng-template>
 				</span>
+				</span>
 			</div>
-			<div style="width: 50%; text-align: end;">
+			<div style="width: 50%; text-align: end;margin: auto;">
 				<form [formGroup]="getFormByIdQuestion(question)">
-
-					<mat-radio-group formControlName="value"
-									 (change)="confirmResult(question)"
-									 class="example-radio-group">
-						<mat-radio-button class="example-radio-button label-padding-left-20" value="1" [matTooltip]="getFirstTooltip(question)">
-						</mat-radio-button>
-						<mat-radio-button class="example-radio-button label-padding-left-20" value="2"
-										  [matTooltip]="ratings[1].mappedName"
-										  [matTooltipDisabled]="question.type === 'boolean'"
-										  [disabled]="question.type === 'boolean'">
-						</mat-radio-button>
-						<mat-radio-button class="example-radio-button label-padding-left-20" value="3"
-										  [matTooltip]="ratings[2].mappedName"
-										  [matTooltipDisabled]="question.type === 'boolean'"
-										  [disabled]="question.type === 'boolean'">
-						</mat-radio-button>
-						<mat-radio-button class="example-radio-button label-padding-left-20" value="4"
-										  [matTooltip]="getLastTooltip(question)">
-						</mat-radio-button>
-					</mat-radio-group>
+					<div class="form-questions">
+						<mat-radio-group formControlName="value"
+										 (change)="confirmResult(question)"
+										 class="example-radio-group">
+							<mat-radio-button class="example-radio-button label-padding-left-20" value="1"
+											  [matTooltip]="getFirstTooltip(question)">
+							</mat-radio-button>
+							<mat-radio-button class="example-radio-button label-padding-left-20" value="2"
+											  [matTooltip]="ratings[1].mappedName"
+											  [matTooltipDisabled]="question.type === 'boolean'"
+											  [ngClass]="question.type === 'boolean' ? 'display-none': ''">
+							</mat-radio-button>
+							<mat-radio-button class="example-radio-button label-padding-left-20" value="3"
+											  [matTooltip]="ratings[2].mappedName"
+											  [matTooltipDisabled]="question.type === 'boolean'"
+											  [ngClass]="question.type === 'boolean' ? 'display-none': ''">
+							</mat-radio-button>
+							<mat-radio-button class="example-radio-button label-padding-left-20" value="4"
+											  [matTooltip]="getLastTooltip(question)">
+							</mat-radio-button>
+						</mat-radio-group>
+					</div>
 					<mat-error class="error-padding-bottom"
 							   *ngIf="finish && getFormByIdQuestion(question).controls.value.errors?.required">
 						Questão obrigatória

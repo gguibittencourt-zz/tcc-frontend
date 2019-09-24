@@ -2,7 +2,7 @@
 
 <h2>Avaliação</h2>
 
-<mat-horizontal-stepper [linear]="true" #stepper class="register-assessment">
+<mat-vertical-stepper [linear]="true" #stepper class="register-assessment">
 	<ng-template matStepperIcon="edit">
 		<i class="fa fa-edit"></i>
 	</ng-template>
@@ -77,7 +77,7 @@
 							<question-assessment [resultForms]="getResultForms.value"
 												 [questions]="getQuestions(process)"
 												 [process]="process"
-												 [finish]="isFinish"
+												 [finish]="checkProcess[indexProcess]"
 												 [ratings]="ratings">
 							</question-assessment>
 						</mat-card-content>
@@ -89,113 +89,17 @@
 					<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
 							class="btn btn-outline-success save-button">Salvar
 					</button>
-					<button mat-raised-button (click)="finish(stepper)" [disabled]="loading"
+					<button mat-raised-button (click)="finish()" [disabled]="loading"
 							class="btn btn-outline-success save-button">Salvar e Finalizar
 					</button>
 				</span>
 					<ng-template #buttonNext>
 						<button mat-raised-button class="mat-raised-button btn btn-outline-secondary"
-								(click)="checkForms()"
-								matStepperNext>Próximo
+								(click)="nextProcess(indexProcess, process, stepper)">Próximo
 						</button>
 					</ng-template>
 				</div>
 			</form>
 		</mat-step>
 	</div>
-
-	<mat-step [stepControl]="assessmentForm" *ngIf="openResult">
-		<form [formGroup]="assessmentForm" *ngIf="assessment?.jsonAssessment?.levelResults">
-			<ng-template matStepLabel>Resultado da avaliação</ng-template>
-			<div class="form-group">
-				<mat-card>
-					<mat-card-title class="title-card">
-						Dados da avaliação
-					</mat-card-title>
-					<mat-card-content>
-						<div class="label">Data da Avaliação: {{getDate | date:'dd/MM/yyyy HH:mm:ss'}}</div>
-						<div class="label">Modelo de Avaliação: {{measurementFramework.name}}</div>
-						<div class="display-flex">
-							<div class="label flex">Nome da Organização: {{getCompany.name}}</div>
-							<div class="label">Área de Atuação: {{getCompany.occupationArea}}</div>
-						</div>
-						<div class="display-flex">
-							<div class="label flex">Quantidade de Colaboradores: {{getCompany.contributors}}</div>
-							<div class="label">Quantidade de projetos: {{getCompany.projects}}</div>
-						</div>
-						<div class="label justify">Resultado da Avaliação: <span
-							class="result">{{getAssessmentResult}}</span></div>
-					</mat-card-content>
-				</mat-card>
-
-				<div class="display-flex col-md-12 box-shadow">
-					<div
-						*ngFor="let levelResult of assessment.jsonAssessment.levelResults; let indexLevelResult = index"
-						class="level-result">
-						<div *ngIf="indexLevelResult == 0" class="processes">
-							<div *ngFor="let process of getLevelResultProcesses(levelResult.processes)"
-								 class="level-result-process">
-								<div class="process-name">{{process.prefix + '. ' + process.name}}</div>
-							</div>
-						</div>
-						<div>
-							{{levelResult.classification.name}}
-							<div class="display-flex">
-								<div class="rating-process-attribute"
-									 *ngFor="let ratingsByProcessAttribute of getRatingsByProcessAttribute(levelResult); let i = index">
-									<div class="process-attribute-name">
-										{{ratingsByProcessAttribute.processAttribute.prefix + " " + ratingsByProcessAttribute.processAttribute.name}}
-									</div>
-									<div *ngFor="let rating of ratingsByProcessAttribute.ratings" class="border-rating">
-										<span class="rating-value">{{rating.name}}</span>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="display-flex col-md-12 box-shadow" *ngIf="highcharts && chartOptions">
-					<div class="col-md-9">
-						<highcharts-chart update
-										  [Highcharts]="highcharts"
-										  [options]="chartOptions">
-						</highcharts-chart>
-					</div>
-					<div class="col-md-3 box-shadow rating-legend">
-						<div *ngFor="let rating of assessment.jsonAssessment.measurementFramework.ratings">
-							{{rating.name[0] + ' - ' + rating.name}}
-						</div>
-					</div>
-				</div>
-
-				<mat-card *ngFor="let levelResult of assessment.jsonAssessment.levelResults">
-					<mat-card-title class="title-card">
-						{{levelResult.classification.name}}
-					</mat-card-title>
-					<mat-card-content>
-						<mat-accordion>
-							<mat-card *ngFor="let processResult of levelResult.processes" class="card-process-result"
-									  [matTooltip]="'Clique para abrir os resultados do processo: ' +processResult.process.prefix + ' - ' + processResult.process.name  "
-									  (click)="openResultDialog(levelResult, processResult)">
-								<mat-card-header class="expansion-panel-header">
-									<div class="col-md-12 content-card">
-										<div class="col-md-8 border-right">
-											{{processResult.process.prefix + ' - ' + processResult.process.name}}
-										</div>
-										<div class="col-md-4">{{processResult.result}}</div>
-									</div>
-								</mat-card-header>
-							</mat-card>
-						</mat-accordion>
-					</mat-card-content>
-				</mat-card>
-			</div>
-			<div class="form-group">
-				<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
-				<button mat-raised-button [routerLink]="['/assessment']" class="btn btn-outline-danger">Cancelar
-				</button>
-			</div>
-		</form>
-	</mat-step>
-</mat-horizontal-stepper>
+</mat-vertical-stepper>

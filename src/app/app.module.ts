@@ -36,7 +36,7 @@ import {LoadingComponent} from "./_directives/loading";
 import {TreeNodeMetricsComponentBoolean} from "./_directives/tree-node-metrics-boolean";
 import {TreeNodeMetricsComponentScaleNominal} from "./_directives/tree-node-metrics-scale-nominal";
 import {ClassificationScaleNominalComponent} from "./_directives/classification-scale-nominal";
-import {ListAssessmentComponent, RegisterAssessmentComponent} from "./assessment";
+import {ListAssessmentComponent, RegisterAssessmentComponent, ViewAssessmentComponent} from "./assessment";
 import {QuestionAssessmentComponent} from "./_directives/question-assessment";
 import {STEPPER_GLOBAL_OPTIONS} from "@angular/cdk/stepper";
 import {LevelScaleNominalComponent} from "./_directives/level-scale-nominal";
@@ -96,7 +96,8 @@ import {ProcessResultDialogComponent} from "./_directives/process-result-dialog"
 		SnackBarComponent,
 		HighchartsChartComponent,
 		CapacityLevelComponent,
-		ProcessResultDialogComponent
+		ProcessResultDialogComponent,
+		ViewAssessmentComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

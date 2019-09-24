@@ -5,4 +5,5 @@ export class LevelResult {
 	processes: ProcessResult[];
 	classification: Classification;
 	ratingByProcessAttribute: any[];
+	result: string;
 }

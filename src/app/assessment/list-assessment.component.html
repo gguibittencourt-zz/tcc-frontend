@@ -4,7 +4,7 @@
 
 <div>
 	<a [routerLink]="['/assessment/register']" class="btn btn btn-outline-secondary col-md-3">
-		Nova Avaliação
+		Iniciar nova Avaliação
 		<i class="fa fa-plus"></i>
 	</a>
 	<mat-form-field class="col-md-9">
@@ -29,7 +29,7 @@
 			<th mat-header-cell *matHeaderCellDef mat-sort-header class="column-action"> Ações</th>
 			<td mat-cell *matCellDef="let element">
 				<button mat-button *ngIf="element.status === 'finalized';else edit"
-						[routerLink]="['/assessment', element.idAssessment]"
+						[routerLink]="['/assessment/view/', element.idAssessment]"
 						class="btn btn-sm" matTooltip="Visualizar">
 					<i class="fa fa-eye"></i>
 				</button>

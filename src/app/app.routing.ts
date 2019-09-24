@@ -7,7 +7,7 @@ import {AuthGuard} from './_guards';
 import {CompanyComponent} from "./company";
 import {ListReferenceModelComponent, RegisterReferenceModelComponent} from "./reference-model";
 import {ListMeasurementFrameworkComponent, RegisterMeasurementFrameworkComponent} from "./measurement-framework";
-import {ListAssessmentComponent, RegisterAssessmentComponent} from "./assessment";
+import {ListAssessmentComponent, RegisterAssessmentComponent, ViewAssessmentComponent} from "./assessment";
 
 const appRoutes: Routes = [
 	{path: '', component: HomeComponent, canActivate: [AuthGuard]},
@@ -24,6 +24,7 @@ const appRoutes: Routes = [
 	{path: 'assessment', component: ListAssessmentComponent, canActivate: [AuthGuard]},
 	{path: 'assessment/register', component: RegisterAssessmentComponent, canActivate: [AuthGuard]},
 	{path: 'assessment/:idAssessment', component: RegisterAssessmentComponent, canActivate: [AuthGuard]},
+	{path: 'assessment/view/:idAssessment', component: ViewAssessmentComponent, canActivate: [AuthGuard]},
 	{path: '**', redirectTo: ''}
 ];
 

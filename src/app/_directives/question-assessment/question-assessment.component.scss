@@ -28,15 +28,10 @@
 	}
 }
 
-.label-padding-left-15 {
-	.mat-radio-label {
-		padding-left: 20px;
-	}
-}
-
 .label-padding-left-20 {
 	.mat-radio-label {
 		padding-left: 20px;
+		margin-top: 0.5rem;
 	}
 }
 
@@ -75,4 +70,10 @@
 
 .question-divider {
 	margin-top: -2px !important;
+}
+
+.display-none {
+	.mat-radio-outer-circle {
+		display: none !important;
+	}
 }
