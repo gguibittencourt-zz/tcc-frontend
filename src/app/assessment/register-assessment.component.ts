@@ -29,6 +29,7 @@ import {Guid} from "guid-typescript";
 import {MatDialog, MatSnackBar, MatVerticalStepper} from "@angular/material";
 import {SnackBarComponent} from "../_directives/snack-bar";
 import {CompanyDialogComponent} from "../_directives/company-dialog";
+import {TutorialDialogComponent} from "../_directives/tutorial-dialog";
 
 @Component({
 	templateUrl: './register-assessment.component.html',
@@ -64,6 +65,7 @@ export class RegisterAssessmentComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		this.openTutorial();
 		this.assessment = new Assessment();
 		this.measurementFrameworkService.list().subscribe((data: MeasurementFramework[]) => {
 			this.measurementFrameworks = data;
@@ -87,7 +89,7 @@ export class RegisterAssessmentComponent implements OnInit {
 
 		this.companyService.get(this.getUser.idCompany).subscribe((company: Company) => {
 			if (company && !company.name) {
-				this.openDialog(company);
+				this.openCompanyDialog(company);
 				return;
 			}
 			this.assessmentForm.get('jsonAssessment').get('company').setValue(company);
@@ -211,7 +213,12 @@ export class RegisterAssessmentComponent implements OnInit {
 			});
 	}
 
-	finish(): void {
+	finish(index: number, idProcess: string): void {
+		this.checkProcess[index] = true;
+		if (this.anyResultInvalid(idProcess)) {
+			this.createSnackBar('Algumas questões obrigatórias não foram preenchidas', 'error');
+			return;
+		}
 		this.onSubmit(true);
 	}
 
@@ -358,7 +365,7 @@ export class RegisterAssessmentComponent implements OnInit {
 		});
 	}
 
-	private openDialog(company: Company): void {
+	private openCompanyDialog(company: Company): void {
 		const dialogRef = this.dialog.open(CompanyDialogComponent, {
 			data: company,
 			disableClose: true
@@ -367,6 +374,12 @@ export class RegisterAssessmentComponent implements OnInit {
 			if (result) {
 				this.assessmentForm.get('jsonAssessment').get('company').setValue(result);
 			}
+		});
+	}
+
+	private openTutorial(): void {
+		this.dialog.open(TutorialDialogComponent, {
+			disableClose: false
 		});
 	}
 

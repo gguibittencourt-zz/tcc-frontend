@@ -22,7 +22,6 @@ export class TreeNodeMetricsComponentScaleNominal implements OnInit {
 	readonly valueMetrics: MetricScale[] = [
 		{idMetricScale: '1', name: 'Não implementado'},
 		{idMetricScale: '2', name: 'Parcialmente implementado'},
-		{idMetricScale: '3', name: 'Não avaliado'},
 		{idMetricScale: '4', name: 'Largamente implementado'},
 		{idMetricScale: '5', name: 'Totalmente implementado'},
 	];

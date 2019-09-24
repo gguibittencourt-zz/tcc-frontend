@@ -29,7 +29,7 @@ export class CapacityLevelComponent implements OnInit {
 			processAttribute.name = 'O processo é executado';
 			processAttribute.prefix = 'AP 1.1';
 			processAttribute.values = CapacityLevelComponent.createValue();
-			processAttribute.ratings = ["4"];
+			processAttribute.ratings = ["3", "4"];
 			processAttribute.generateQuestions = false;
 			capacityLevel.processAttributes = [processAttribute];
 			this.capacityLevels.push(capacityLevel);

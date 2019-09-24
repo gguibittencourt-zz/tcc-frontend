@@ -99,7 +99,7 @@
 												*ngFor="let question of data.questions; let indexDependent = index"
 												[value]="question.idQuestion"
 												[disabled]="i == indexDependent">
-												{{indexDependent + 1 + '. ' + question.name}}
+												{{indexDependent + 1 + '. ' + (question.name ? question.name : '')}}
 											</mat-option>
 										</mat-select>
 									</mat-form-field>

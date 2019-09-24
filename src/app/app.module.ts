@@ -49,6 +49,8 @@ import {SnackBarComponent} from "./_directives/snack-bar";
 import {CompanyDialogComponent} from "./_directives/company-dialog";
 import {CapacityLevelComponent} from "./_directives/capacity-level";
 import {ProcessResultDialogComponent} from "./_directives/process-result-dialog";
+import {TutorialDialogComponent} from "./_directives/tutorial-dialog";
+import { ProcessAttributeValueChartDialogComponent } from './_directives/process-attribute-value-chart-dialog';
 
 @NgModule({
 	imports: [
@@ -97,7 +99,9 @@ import {ProcessResultDialogComponent} from "./_directives/process-result-dialog"
 		HighchartsChartComponent,
 		CapacityLevelComponent,
 		ProcessResultDialogComponent,
-		ViewAssessmentComponent
+		ViewAssessmentComponent,
+		TutorialDialogComponent,
+		ProcessAttributeValueChartDialogComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -121,7 +125,9 @@ import {ProcessResultDialogComponent} from "./_directives/process-result-dialog"
 		SnackBarComponent,
 		CompanyDialogComponent,
 		CompanyComponent,
-		ProcessResultDialogComponent
+		ProcessResultDialogComponent,
+		TutorialDialogComponent,
+		ProcessAttributeValueChartDialogComponent
 	],
 	bootstrap: [AppComponent]
 })

@@ -109,6 +109,7 @@
 						<mat-card-content>
 							<tree-node-questions *ngIf="referenceModel" [knowledgeAreas]="referenceModel.knowledgeAreas"
 												 [questions]="measurementFramework.questions"
+												 [ratings]="measurementFramework.ratings"
 												 [type]="type"
 												 (onConfirmQuestions)="confirmQuestions($event)">
 							</tree-node-questions>

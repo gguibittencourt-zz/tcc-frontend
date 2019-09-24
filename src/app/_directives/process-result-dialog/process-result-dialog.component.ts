@@ -1,7 +1,8 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {ProcessResultDialogData, Rating} from "../../_models";
-import {cloneDeep} from 'lodash';
+import {ProcessResult, ProcessResultDialogData, Rating} from "../../_models";
+import {cloneDeep, flatMap, uniqBy, sortBy} from 'lodash';
+import Highcharts = require('highcharts');
 
 @Component({
 	selector: 'process-result',
@@ -11,8 +12,12 @@ import {cloneDeep} from 'lodash';
 
 export class ProcessResultDialogComponent {
 
+	highcharts = Highcharts;
+	chartOptions: any;
+
 	constructor(private dialogRef: MatDialogRef<ProcessResultDialogComponent>,
 				@Inject(MAT_DIALOG_DATA) public data: ProcessResultDialogData) {
+		this.createPieHighcharts(this.data.processResults);
 	}
 
 	onNoClick(): void {
@@ -31,6 +36,69 @@ export class ProcessResultDialogComponent {
 	}
 
 	expectedResultNotSatisfied(ratings: string[], ratingAssessment: Rating) {
-		return !ratings.includes(ratingAssessment.id);
+		if (ratingAssessment) {
+			return !ratings.includes(ratingAssessment.id);
+		}
+		return true;
+	}
+
+	createPieHighcharts(processResults: ProcessResult[]): void {
+		const ratings = flatMap(processResults, (processResult => {
+			return flatMap(processResult.capacityResults, (capacityResult => {
+				return flatMap(capacityResult.processAttributeResults, (processAttributeResult => {
+					if (processAttributeResult.processAttribute.generateQuestions) {
+						return flatMap(processAttributeResult.processAttribute.values, (value => {
+							return value.ratingAssessment;
+						}));
+					}
+					return flatMap(this.data.process.expectedResults, (expectedResult => {
+						return expectedResult.ratingAssessment;
+					}));
+				}));
+			}));
+		}));
+		this.chartOptions = {
+			chart: {
+				type: 'pie',
+				height: 200,
+				width: 600
+			},
+			title: {
+				text: 'Percentual de resultados'
+			},
+			tooltip: {
+				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: true,
+					cursor: 'pointer',
+					dataLabels: {
+						enabled: false,
+					},
+					showInLegend: true
+				}
+			},
+			legend: {
+				layout: 'vertical',
+				align: 'right',
+				verticalAlign: 'top',
+			},
+			series: [{
+				name: 'Resultados',
+				colorByPoint: true,
+				data: ProcessResultDialogComponent.generateData(ratings)
+			}],
+			credits: {enabled: false}
+		};
+	}
+
+	private static generateData(ratings: Rating[]): any[] {
+		ratings = sortBy(ratings, (rating => !rating || rating && rating.id));
+		const unique: any[] = uniqBy(ratings, (rating => !rating || rating.id));
+		return flatMap(unique, (value => {
+			const ratingsMapped = ratings.filter(rating => !rating && !value || (rating && value && rating.id == value.id));
+			return {name: value ? value.name : 'Não avaliado', y: (ratingsMapped.length / ratings.length) * 100};
+		}));
 	}
 }

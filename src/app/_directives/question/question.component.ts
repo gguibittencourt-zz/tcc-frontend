@@ -140,17 +140,13 @@ export class QuestionComponent {
 	private createValues(type: string) {
 		if (type === 'boolean') {
 			return [
-				this.newDependentValue('Verdadeiro', 5),
+				this.newDependentValue('Verdadeiro', 4),
 				this.newDependentValue('Falso', 1)
 			];
 		} else if (type === 'scale-nominal') {
-			return [
-				this.newDependentValue('Não implementado', 1),
-				this.newDependentValue('Parcialmente implementado', 2),
-				this.newDependentValue('Não avaliado', 3),
-				this.newDependentValue('Largamente implementado', 4),
-				this.newDependentValue('Totalmente implementado', 5),
-			];
+			return this.data.ratings.map(rating => {
+				return this.newDependentValue(rating.mappedName, rating.id);
+			});
 		}
 	}
 

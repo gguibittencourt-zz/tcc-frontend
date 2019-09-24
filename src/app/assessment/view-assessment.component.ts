@@ -11,7 +11,7 @@ import {
 	MeasurementFramework,
 	Process,
 	ProcessAttribute,
-	ProcessAttributeResult,
+	ProcessAttributeResult, ProcessAttributeValueChartDialog,
 	ProcessResult,
 	ProcessResultDialogData,
 	Rating,
@@ -21,6 +21,7 @@ import {flatMap, groupBy, indexOf, uniqBy} from "lodash";
 import {ProcessResultDialogComponent} from "../_directives/process-result-dialog";
 import {MatDialog} from "@angular/material";
 import Highcharts = require('highcharts');
+import {ProcessAttributeValueChartDialogComponent} from "../_directives/process-attribute-value-chart-dialog";
 
 @Component({
 	templateUrl: './view-assessment.component.html',
@@ -177,6 +178,8 @@ export class ViewAssessmentComponent implements OnInit {
 			}));
 		})), (process => process.idProcess));
 
+		const dialog = this.dialog;
+
 		this.chartOptions = {
 			chart: {
 				type: 'column'
@@ -237,12 +240,8 @@ export class ViewAssessmentComponent implements OnInit {
 					point: {
 						events: {
 							click: function () {
-								const indexProcess: number = this.x;
-								const indexProcessAttribute: number = this.stackY - 1;
-								const map = flatMap(jsonAssessment.levelResults, (levelResult => {
-									return ViewAssessmentComponent.getRatingsByProcessAttribute(levelResult);
-								}));
-								this.openValueOfProcessAttribute();
+								const processAttribute = processAttributes[this.stackY - 1];
+								ViewAssessmentComponent.openValueOfProcessAttribute(processAttribute, processes, jsonAssessment, dialog);
 							}
 						}
 					}
@@ -262,5 +261,16 @@ export class ViewAssessmentComponent implements OnInit {
 				name: rating.name, data: processes.map(value => 1), color: '#bfbfbf'
 			};
 		});
+	}
+
+	private static openValueOfProcessAttribute(processAttribute: ProcessAttribute,
+											   processes: Process[],
+											   jsonAssessment: JsonAssessment,
+											   dialog: MatDialog): void {
+		const processAttributeValueChartDialog: ProcessAttributeValueChartDialog = {processAttribute, processes, jsonAssessment};
+		dialog.open(ProcessAttributeValueChartDialogComponent, {
+			data: processAttributeValueChartDialog,
+			disableClose: true
+		})
 	}
 }

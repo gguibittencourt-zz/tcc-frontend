@@ -89,7 +89,7 @@
 					<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
 							class="btn btn-outline-success save-button">Salvar
 					</button>
-					<button mat-raised-button (click)="finish()" [disabled]="loading"
+					<button mat-raised-button (click)="finish(indexProcess, process.idProcess)" [disabled]="loading"
 							class="btn btn-outline-success save-button">Salvar e Finalizar
 					</button>
 				</span>
