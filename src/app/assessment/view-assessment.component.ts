@@ -204,7 +204,8 @@ export class ViewAssessmentComponent implements OnInit {
 						}
 
 						if (processAttributes[this.value - 1]) {
-							return processAttributes[this.value - 1].prefix;
+							const processAttribute = processAttributes[this.value - 1];
+							return processAttribute.prefix + ' ' + processAttribute.name;
 						}
 					}
 				},

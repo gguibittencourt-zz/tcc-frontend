@@ -32,8 +32,8 @@
 	}
 }
 
-.title-card {
-	text-align: center;
+.title-cards {
+	text-align: center !important;
 	font-size: 15px;
 	font-weight: bold;
 }
@@ -64,7 +64,7 @@
 }
 
 .flex {
-	flex: 1;
+	flex: 0.5;
 }
 
 .result-with-error {
