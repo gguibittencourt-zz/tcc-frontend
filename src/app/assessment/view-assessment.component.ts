@@ -11,7 +11,8 @@ import {
 	MeasurementFramework,
 	Process,
 	ProcessAttribute,
-	ProcessAttributeResult, ProcessAttributeValueChartDialog,
+	ProcessAttributeResult,
+	ProcessAttributeValueChartDialog,
 	ProcessResult,
 	ProcessResultDialogData,
 	Rating,
@@ -20,8 +21,8 @@ import {
 import {flatMap, groupBy, indexOf, uniqBy} from "lodash";
 import {ProcessResultDialogComponent} from "../_directives/process-result-dialog";
 import {MatDialog} from "@angular/material";
-import Highcharts = require('highcharts');
 import {ProcessAttributeValueChartDialogComponent} from "../_directives/process-attribute-value-chart-dialog";
+import Highcharts = require('highcharts');
 
 @Component({
 	templateUrl: './view-assessment.component.html',
@@ -210,10 +211,15 @@ export class ViewAssessmentComponent implements OnInit {
 							const processAttribute = processAttributes[this.value - 1];
 							return processAttribute.prefix + ' ' + processAttribute.name;
 						}
-					}
+					},
+					y: ViewAssessmentComponent.getY(processAttributes.length)
 				},
 			},
-			tooltip: {enabled: false},
+			tooltip: {
+				formatter: function () {
+					return 'Clique para visualizar os resultados do atributo de processo';
+				}
+			},
 			plotOptions: {
 				column: {
 					stacking: 'normal',
@@ -234,7 +240,8 @@ export class ViewAssessmentComponent implements OnInit {
 						},
 						style: {
 							fontSize: 16,
-							color: 'white'
+							color: 'white',
+							cursor: 'pointer'
 						}
 					},
 					point: {
@@ -247,7 +254,7 @@ export class ViewAssessmentComponent implements OnInit {
 					}
 				},
 			},
-			series: this.generateSeries(processes, jsonAssessment),
+			series: this.generateSeries(processes, processAttributes),
 			legend: {
 				enabled: false
 			},
@@ -255,10 +262,10 @@ export class ViewAssessmentComponent implements OnInit {
 		};
 	}
 
-	private generateSeries(processes: Process[], jsonAssessment: JsonAssessment) {
-		return jsonAssessment.measurementFramework.ratings.map(rating => {
+	private generateSeries(processes: Process[], processAttributes: ProcessAttribute[]) {
+		return processAttributes.map(rating => {
 			return {
-				name: rating.name, data: processes.map(value => 1), color: '#bfbfbf'
+				name: '', data: processes.map(value => 1), color: '#bfbfbf', cursor: 'pointer'
 			};
 		});
 	}
@@ -267,10 +274,25 @@ export class ViewAssessmentComponent implements OnInit {
 											   processes: Process[],
 											   jsonAssessment: JsonAssessment,
 											   dialog: MatDialog): void {
-		const processAttributeValueChartDialog: ProcessAttributeValueChartDialog = {processAttribute, processes, jsonAssessment};
+		const processAttributeValueChartDialog: ProcessAttributeValueChartDialog = {
+			processAttribute,
+			processes,
+			jsonAssessment
+		};
 		dialog.open(ProcessAttributeValueChartDialogComponent, {
 			data: processAttributeValueChartDialog,
+			width: '80%',
 			disableClose: true
 		})
+	}
+
+	private static getY(length: any) {
+		if (length == 1) {
+			return 150;
+		}
+		if (length > 4) {
+			return 25;
+		}
+		return 50;
 	}
 }

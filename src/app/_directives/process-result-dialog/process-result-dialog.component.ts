@@ -48,7 +48,7 @@ export class ProcessResultDialogComponent {
 				return flatMap(capacityResult.processAttributeResults, (processAttributeResult => {
 					if (processAttributeResult.processAttribute.generateQuestions) {
 						return flatMap(processAttributeResult.processAttribute.values, (value => {
-							return value.ratingAssessment;
+							return value.ratingAssessmentByIdProcess[processResult.process.idProcess];
 						}));
 					}
 					return flatMap(this.data.process.expectedResults, (expectedResult => {

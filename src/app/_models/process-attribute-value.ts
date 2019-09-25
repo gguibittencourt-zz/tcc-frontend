@@ -4,7 +4,7 @@ import {Rating} from "./rating";
 export class ProcessAttributeValue {
 	idProcessAttributeValue: string;
 	name: string;
-	ratingAssessment: Rating;
+	ratingAssessmentByIdProcess: Map<string, Rating>;
 
 	constructor() {
 		this.idProcessAttributeValue = Guid.create().toString();

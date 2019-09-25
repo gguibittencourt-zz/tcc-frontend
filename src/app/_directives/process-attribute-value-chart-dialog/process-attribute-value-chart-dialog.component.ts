@@ -1,7 +1,7 @@
 ﻿import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {JsonAssessment, LevelResult, Process, ProcessAttributeValueChartDialog} from "../../_models";
-import {flatMap, groupBy} from 'lodash';
+import {LevelResult, Process, ProcessAttribute, ProcessAttributeValueChartDialog} from "../../_models";
+import {flatMap, uniqBy} from 'lodash';
 import {ProcessAttributeValue} from "../../_models/process-attribute-value";
 import Highcharts = require('highcharts');
 
@@ -22,7 +22,9 @@ export class ProcessAttributeValueChartDialogComponent {
 				type: 'column'
 			},
 			title: {
-				text: 'Capacidade dos processos'
+				style: {
+					display: 'none'
+				}
 			},
 			xAxis: {
 				categories: data.processes.map(process => process.name),
@@ -35,7 +37,7 @@ export class ProcessAttributeValueChartDialogComponent {
 				tickInterval: 1,
 				max: data.processAttribute.values.length,
 				title: {
-					text: 'Atributos de processo'
+					text: 'Resultado do atributo de processo'
 				},
 				labels: {
 					formatter: function () {
@@ -44,9 +46,11 @@ export class ProcessAttributeValueChartDialogComponent {
 						}
 
 						if (data.processAttribute.values[this.value - 1]) {
-							return data.processAttribute.prefix + '.' + this.value + ' ' + data.processAttribute.values[this.value - 1].name;
+							const value = data.processAttribute.prefix + '.' + this.value + ' ' + data.processAttribute.values[this.value - 1].name;
+							return (value.length < 50) ? value : value.substring(0, 49) + '...';
 						}
-					}
+					},
+					y: ProcessAttributeValueChartDialogComponent.getY(data.processAttribute.values.length)
 				},
 			},
 			tooltip: {enabled: false},
@@ -59,12 +63,13 @@ export class ProcessAttributeValueChartDialogComponent {
 						enabled: true,
 						formatter: function () {
 							const indexProcess: number = this.point.x;
+							const process = data.processes[indexProcess];
 							const indexProcessAttributeValue: number = this.point.stackY - 1;
-							const map = flatMap(data.jsonAssessment.levelResults, (levelResult => {
-								return ProcessAttributeValueChartDialogComponent.getRatingsByProcessAttribute(levelResult);
+							const processAttributeValues = flatMap(data.jsonAssessment.levelResults, (levelResult => {
+								return ProcessAttributeValueChartDialogComponent.getProcessAttributeValues(levelResult, data.processAttribute.idProcessAttribute);
 							}));
-							if (map[indexProcessAttributeValue]) {
-								const rating = map[indexProcessAttributeValue].ratings[indexProcess];
+							if (processAttributeValues[indexProcessAttributeValue]) {
+								const rating = processAttributeValues[indexProcessAttributeValue].ratingAssessmentByIdProcess[process.idProcess];
 								return rating ? rating.name[0] : '';
 							}
 							return '';
@@ -76,7 +81,7 @@ export class ProcessAttributeValueChartDialogComponent {
 					},
 				},
 			},
-			series: this.generateSeries(data.processes, data.jsonAssessment),
+			series: this.generateSeries(data.processes, data.processAttribute),
 			legend: {
 				enabled: false
 			},
@@ -84,37 +89,39 @@ export class ProcessAttributeValueChartDialogComponent {
 		};
 	}
 
-	static getRatingsByProcessAttribute(levelResult: LevelResult): any[] {
-		const processAttributeValues: ProcessAttributeValue[] = flatMap(levelResult.processes, (processResult => {
+	static getProcessAttributeValues(levelResult: LevelResult, idProcessAttribute: string): ProcessAttributeValue[] {
+		let processAttributeValues: ProcessAttributeValue[] = flatMap(levelResult.processes, (processResult => {
 			return flatMap(processResult.capacityResults, (capacityResult => {
 				return flatMap(capacityResult.processAttributeResults, (processAttributeResult => {
-					return flatMap(processAttributeResult.processAttribute.values, (processAttributeValue => {
-						return processAttributeValue;
-					}));
+					if (processAttributeResult.processAttribute.idProcessAttribute == idProcessAttribute) {
+						return flatMap(processAttributeResult.processAttribute.values, (processAttributeValue => {
+							return processAttributeValue;
+						}));
+					}
+					return [];
 				}));
 			}));
 		}));
-		const dictionary = groupBy(processAttributeValues, (processAttributeValue: ProcessAttributeValue) => {
+		return uniqBy(processAttributeValues, (processAttributeValue: ProcessAttributeValue) => {
 			return processAttributeValue.idProcessAttributeValue;
 		});
-
-		const ratingByProcessAttributeValue = [];
-		for (let key in dictionary) {
-			if (dictionary.hasOwnProperty(key)) {
-				ratingByProcessAttributeValue.push({
-					processAttributeValue: dictionary[key][0],
-					ratings: dictionary[key].map((processAttributeValue: ProcessAttributeValue) => processAttributeValue.ratingAssessment)
-				});
-			}
-		}
-		return ratingByProcessAttributeValue;
 	}
 
-	private generateSeries(processes: Process[], jsonAssessment: JsonAssessment) {
-		return jsonAssessment.measurementFramework.ratings.map(rating => {
+	private generateSeries(processes: Process[], processAttribute: ProcessAttribute) {
+		return processAttribute.values.map(rating => {
 			return {
-				name: rating.name, data: processes.map(value => 1), color: '#bfbfbf'
+				name: '', data: processes.map(value => 1), color: '#bfbfbf'
 			};
 		});
+	}
+
+	private static getY(length: any) {
+		if (length == 1) {
+			return 150;
+		}
+		if (length > 4) {
+			return 25;
+		}
+		return 40;
 	}
 }

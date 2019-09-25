@@ -1,6 +1,6 @@
 ﻿<loading [isLoading]="loading"></loading>
 
-<h2>Modelo de Avaliação</h2>
+<h2>Modelo de Avaliação{{measurementFrameworkForm.get('name').value ? ': ' + measurementFrameworkForm.get('name').value : ''}}</h2>
 
 <mat-horizontal-stepper [linear]="true" #stepper>
 	<ng-template matStepperIcon="edit">
