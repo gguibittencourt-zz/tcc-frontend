@@ -2,6 +2,8 @@
 import {Observable} from "rxjs/internal/Observable";
 import {AuthenticationService} from "../../_services";
 import {User} from "../../_models";
+import {MatDialog} from "@angular/material";
+import {AboutDialogComponent} from "../about-dialog";
 
 @Component({
 	selector: 'nav-bar',
@@ -12,7 +14,7 @@ export class NavbarComponent implements OnInit {
 	isLoggedIn$: Observable<boolean>;
 	isUserIn: Observable<User>;
 
-	constructor(private authenticationService: AuthenticationService) {
+	constructor(private authenticationService: AuthenticationService, private dialog: MatDialog) {
 		this.isLoggedIn$ = this.authenticationService.isLoggedIn;
 		this.isUserIn = this.authenticationService.isUserIn;
 	}
@@ -26,9 +28,15 @@ export class NavbarComponent implements OnInit {
 		this.authenticationService.logout();
 	}
 
-	get getUser() : User {
+	get getUser(): User {
 		let user = null;
-		this.isUserIn.subscribe(currentUser =>  user = currentUser);
+		this.isUserIn.subscribe(currentUser => user = currentUser);
 		return user;
+	}
+
+	openAbout() {
+		this.dialog.open(AboutDialogComponent, {
+			width: '60%'
+		});
 	}
 }

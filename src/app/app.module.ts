@@ -51,6 +51,7 @@ import {CapacityLevelComponent} from "./_directives/capacity-level";
 import {ProcessResultDialogComponent} from "./_directives/process-result-dialog";
 import {TutorialDialogComponent} from "./_directives/tutorial-dialog";
 import { ProcessAttributeValueChartDialogComponent } from './_directives/process-attribute-value-chart-dialog';
+import {AboutDialogComponent} from "./_directives/about-dialog";
 
 @NgModule({
 	imports: [
@@ -101,7 +102,8 @@ import { ProcessAttributeValueChartDialogComponent } from './_directives/process
 		ProcessResultDialogComponent,
 		ViewAssessmentComponent,
 		TutorialDialogComponent,
-		ProcessAttributeValueChartDialogComponent
+		ProcessAttributeValueChartDialogComponent,
+		AboutDialogComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -127,7 +129,8 @@ import { ProcessAttributeValueChartDialogComponent } from './_directives/process
 		CompanyComponent,
 		ProcessResultDialogComponent,
 		TutorialDialogComponent,
-		ProcessAttributeValueChartDialogComponent
+		ProcessAttributeValueChartDialogComponent,
+		AboutDialogComponent
 	],
 	bootstrap: [AppComponent]
 })
