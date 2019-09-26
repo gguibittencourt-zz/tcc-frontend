@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
-import {ProcessResult, ProcessResultDialogData, Rating} from "../../_models";
+import {Process, ProcessResult, ProcessResultDialogData, Rating} from "../../_models";
 import {cloneDeep, flatMap, uniqBy, sortBy} from 'lodash';
 import Highcharts = require('highcharts');
 
@@ -38,6 +38,13 @@ export class ProcessResultDialogComponent {
 	expectedResultNotSatisfied(ratings: string[], ratingAssessment: Rating) {
 		if (ratingAssessment) {
 			return !ratings.includes(ratingAssessment.id);
+		}
+		return true;
+	}
+
+	processAttributeValueNotSatisfied(ratings: string[], ratingAssessment: Map<string, Rating>, process: Process) {
+		if (ratingAssessment) {
+			return !ratings.includes(ratingAssessment[process.idProcess].id);
 		}
 		return true;
 	}

@@ -27,12 +27,12 @@
 						<div
 							*ngFor="let value of processAttributeResult.processAttribute.values; let indexValue = index">
 							<mat-card class="card-expected-result"
-									  *ngIf="expectedResultNotSatisfied(processAttributeResult.processAttribute.ratings, value.ratingAssessment)">
+									  *ngIf="processAttributeValueNotSatisfied(processAttributeResult.processAttribute.ratings, value.ratingAssessmentByIdProcess, processResult.process)">
 								<div class="col-md-12 content-card display-flex font-size">
 									<div class="col-md-8 border-right text-justify">
 										{{processAttributeResult.processAttribute.prefix + ' ' + (indexValue + 1) + '. ' + value.name}}
 									</div>
-									<div class="col-md-4">{{value.ratingAssessment.name}}</div>
+									<div class="col-md-4">{{value?.ratingAssessmentByIdProcess[processResult.process.idProcess]?.name}}</div>
 								</div>
 							</mat-card>
 						</div>

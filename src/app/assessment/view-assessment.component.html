@@ -68,7 +68,7 @@
 		</div>
 	</div>
 
-	<mat-card *ngFor="let levelResult of assessment.jsonAssessment.levelResults">
+	<mat-card *ngFor="let levelResult of assessment.jsonAssessment.levelResults.reverse()">
 		<mat-card-title class="title-cards">
 			{{levelResult.classification.name}}
 		</mat-card-title>

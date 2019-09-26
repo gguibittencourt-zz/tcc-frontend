@@ -26,7 +26,7 @@ import {
 } from "../_models";
 import {flatMap, uniqBy} from "lodash";
 import {Guid} from "guid-typescript";
-import {MatDialog, MatSnackBar, MatVerticalStepper} from "@angular/material";
+import {MatDialog, MatOptionSelectionChange, MatSnackBar, MatVerticalStepper} from "@angular/material";
 import {SnackBarComponent} from "../_directives/snack-bar";
 import {CompanyDialogComponent} from "../_directives/company-dialog";
 import {TutorialDialogComponent} from "../_directives/tutorial-dialog";
@@ -83,7 +83,8 @@ export class RegisterAssessmentComponent implements OnInit {
 				results: [],
 				targetLevel: [, Validators.required],
 				levelResults: [],
-				assessmentResult: ['']
+				assessmentResult: [''],
+				processToAssessment: []
 			})
 		});
 
@@ -111,6 +112,11 @@ export class RegisterAssessmentComponent implements OnInit {
 				});
 			}
 		});
+	}
+
+	get processesToAssessment(): Process[] {
+		const processToAssessment: string[] = this.assessmentForm.get('jsonAssessment').get('processToAssessment').value;
+		return this.processes.filter(process => processToAssessment.includes(process.idProcess));
 	}
 
 	get getUser(): User {
@@ -142,6 +148,7 @@ export class RegisterAssessmentComponent implements OnInit {
 		const index = this.measurementFramework.classifications.map(value => value.idClassification).indexOf(classification.idClassification);
 		this.classifications = this.measurementFramework.classifications.filter(value => this.measurementFramework.classifications.indexOf(value) <= index);
 		this.processes = this.getProcesses();
+		this.assessmentForm.get('jsonAssessment').get('processToAssessment').setValue(this.processes.map(value => value.idProcess));
 		this.processAttributes = this.getProcessAttributes(update);
 	}
 
@@ -227,7 +234,7 @@ export class RegisterAssessmentComponent implements OnInit {
 	}
 
 	isLastProcess(indexProcess: number) {
-		return (indexProcess + 1) === this.processes.length;
+		return (indexProcess + 1) === this.processesToAssessment.length;
 	}
 
 	private createResults(knowledgeArea: KnowledgeArea) {

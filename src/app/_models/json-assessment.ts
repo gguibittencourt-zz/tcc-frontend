@@ -13,4 +13,5 @@ export class JsonAssessment {
 	levelResults: LevelResult[];
 	company: Company;
 	assessmentResult: string;
+	processToAssessment: string[]
 }
