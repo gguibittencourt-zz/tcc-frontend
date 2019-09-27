@@ -220,10 +220,10 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 	}
 
 	private createQuestionsByProcessAttributes(processAttributes: ProcessAttribute[]): Question[] {
-		return flatten(processAttributes.filter(value => value.generateQuestions).map(processAttribute => {
+		return flatten(processAttributes.map(processAttribute => {
 			const processAttributeValues = processAttribute.values.filter(value => {
 				const idsProcessAttributeValues = this.measurementFramework.questions.map(question => question.idProcessAttributeValue);
-				return !idsProcessAttributeValues.includes(value.idProcessAttributeValue);
+				return value.generateQuestions && !idsProcessAttributeValues.includes(value.idProcessAttributeValue);
 			});
 			return flatten(processAttributeValues.map(value => {
 				const question: Question = new Question(Guid.create().toString());

@@ -122,6 +122,7 @@
 							<tree-node-questions-process-attributes *ngIf="referenceModel && enableCapabilityLevels"
 																	[processAttributes]="getProcessAttributes()"
 																	[questions]="measurementFramework.questions"
+																	[ratings]="measurementFramework.ratings"
 																	[type]="type"
 																	(onConfirmQuestions)="confirmQuestions($event)">
 							</tree-node-questions-process-attributes>

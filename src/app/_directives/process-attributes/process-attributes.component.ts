@@ -32,7 +32,6 @@ export class ProcessAttributesComponent {
 	addProcessAttribute() {
 		if (this.allValidForms()) {
 			const processAttribute: ProcessAttribute = new ProcessAttribute();
-			processAttribute.generateQuestions = true;
 			this.processAttributes.push(processAttribute);
 		}
 	}

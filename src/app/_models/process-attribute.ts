@@ -7,7 +7,6 @@ export class ProcessAttribute {
 	name: string;
 	prefix: string;
 	description: string;
-	generateQuestions: boolean;
 	values: ProcessAttributeValue[];
 	ratings: string[];
 
@@ -15,6 +14,5 @@ export class ProcessAttribute {
 		this.idProcessAttribute = Guid.create().toString();
 		this.values = [];
 		this.ratings = [];
-		this.generateQuestions = true;
 	}
 }

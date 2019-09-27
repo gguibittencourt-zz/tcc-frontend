@@ -5,8 +5,11 @@ export class ProcessAttributeValue {
 	idProcessAttributeValue: string;
 	name: string;
 	ratingAssessmentByIdProcess: Map<string, Rating>;
+	generateQuestions: boolean;
+
 
 	constructor() {
 		this.idProcessAttributeValue = Guid.create().toString();
+		this.generateQuestions = true;
 	}
 }

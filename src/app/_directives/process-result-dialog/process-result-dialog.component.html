@@ -24,9 +24,8 @@
 							</div>
 							<div class="col-md-4">{{processAttributeResult.rating.name}}</div>
 						</mat-expansion-panel-header>
-						<div *ngIf="processAttributeResult.processAttribute.generateQuestions;else expectedResults">
-							<div
-								*ngFor="let value of processAttributeResult.processAttribute.values; let indexValue = index">
+						<div *ngFor="let value of processAttributeResult.processAttribute.values; let indexValue = index">
+							<div *ngIf="value.generateQuestions;else expectedResults">
 								<mat-card class="card-expected-result">
 									<div class="col-md-12 content-card display-flex font-size">
 										<div class="col-md-8 border-right text-justify">
@@ -37,20 +36,20 @@
 									</div>
 								</mat-card>
 							</div>
-						</div>
-						<ng-template #expectedResults>
-							<div *ngFor="let expectedResult of data.process.expectedResults; let i = index">
-								<mat-card class="card-expected-result">
-									<div class="col-md-12 content-card display-flex font-size">
-										<div class="col-md-8 border-right text-justify">
-											{{data.process.prefix + ' ' + (i + 1) + '. ' + expectedResult.name}}
+							<ng-template #expectedResults>
+								<div *ngFor="let expectedResult of data.process.expectedResults; let i = index">
+									<mat-card class="card-expected-result">
+										<div class="col-md-12 content-card display-flex font-size">
+											<div class="col-md-8 border-right text-justify">
+												{{data.process.prefix + ' ' + (i + 1) + '. ' + expectedResult.name}}
+											</div>
+											<div
+												class="col-md-4">{{expectedResult.ratingAssessment ? expectedResult.ratingAssessment.name : 'Não avaliado'}}</div>
 										</div>
-										<div
-											class="col-md-4">{{expectedResult.ratingAssessment ? expectedResult.ratingAssessment.name : 'Não avaliado'}}</div>
-									</div>
-								</mat-card>
-							</div>
-						</ng-template>
+									</mat-card>
+								</div>
+							</ng-template>
+						</div>
 					</mat-expansion-panel>
 				</mat-accordion>
 			</mat-card>

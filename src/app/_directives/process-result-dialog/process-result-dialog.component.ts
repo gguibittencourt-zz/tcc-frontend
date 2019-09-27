@@ -1,7 +1,7 @@
 import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {Process, ProcessResult, ProcessResultDialogData, Rating} from "../../_models";
-import {cloneDeep, flatMap, uniqBy, sortBy} from 'lodash';
+import {cloneDeep, flatMap, sortBy, uniqBy} from 'lodash';
 import Highcharts = require('highcharts');
 
 @Component({
@@ -53,13 +53,13 @@ export class ProcessResultDialogComponent {
 		const ratings = flatMap(processResults, (processResult => {
 			return flatMap(processResult.capacityResults, (capacityResult => {
 				return flatMap(capacityResult.processAttributeResults, (processAttributeResult => {
-					if (processAttributeResult.processAttribute.generateQuestions) {
-						return flatMap(processAttributeResult.processAttribute.values, (value => {
+					return flatMap(processAttributeResult.processAttribute.values, (value => {
+						if (value.generateQuestions) {
 							return value.ratingAssessmentByIdProcess[processResult.process.idProcess];
+						}
+						return flatMap(this.data.process.expectedResults, (expectedResult => {
+							return expectedResult.ratingAssessment;
 						}));
-					}
-					return flatMap(this.data.process.expectedResults, (expectedResult => {
-						return expectedResult.ratingAssessment;
 					}));
 				}));
 			}));

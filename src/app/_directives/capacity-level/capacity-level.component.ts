@@ -30,7 +30,6 @@ export class CapacityLevelComponent implements OnInit {
 			processAttribute.prefix = 'AP 1.1';
 			processAttribute.values = CapacityLevelComponent.createValue();
 			processAttribute.ratings = ["3", "4"];
-			processAttribute.generateQuestions = false;
 			capacityLevel.processAttributes = [processAttribute];
 			this.capacityLevels.push(capacityLevel);
 			this.onConfirmCapacityLevels.emit(this.capacityLevels);
@@ -82,6 +81,7 @@ export class CapacityLevelComponent implements OnInit {
 	private static createValue(): ProcessAttributeValue[] {
 		const processAttributeValue = new ProcessAttributeValue();
 		processAttributeValue.name = 'O processo produz os resultados definidos.';
+		processAttributeValue.generateQuestions = false;
 		return [processAttributeValue];
 	}
 }

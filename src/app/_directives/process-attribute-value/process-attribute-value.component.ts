@@ -34,6 +34,7 @@ export class ProcessAttributeValueComponent implements OnInit {
 			return;
 		}
 		const processAttributeValue = new ProcessAttributeValue();
+		processAttributeValue.generateQuestions = true;
 		this.values.push(processAttributeValue);
 	}
 

@@ -328,7 +328,7 @@ export class RegisterAssessmentComponent implements OnInit {
 		let processAttributes = flatMap(this.classifications, (classification => {
 			const capacityLevels = this.measurementFramework.capacityLevels.filter(value => classification.capacityLevels.includes(value.idCapacityLevel));
 			return flatMap(capacityLevels, (capacityLevel => {
-				return capacityLevel.processAttributes.filter(processAttribute => processAttribute.generateQuestions);
+				return capacityLevel.processAttributes.filter(processAttribute => processAttribute.values.some(value => value.generateQuestions));
 			}));
 		}));
 

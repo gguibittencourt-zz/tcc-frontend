@@ -1,5 +1,5 @@
 ﻿import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {MatQuestionDialogData, ProcessAttribute, Question, TreeNode} from "../../_models";
+import {MatQuestionDialogData, ProcessAttribute, Question, Rating, TreeNode} from "../../_models";
 import {MatDialog, MatTreeNestedDataSource} from "@angular/material";
 import {NestedTreeControl} from "@angular/cdk/tree";
 import {FormBuilder} from "@angular/forms";
@@ -15,6 +15,7 @@ import {cloneDeep, isEmpty, reject} from "lodash";
 export class TreeNodeQuestionsProcessAttributesComponent implements OnInit {
 	@Input('processAttributes') processAttributes: ProcessAttribute[];
 	@Input('questions') questions: Question[] = [];
+	@Input('ratings') ratings: Rating[] = [];
 	@Input('type') type: string;
 	@Output() onConfirmQuestions: EventEmitter<any> = new EventEmitter();
 
@@ -28,13 +29,13 @@ export class TreeNodeQuestionsProcessAttributesComponent implements OnInit {
 		if (!this.processAttributes) {
 			this.processAttributes = [];
 		}
-		this.dataSource.data = this.processAttributes.filter(value => value.generateQuestions)
+		this.dataSource.data = this.processAttributes.filter(processAttribute => processAttribute.values.some(value => value.generateQuestions))
 			.map(processAttribute => {
 				const treeNode: TreeNode = new TreeNode();
 				treeNode.idTreeNode = processAttribute.idProcessAttribute;
 				treeNode.name = processAttribute.name;
 				treeNode.prefix = processAttribute.prefix;
-				treeNode.processAttributeValues = processAttribute.values;
+				treeNode.processAttributeValues = processAttribute.values.filter(value => value.generateQuestions);
 				return treeNode;
 			});
 	}
@@ -44,6 +45,7 @@ export class TreeNodeQuestionsProcessAttributesComponent implements OnInit {
 		data.node = node;
 		data.type = this.type;
 		data.isProcessAttribute = true;
+		data.ratings = this.ratings;
 		data.questions = isEmpty(this.questions) ? [] : cloneDeep(this.getQuestionsByNode(node.idTreeNode));
 		const dialogRef = this.dialog.open(QuestionComponent, {
 			height: '95%',
