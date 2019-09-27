@@ -25,8 +25,9 @@ import {
 	User
 } from "../_models";
 import {flatMap, uniqBy} from "lodash";
+import { ElementRef } from '@angular/core';
 import {Guid} from "guid-typescript";
-import {MatDialog, MatOptionSelectionChange, MatSnackBar, MatVerticalStepper} from "@angular/material";
+import {MatDialog, MatSnackBar, MatVerticalStepper} from "@angular/material";
 import {SnackBarComponent} from "../_directives/snack-bar";
 import {CompanyDialogComponent} from "../_directives/company-dialog";
 import {TutorialDialogComponent} from "../_directives/tutorial-dialog";
@@ -61,6 +62,7 @@ export class RegisterAssessmentComponent implements OnInit {
 		private authenticationService: AuthenticationService,
 		private companyService: CompanyService,
 		private snackBar: MatSnackBar,
+		private myElement: ElementRef,
 		private dialog: MatDialog) {
 	}
 
@@ -237,6 +239,11 @@ export class RegisterAssessmentComponent implements OnInit {
 		return (indexProcess + 1) === this.processesToAssessment.length;
 	}
 
+	goToElement(selector: number) {
+		const el = this.myElement.nativeElement.querySelector('#process' + selector);
+		el.scrollIntoView();
+	}
+
 	private createResults(knowledgeArea: KnowledgeArea) {
 		knowledgeArea.processes.forEach(process => {
 			const questions = this.getQuestions(process);
@@ -397,12 +404,18 @@ export class RegisterAssessmentComponent implements OnInit {
 		});
 	}
 
-	nextProcess(index: any, process: Process, stepper: MatVerticalStepper) {
-		this.checkProcess[index] = true;
+	nextProcess(indexProcess: any, process: Process, stepper: MatVerticalStepper) {
+		this.checkProcess[indexProcess] = true;
 		if (this.anyResultInvalid(process.idProcess)) {
 			this.createSnackBar('Algumas questões obrigatórias não foram preenchidas', 'error');
 			return;
 		}
 		stepper.next();
+		this.goToElement(indexProcess);
+	}
+
+	previousProcess(indexProcess: number, process: Process, stepper: MatVerticalStepper) {
+		stepper.previous();
+		this.goToElement(indexProcess);
 	}
 }
