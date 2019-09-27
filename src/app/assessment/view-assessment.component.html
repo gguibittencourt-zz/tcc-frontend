@@ -55,10 +55,10 @@
 	</div>
 
 	<div class="display-flex box-shadow" *ngIf="highcharts && chartOptions">
-		<div class="box-shadow margin-right-10">
+		<div class="box-shadow margin-right-10 col-md-7">
 			<highcharts-chart update
 							  [Highcharts]="highcharts"
-							  [options]="chartOptions" class="col-md-7">
+							  [options]="chartOptions">
 			</highcharts-chart>
 			<div class="box-shadow legend-view">
 			<span *ngFor="let rating of assessment.jsonAssessment.measurementFramework.ratings"
@@ -69,7 +69,7 @@
 			</div>
 		</div>
 
-		<div class="display-block">
+		<div class="display-block col-md-5">
 			<mat-card *ngFor="let levelResult of assessment.jsonAssessment.levelResults.reverse()">
 				<mat-card-title class="title-cards">
 					{{levelResult.classification.name}}
