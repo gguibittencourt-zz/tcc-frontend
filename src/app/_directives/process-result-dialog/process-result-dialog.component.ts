@@ -67,17 +67,23 @@ export class ProcessResultDialogComponent {
 		this.chartOptions = {
 			chart: {
 				type: 'pie',
-				height: 200,
-				width: 600
+				height: 400,
+				width: 250,
+				marginLeft: 0
 			},
 			title: {
-				text: 'Percentual de resultados'
+				text: 'Percentual de resultados',
+				style: {
+					fontSize: '15px',
+					fontWeight: 'bold'
+				}
 			},
 			tooltip: {
 				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
 			},
 			plotOptions: {
 				pie: {
+					center: [100, 100],
 					allowPointSelect: true,
 					cursor: 'pointer',
 					dataLabels: {
@@ -88,8 +94,7 @@ export class ProcessResultDialogComponent {
 			},
 			legend: {
 				layout: 'vertical',
-				align: 'right',
-				verticalAlign: 'top',
+				verticalAlign: 'bottom',
 			},
 			series: [{
 				name: 'Resultados',

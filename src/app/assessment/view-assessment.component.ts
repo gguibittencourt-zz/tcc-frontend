@@ -121,11 +121,9 @@ export class ViewAssessmentComponent implements OnInit {
 				ratingByProcessAttribute.push({
 					processAttribute: dictionary[key][0].processAttribute,
 					ratings: dictionary[key].map((processAttributeResult: ProcessAttributeResult) => {
-						const processAttributeSatisfied = isLast ?
-							processAttributeResult.processAttribute.ratings.includes(processAttributeResult.rating.id) :
-							processAttributeResult.rating.id == '4';
+						const color = ViewAssessmentComponent.getColor(processAttributeResult.rating.id);
 						return {
-							color: processAttributeSatisfied ? 'green' : 'red',
+							color: color,
 							rating: processAttributeResult.rating
 						};
 					}),
@@ -183,7 +181,7 @@ export class ViewAssessmentComponent implements OnInit {
 
 		this.chartOptions = {
 			chart: {
-				type: 'column'
+				type: 'column',
 			},
 			title: {
 				text: 'Capacidade dos processos'
@@ -234,7 +232,8 @@ export class ViewAssessmentComponent implements OnInit {
 								return ViewAssessmentComponent.getRatingsByProcessAttribute(levelResult);
 							}));
 							if (map[indexProcessAttribute]) {
-								return map[indexProcessAttribute].ratings[indexProcess].name[0];
+								const rating = map[indexProcessAttribute].ratings[indexProcess];
+								return '<span style="color: '+ ViewAssessmentComponent.getColor(rating.id) + '">' +  rating.name[0] + '</span>';
 							}
 							return '';
 						},
@@ -265,7 +264,7 @@ export class ViewAssessmentComponent implements OnInit {
 	private generateSeries(processes: Process[], processAttributes: ProcessAttribute[]) {
 		return processAttributes.map(rating => {
 			return {
-				name: '', data: processes.map(value => 1), color: '#bfbfbf', cursor: 'pointer'
+				name: '', data: processes.map(value => 1), color: '#cecece', cursor: 'pointer'
 			};
 		});
 	}
@@ -294,5 +293,19 @@ export class ViewAssessmentComponent implements OnInit {
 			return 25;
 		}
 		return 50;
+	}
+
+	public static getColor(id: string): string {
+		if (id == '1' || id == '2') {
+			return 'red';
+		}
+		if (id == '3') {
+			return 'yellow';
+		}
+		return 'green';
+	}
+
+	getColor(id: string) {
+		return ViewAssessmentComponent.getColor(id);
 	}
 }

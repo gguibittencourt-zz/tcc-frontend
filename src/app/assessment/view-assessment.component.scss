@@ -73,6 +73,11 @@
 
 .expansion-panel-header {
 	padding: 0 15px 0 24px !important;
+
+	.mat-card-header-text {
+		margin: 0;
+	}
+
 }
 
 .justify {
@@ -88,5 +93,27 @@
 }
 
 .red {
-	background-color: #ff00008c;
+	background-color: red;
+}
+
+.yellow {
+	background-color: yellow;
+}
+
+.highcharts-container {
+	margin: 0 auto;
+}
+
+.rating-legend-value {
+	padding-left: 5px;
+}
+
+.legend-view {
+	font-size: 13px;
+	display: inline-flex;
+	text-align: center;
+}
+
+.margin-right-10 {
+	margin-right: 10px;
 }

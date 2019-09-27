@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Resultados do Processo {{data.process.prefix + ' - ' + data.process.name}}</h1>
 <div mat-dialog-content class="process-result-dialog">
-	<div class="col-md-12 display-flex">
-		<div class="col-md-4 text-justify">
+	<div class="col-md-4">
+		<div class="text-justify level-capacity-name">
 			Nível de Capacidade: {{getCapacityLevel}}
 		</div>
 		<div class="col-md-8">
@@ -11,49 +11,50 @@
 			</highcharts-chart>
 		</div>
 	</div>
-	<div *ngFor="let processResult of data.processResults">
-		<mat-card *ngFor="let capacityResult of processResult.capacityResults" class="card-expected-result">
-			{{capacityResult.capacityLevel.name}}
-			<mat-accordion>
-				<mat-expansion-panel
-					*ngFor="let processAttributeResult of capacityResult.processAttributeResults; let i = index">
-					<mat-expansion-panel-header class="col-md-12 display-flex font-size">
-						<div class="col-md-8 border-right text-justify">
-							{{processAttributeResult.processAttribute.prefix + ' ' + processAttributeResult.processAttribute.name}}
-						</div>
-						<div class="col-md-4">{{processAttributeResult.rating.name}}</div>
-					</mat-expansion-panel-header>
-					<div *ngIf="processAttributeResult.processAttribute.generateQuestions;else expectedResults">
-						<div
-							*ngFor="let value of processAttributeResult.processAttribute.values; let indexValue = index">
-							<mat-card class="card-expected-result"
-									  *ngIf="processAttributeValueNotSatisfied(processAttributeResult.processAttribute.ratings, value.ratingAssessmentByIdProcess, processResult.process)">
-								<div class="col-md-12 content-card display-flex font-size">
-									<div class="col-md-8 border-right text-justify">
-										{{processAttributeResult.processAttribute.prefix + ' ' + (indexValue + 1) + '. ' + value.name}}
+	<div class="col-md-8">
+		<div *ngFor="let processResult of data.processResults.reverse()">
+			<mat-card *ngFor="let capacityResult of processResult.capacityResults" class="card-expected-result">
+				{{capacityResult.capacityLevel.name}}
+				<mat-accordion>
+					<mat-expansion-panel
+						*ngFor="let processAttributeResult of capacityResult.processAttributeResults; let i = index">
+						<mat-expansion-panel-header class="col-md-12 display-flex font-size">
+							<div class="col-md-8 border-right text-justify">
+								{{processAttributeResult.processAttribute.prefix + ' ' + processAttributeResult.processAttribute.name}}
+							</div>
+							<div class="col-md-4">{{processAttributeResult.rating.name}}</div>
+						</mat-expansion-panel-header>
+						<div *ngIf="processAttributeResult.processAttribute.generateQuestions;else expectedResults">
+							<div
+								*ngFor="let value of processAttributeResult.processAttribute.values; let indexValue = index">
+								<mat-card class="card-expected-result">
+									<div class="col-md-12 content-card display-flex font-size">
+										<div class="col-md-8 border-right text-justify">
+											{{processAttributeResult.processAttribute.prefix + ' ' + (indexValue + 1) + '. ' + value.name}}
+										</div>
+										<div
+											class="col-md-4">{{value?.ratingAssessmentByIdProcess[processResult.process.idProcess]?.name}}</div>
 									</div>
-									<div class="col-md-4">{{value?.ratingAssessmentByIdProcess[processResult.process.idProcess]?.name}}</div>
-								</div>
-							</mat-card>
+								</mat-card>
+							</div>
 						</div>
-					</div>
-					<ng-template #expectedResults>
-						<div *ngFor="let expectedResult of data.process.expectedResults; let i = index">
-							<mat-card class="card-expected-result"
-									  *ngIf="expectedResultNotSatisfied(processAttributeResult.processAttribute.ratings, expectedResult.ratingAssessment)">
-								<div class="col-md-12 content-card display-flex font-size">
-									<div class="col-md-8 border-right text-justify">
-										{{data.process.prefix + ' ' + (i + 1) + '. ' + expectedResult.name}}
+						<ng-template #expectedResults>
+							<div *ngFor="let expectedResult of data.process.expectedResults; let i = index">
+								<mat-card class="card-expected-result">
+									<div class="col-md-12 content-card display-flex font-size">
+										<div class="col-md-8 border-right text-justify">
+											{{data.process.prefix + ' ' + (i + 1) + '. ' + expectedResult.name}}
+										</div>
+										<div
+											class="col-md-4">{{expectedResult.ratingAssessment ? expectedResult.ratingAssessment.name : 'Não avaliado'}}</div>
 									</div>
-									<div
-										class="col-md-4">{{expectedResult.ratingAssessment ? expectedResult.ratingAssessment.name : 'Não avaliado'}}</div>
-								</div>
-							</mat-card>
-						</div>
-					</ng-template>
-				</mat-expansion-panel>
-			</mat-accordion>
-		</mat-card>
+								</mat-card>
+							</div>
+						</ng-template>
+					</mat-expansion-panel>
+				</mat-accordion>
+			</mat-card>
+		</div>
 	</div>
 </div>
 

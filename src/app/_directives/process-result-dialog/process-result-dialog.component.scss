@@ -1,4 +1,6 @@
 .process-result-dialog {
+	display: flex !important;
+
 	.card-expected-result {
 		padding: 5px !important;
 		margin: 0 0 1px 0 !important;
@@ -7,5 +9,9 @@
 
 	.font-size {
 		font-size: 12px;
+	}
+
+	.level-capacity-name {
+		font-size: 15px;
 	}
 }

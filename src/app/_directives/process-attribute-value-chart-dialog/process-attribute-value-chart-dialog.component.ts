@@ -3,11 +3,13 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 import {LevelResult, Process, ProcessAttribute, ProcessAttributeValueChartDialog} from "../../_models";
 import {flatMap, uniqBy} from 'lodash';
 import {ProcessAttributeValue} from "../../_models/process-attribute-value";
+import {ViewAssessmentComponent} from "../../assessment";
 import Highcharts = require('highcharts');
 
 @Component({
 	selector: 'process-attribute-value-chart-dialog',
-	templateUrl: 'process-attribute-value-chart-dialog.component.html'
+	templateUrl: 'process-attribute-value-chart-dialog.component.html',
+	styleUrls: ['process-attribute-value-chart-dialog.component.scss']
 })
 
 export class ProcessAttributeValueChartDialogComponent {
@@ -69,8 +71,11 @@ export class ProcessAttributeValueChartDialogComponent {
 								return ProcessAttributeValueChartDialogComponent.getProcessAttributeValues(levelResult, data.processAttribute.idProcessAttribute);
 							}));
 							if (processAttributeValues[indexProcessAttributeValue]) {
-								const rating = processAttributeValues[indexProcessAttributeValue].ratingAssessmentByIdProcess[process.idProcess];
-								return rating ? rating.name[0] : '';
+								const ratingAssessmentByIdProcess = processAttributeValues[indexProcessAttributeValue].ratingAssessmentByIdProcess;
+								const rating = ratingAssessmentByIdProcess ? ratingAssessmentByIdProcess[process.idProcess] : null;
+								return rating ?
+									'<span style="color: ' + ViewAssessmentComponent.getColor(rating.id) + '">' + rating.name[0] + '</span>'
+									: '';
 							}
 							return '';
 						},
@@ -110,7 +115,7 @@ export class ProcessAttributeValueChartDialogComponent {
 	private generateSeries(processes: Process[], processAttribute: ProcessAttribute) {
 		return processAttribute.values.map(rating => {
 			return {
-				name: '', data: processes.map(value => 1), color: '#bfbfbf'
+				name: '', data: processes.map(value => 1), color: '#cecece'
 			};
 		});
 	}
@@ -123,5 +128,9 @@ export class ProcessAttributeValueChartDialogComponent {
 			return 25;
 		}
 		return 40;
+	}
+
+	getColor(id: string) {
+		return ViewAssessmentComponent.getColor(id);
 	}
 }

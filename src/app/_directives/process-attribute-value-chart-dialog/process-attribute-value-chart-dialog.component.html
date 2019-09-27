@@ -1,17 +1,14 @@
 ﻿<h1 mat-dialog-title>{{'Resultados do atributo de processo: ' + data.processAttribute.prefix + ' ' + data.processAttribute.name}}</h1>
 <div mat-dialog-content>
-	<div class="col-md-12 display-flex">
-		<div class="col-md-9">
-			<highcharts-chart update
-							  [Highcharts]="highcharts"
-							  [options]="chartOptions">
-			</highcharts-chart>
-		</div>
-		<div class="col-md-3 box-shadow rating-legend">
-			<div *ngFor="let rating of data.jsonAssessment.measurementFramework.ratings">
-				{{rating.name[0] + ' - ' + rating.name}}
-			</div>
-		</div>
+	<highcharts-chart update
+					  [Highcharts]="highcharts"
+					  [options]="chartOptions">
+	</highcharts-chart>
+	<div class="legend-view process-attribute-legend-view">
+			<span *ngFor="let rating of data.jsonAssessment.measurementFramework.ratings" class="rating-legend-value">
+				<span class="legend-color" [ngClass]="getColor(rating.id)"></span>
+				<span>{{rating.name[0] + ' - ' + rating.name}}</span>
+			</span>
 	</div>
 </div>
 

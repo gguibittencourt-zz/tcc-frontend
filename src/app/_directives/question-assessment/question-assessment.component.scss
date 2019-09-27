@@ -73,6 +73,10 @@
 }
 
 .display-none {
+	.mat-radio-container {
+		display: none !important;
+	}
+
 	.mat-radio-outer-circle {
 		display: none !important;
 	}
