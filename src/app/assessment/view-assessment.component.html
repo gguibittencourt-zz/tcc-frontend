@@ -57,7 +57,7 @@
 		<div class="legend-class box-shadow class-table">
 			<div class="col-md-12">Legenda:</div>
 			<div class="display-flex col-md-12 legend-class-content">
-				<div class="legend-rating-view col-md-3">
+				<div class="legend-rating-view col-md-4">
 					<div>Avaliação:</div>
 					<span *ngFor="let rating of assessment.jsonAssessment.measurementFramework.ratings"
 						  class="rating-legend-value">
@@ -65,7 +65,7 @@
 						{{rating.name[0] + ' - ' + rating.name}}
 			</span>
 				</div>
-				<div class="legend-process-attribute-view col-md-9">
+				<div class="legend-process-attribute-view col-md-8">
 					<div>Atributos de Processo:</div>
 					<span *ngFor="let processAttribute of processAttributes"
 						  class="rating-legend-value">

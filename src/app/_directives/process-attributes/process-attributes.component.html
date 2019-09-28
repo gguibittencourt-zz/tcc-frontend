@@ -12,7 +12,7 @@
 		<mat-accordion>
 			<mat-expansion-panel *ngFor="let processAttribute of processAttributes; let i = index">
 				<mat-expansion-panel-header>
-					<input matInput spellcheck="false" value="{{processAttribute.prefix ? processAttribute.prefix + ' ' + processAttribute.name : ''}}" disabled placeholder="Nome"/>
+					<input matInput spellcheck="false" value="{{processAttribute.prefix ? processAttribute.prefix + ' ' + (processAttribute.name ? processAttribute.name : '') : ''}}" disabled placeholder="Nome"/>
 					<button mat-icon-button type="button" (click)="deleteProcessAttribute(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
@@ -24,13 +24,15 @@
 				<form [formGroup]="getProcessAttributeForm(i)" (ngSubmit)="confirmProcessAttribute(i)">
 					<div class="display-flex">
 						<mat-form-field class="col-md-2">
-							<input matInput spellcheck="false" formControlName="prefix" placeholder="Identificador"/>
+							<input matInput spellcheck="false" [(ngModel)]="processAttribute.prefix"
+								   formControlName="prefix" placeholder="Identificador" class="col-md-2"/>
 						</mat-form-field>
 						<mat-error *ngIf="submitted && getProcessAttributeForm(i).controls.prefix.errors">Identificador é
 							obrigatório
 						</mat-error>
 						<mat-form-field class="col-md-10">
-							<input matInput spellcheck="false" formControlName="name" placeholder="Nome"/>
+							<input matInput spellcheck="false" formControlName="name" class="col-md-10"
+								   [(ngModel)]="processAttribute.name"  placeholder="Nome"/>
 						</mat-form-field>
 						<mat-error *ngIf="submitted && getProcessAttributeForm(i).controls.name.errors">Nome é
 							obrigatório

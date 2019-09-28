@@ -26,7 +26,7 @@
 
 				<form [formGroup]="getCapacityLevelForm(i)" (ngSubmit)="confirmCapacityLevel(i)">
 					<mat-form-field class="col-md-12">
-						<input spellcheck="false" matInput formControlName="name" placeholder="Nome"/>
+						<input spellcheck="false" [(ngModel)]="capacityLevel.name" matInput formControlName="name" placeholder="Nome"/>
 					</mat-form-field>
 					<process-attributes [ratings]="ratings"
 										[processAttributes]="capacityLevel.processAttributes"
