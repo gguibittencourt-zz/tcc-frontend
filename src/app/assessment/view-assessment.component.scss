@@ -119,7 +119,6 @@
 }
 
 .legend-class {
-	border-top: 1px solid #a3a3a3;
 	margin: 0 0 10px;
 
 	.legend-class-content {
@@ -136,4 +135,9 @@
 		font-size: 13px;
 		display: grid;
 	}
+}
+
+.class-table {
+	display: table;
+	margin: 0 auto;
 }
