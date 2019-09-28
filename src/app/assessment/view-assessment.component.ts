@@ -37,7 +37,7 @@ export class ViewAssessmentComponent implements OnInit {
 	measurementFramework: MeasurementFramework;
 	classification: Classification;
 	processes: Process[];
-	processAttributes: ProcessAttribute[];
+	_processAttributes: ProcessAttribute[];
 	highcharts = Highcharts;
 	chartOptions: any;
 
@@ -62,6 +62,10 @@ export class ViewAssessmentComponent implements OnInit {
 				});
 			}
 		});
+	}
+
+	get processAttributes(): ProcessAttribute[] {
+		return this._processAttributes;
 	}
 
 	get ratings(): Rating[] {
@@ -104,7 +108,6 @@ export class ViewAssessmentComponent implements OnInit {
 	}
 
 	getRatingsByProcessAttribute(levelResult: LevelResult, index: number): any[] {
-		const isLast = (this.assessment.jsonAssessment.levelResults.length - 1) == index;
 		const processAttributeResults: ProcessAttributeResult[] = flatMap(levelResult.processes, (processResult => {
 			return flatMap(processResult.capacityResults, (capacityResult => {
 				return capacityResult.processAttributeResults;
@@ -166,10 +169,11 @@ export class ViewAssessmentComponent implements OnInit {
 			const index = jsonAssessment.measurementFramework.classifications.findIndex(value => value.idClassification == jsonAssessment.targetLevel.idClassification);
 			return indexOf(jsonAssessment.measurementFramework.classifications, classification) <= index;
 		});
-		const processAttributes: ProcessAttribute[] = uniqBy(flatMap(classifications, (classification => {
+		const processAttributes = uniqBy(flatMap(classifications, (classification => {
 			const capacityLevels = jsonAssessment.measurementFramework.capacityLevels.filter(value => classification.capacityLevels.includes(value.idCapacityLevel));
 			return flatMap(capacityLevels, (capacityLevel => capacityLevel.processAttributes));
 		})), (processAttribute => processAttribute.idProcessAttribute));
+		this._processAttributes = processAttributes;
 
 		const processes = uniqBy(flatMap(jsonAssessment.levelResults, (levelResult => {
 			return flatMap(levelResult.processes, (processResult => {

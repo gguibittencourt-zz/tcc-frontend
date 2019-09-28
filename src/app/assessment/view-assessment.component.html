@@ -41,17 +41,36 @@
 						<div class="rating-process-attribute"
 							 *ngFor="let ratingsByProcessAttribute of getRatingsByProcessAttribute(levelResult, indexLevelResult); let i = index">
 							<div class="process-attribute-name">
-								{{ratingsByProcessAttribute.processAttribute.prefix + " " + ratingsByProcessAttribute.processAttribute.name}}
+								{{ratingsByProcessAttribute.processAttribute.prefix}}
 							</div>
 							<div *ngFor="let rating of ratingsByProcessAttribute.ratings" class="border-rating"
 								 [ngClass]="rating.color">
-								<span class="rating-value">{{rating.rating.name}}</span>
+								<span class="rating-value">{{rating.rating.name[0]}}</span>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<div class="legend-class box-shadow">
+			<div class="col-md-12">Legenda:</div>
+			<div class="display-flex col-md-12 legend-class-content">
+				<div class="legend-rating-view col-md-3">
+			<span *ngFor="let rating of assessment.jsonAssessment.measurementFramework.ratings"
+				  class="rating-legend-value">
+				<span class="legend-color" [ngClass]="getColor(rating.id)"></span>
+				{{rating.name[0] + ' - ' + rating.name}}
+			</span>
+				</div>
+				<div class="legend-process-attribute-view col-md-9">
+			<span *ngFor="let processAttribute of processAttributes"
+				  class="rating-legend-value">
+				{{processAttribute.prefix + ' - ' + processAttribute.name}}
+			</span>
+				</div>
+			</div>
+		</div>
+
 	</div>
 
 	<div class="display-flex box-shadow" *ngIf="highcharts && chartOptions">

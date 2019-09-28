@@ -51,8 +51,8 @@ export class ProcessAttributesComponent {
 		if (form == null) {
 			form = this.formBuilder.group({
 				idProcessAttribute: [Guid.create().toString()],
-				name: ['', Validators.required],
-				prefix: ['', Validators.required],
+				name: [''],
+				prefix: [''],
 				generateQuestions: [],
 				description: [''],
 				values: this.formBuilder.array([]),

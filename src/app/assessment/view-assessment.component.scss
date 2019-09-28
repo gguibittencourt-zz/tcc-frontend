@@ -117,3 +117,23 @@
 .margin-right-10 {
 	margin-right: 10px;
 }
+
+.legend-class {
+	border-top: 1px solid #a3a3a3;
+	margin: 0 0 10px;
+
+	.legend-class-content {
+		align-items: baseline;
+	}
+
+	.legend-rating-view {
+		font-size: 13px;
+		display: grid;
+	}
+
+	.legend-process-attribute-view {
+		border-left: 1px solid #a3a3a3;
+		font-size: 13px;
+		display: grid;
+	}
+}
