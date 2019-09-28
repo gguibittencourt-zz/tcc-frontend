@@ -61,7 +61,7 @@
 								formControlName="processToAssessment"
 								[disabled]="!!idAssessment" class="process-to-assessment">
 						<mat-option *ngFor="let process of processes"
-							[value]="process.idProcess">
+									[value]="process.idProcess">
 							<span>{{process.prefix + '. ' + process.name}}</span>
 							<span class="process-purpose">{{process.purpose}}</span>
 						</mat-option>
@@ -73,33 +73,37 @@
 				<button mat-raised-button class="btn btn-outline-danger" [routerLink]="['/assessment']">
 					Cancelar
 				</button>
-				<button mat-raised-button class="mat-raised-button btn btn-outline-secondary" (click)="checkForms()"
+				<button mat-raised-button class="mat-raised-button btn btn-outline-secondary" (click)="nextFirstPage()"
 						matStepperNext>Próximo
 				</button>
 			</div>
 		</form>
 	</mat-step>
 	<div *ngIf="measurementFramework && referenceModel && processes && processAttributes">
-		<mat-step [stepControl]="assessmentForm" *ngFor="let process of processesToAssessment; let indexProcess = index">
+		<mat-step [stepControl]="assessmentForm"
+				  *ngFor="let process of processesToAssessment; let indexProcess = index">
 			<form [formGroup]="assessmentForm" id="{{'process' + indexProcess}}">
 				<ng-template matStepLabel>{{process.prefix + '. ' + process.name}}</ng-template>
-				<div class="form-group">
-					<mat-card *ngIf="hasQuestions(process)" class="card-process">
-						<mat-card-content>
-							<div class="process-title">{{process.prefix + '. ' + process.name}}</div>
-							<div class="purpose">{{process.purpose}}</div>
-							<question-assessment [resultForms]="getResultForms.value"
-												 [questions]="getQuestions(process)"
-												 [process]="process"
-												 [finish]="checkProcess[indexProcess]"
-												 [ratings]="ratings">
-							</question-assessment>
-						</mat-card-content>
-					</mat-card>
-				</div>
-				<div class="form-group">
-					<button mat-raised-button class="btn btn-outline-secondary" (click)="previousProcess(indexProcess, process, stepper)">Voltar</button>
-					<span *ngIf="isLastProcess(indexProcess); else buttonNext">
+				<div *ngIf="isTurn(indexProcess)">
+					<div class="form-group">
+						<mat-card *ngIf="hasQuestions(process)" class="card-process">
+							<mat-card-content>
+								<div class="process-title">{{process.prefix + '. ' + process.name}}</div>
+								<div class="purpose">{{process.purpose}}</div>
+								<question-assessment [resultForms]="getResultForms.value"
+													 [questions]="getQuestions(process)"
+													 [process]="process"
+													 [finish]="checkProcess[indexProcess]"
+													 [ratings]="ratings">
+								</question-assessment>
+							</mat-card-content>
+						</mat-card>
+					</div>
+					<div class="form-group">
+						<button mat-raised-button class="btn btn-outline-secondary"
+								(click)="previousProcess(indexProcess, process, stepper)">Voltar
+						</button>
+						<span *ngIf="isLastProcess(indexProcess); else buttonNext">
 					<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
 							class="btn btn-outline-success save-button">Salvar
 					</button>
@@ -107,11 +111,12 @@
 							class="btn btn-outline-success save-button">Salvar e Finalizar
 					</button>
 				</span>
-					<ng-template #buttonNext>
-						<button mat-raised-button class="mat-raised-button btn btn-outline-secondary"
-								(click)="nextProcess(indexProcess, process, stepper)">Próximo
-						</button>
-					</ng-template>
+						<ng-template #buttonNext>
+							<button mat-raised-button class="mat-raised-button btn btn-outline-secondary"
+									(click)="nextProcess(indexProcess, process, stepper)">Próximo
+							</button>
+						</ng-template>
+					</div>
 				</div>
 			</form>
 		</mat-step>

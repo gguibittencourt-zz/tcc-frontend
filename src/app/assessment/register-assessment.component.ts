@@ -24,7 +24,7 @@ import {
 	Result,
 	User
 } from "../_models";
-import {flatMap, uniqBy} from "lodash";
+import {flatMap, uniqBy, isNil} from "lodash";
 import { ElementRef } from '@angular/core';
 import {Guid} from "guid-typescript";
 import {MatDialog, MatSnackBar, MatVerticalStepper} from "@angular/material";
@@ -51,6 +51,7 @@ export class RegisterAssessmentComponent implements OnInit {
 	processes: Process[];
 	processAttributes: ProcessAttribute[];
 	checkProcess: boolean[] = [];
+	indexProcess: number;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -240,8 +241,13 @@ export class RegisterAssessmentComponent implements OnInit {
 	}
 
 	goToElement(selector: number) {
-		const el = this.myElement.nativeElement.querySelector('#process' + selector);
-		el.scrollIntoView();
+		setTimeout(() => {
+			const el = this.myElement.nativeElement.querySelector('#process' + selector);
+			if (el) {
+				el.scrollIntoView(true);
+			}
+		}, 300);
+
 	}
 
 	private createResults(knowledgeArea: KnowledgeArea) {
@@ -410,12 +416,31 @@ export class RegisterAssessmentComponent implements OnInit {
 			this.createSnackBar('Algumas questões obrigatórias não foram preenchidas', 'error');
 			return;
 		}
-		stepper.next();
-		this.goToElement(indexProcess);
+		indexProcess += 1;
+		this.setTurn(indexProcess).then(value => {
+			stepper.next();
+			this.goToElement(indexProcess);
+		});
 	}
 
 	previousProcess(indexProcess: number, process: Process, stepper: MatVerticalStepper) {
-		stepper.previous();
-		this.goToElement(indexProcess);
+		indexProcess -= 1;
+		this.setTurn(indexProcess).then(value => {
+			stepper.previous();
+			this.goToElement(indexProcess);
+		});
+	}
+
+	async setTurn(indexProcess: number): Promise<void> {
+		this.indexProcess = indexProcess;
+	}
+
+	isTurn(indexProcess: number) {
+		return this.indexProcess == indexProcess;
+	}
+
+	nextFirstPage() {
+		this.checkForms();
+		this.indexProcess = 0;
 	}
 }
