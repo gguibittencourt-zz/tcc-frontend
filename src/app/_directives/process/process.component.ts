@@ -14,7 +14,6 @@ export class ProcessComponent implements OnInit {
 
 	processForms: FormGroup[] = [];
 	submitted = false;
-	private _isPossibleConfirm: boolean = true;
 
 	constructor(private dialogRef: MatDialogRef<ProcessComponent>,
 				@Inject(MAT_DIALOG_DATA) public data: Process[],
@@ -36,10 +35,6 @@ export class ProcessComponent implements OnInit {
 		});
 	}
 
-	get isPossibleConfirm(): boolean {
-		return this._isPossibleConfirm;
-	}
-
 	onNoClick(): void {
 		this.dialogRef.close(false);
 	}
@@ -50,13 +45,11 @@ export class ProcessComponent implements OnInit {
 			return;
 		}
 		this.submitted = false;
-		this._isPossibleConfirm = true;
 		this.data[index] = this.processForms[index].value;
 	}
 
 	addProcess() {
 		if (this.allValidForms()) {
-			this._isPossibleConfirm = false;
 			let process: Process = new Process();
 			this.data.push(process);
 			this.processForms[this.data.indexOf(process)] = this.formBuilder.group({

@@ -49,7 +49,7 @@ export class ProcessAttributeValueChartDialogComponent {
 
 						if (data.processAttribute.values[this.value - 1]) {
 							const value = data.processAttribute.prefix + '.' + this.value + ' ' + data.processAttribute.values[this.value - 1].name;
-							return (value.length < 50) ? value : value.substring(0, 49) + '...';
+							return (value.length < 60) ? value : value.substring(0, 59) + '...';
 						}
 					},
 					y: ProcessAttributeValueChartDialogComponent.getY(data.processAttribute.values.length)
