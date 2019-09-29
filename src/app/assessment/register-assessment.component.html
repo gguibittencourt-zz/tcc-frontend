@@ -104,18 +104,18 @@
 								(click)="previousProcess(indexProcess, process, stepper)">Voltar
 						</button>
 						<span *ngIf="isLastProcess(indexProcess); else buttonNext">
-					<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
-							class="btn btn-outline-success save-button">Salvar
-					</button>
-					<button mat-raised-button (click)="finish(indexProcess, process.idProcess)" [disabled]="loading"
-							class="btn btn-outline-success save-button">Salvar e Finalizar
-					</button>
-				</span>
+							<button mat-raised-button (click)="finish(indexProcess, process.idProcess)" [disabled]="loading"
+								class="btn btn-outline-success save-button">Salvar e Finalizar
+							</button>
+						</span>
 						<ng-template #buttonNext>
 							<button mat-raised-button class="mat-raised-button btn btn-outline-secondary"
 									(click)="nextProcess(indexProcess, process, stepper)">Próximo
 							</button>
 						</ng-template>
+						<button mat-raised-button (click)="onSubmit()" [disabled]="loading"
+								class="btn btn-outline-success save-button">Salvar
+						</button>
 					</div>
 				</div>
 			</form>

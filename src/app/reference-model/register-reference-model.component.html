@@ -5,9 +5,7 @@
 			<input matInput spellcheck="false" formControlName="name" class="form-control" placeholder="Nome"
 				   [ngClass]="{ 'is-invalid': submitted && f.name.errors }"/>
 		</mat-form-field>
-		<div *ngIf="submitted && f.name.errors" class="invalid-feedback">
-			<div *ngIf="f.name.errors.required">Nome é obrigatório</div>
-		</div>
+		<mat-error *ngIf="submitted && f.name.errors">Nome é obrigatório</mat-error>
 		<knowledge-area formArrayName="knowledgeAreas" [knowledgeAreas]="knowledgeAreas"
 						(onAddKnowledgeArea)="addKnowledgeArea($event)"
 						(onDeleteKnowledgeArea)="deleteKnowledgeArea($event)"
