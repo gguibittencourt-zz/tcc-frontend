@@ -3,6 +3,6 @@
 export class KnowledgeArea {
     idKnowledgeArea: string;
     name: string;
-    purpose: string;
+    prefix: string;
 	processes: Process[];
 }

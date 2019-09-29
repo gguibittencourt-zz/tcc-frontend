@@ -16,7 +16,8 @@
 			<mat-expansion-panel *ngFor="let knowledgeArea of knowledgeAreas; let i = index"
 								 [expanded]="mapCloseAccordion.get(i)">
 				<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-					<input matInput spellcheck="false" value="{{knowledgeArea.name}}" disabled placeholder="Grupo de Processo"/>
+					<input matInput spellcheck="false" value="{{knowledgeArea.name}}" disabled
+						   placeholder="Grupo de Processo"/>
 					<button mat-icon-button type="button" (click)="deleteKnowledgeArea(i)"
 							class="mat-icon-button active">
 						<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
@@ -26,22 +27,19 @@
 				</mat-expansion-panel-header>
 
 				<form [formGroup]="getKnowledgeAreaForm(i)" (ngSubmit)="confirmKnowledgeArea(i)">
-					<mat-form-field class="col-md-12">
-						<input matInput spellcheck="false" formControlName="name"
-							   (change)="formChange(i)" placeholder="Nome"/>
-					</mat-form-field>
-					<mat-form-field class="padding-top col-md-12">
-						<textarea matInput
-								  cdkTextareaAutosize
-								  cdkAutosizeMinRows="1"
-								  cdkAutosizeMaxRows="5"
-								  formControlName="purpose"
-								  (change)="formChange(i)"
-								  placeholder="Objetivo"></textarea>
-					</mat-form-field>
+					<div class="display-flex">
+						<mat-form-field class="col-md-3">
+							<input matInput spellcheck="false" formControlName="prefix"
+								   (change)="formChange(i)" placeholder="Identificador"/>
+						</mat-form-field>
+						<mat-form-field class="col-md-9">
+							<input matInput spellcheck="false" formControlName="name"
+								   (change)="formChange(i)" placeholder="Nome"/>
+						</mat-form-field>
+					</div>
 					<div class="process-button">
 						<a mat-raised-button (click)="openDialog(i)"
-								class="btn btn-outline-secondary btn-sm">
+						   class="btn btn-outline-secondary btn-sm">
 							Processos: {{knowledgeArea.processes ? knowledgeArea.processes.length : 0}}
 						</a>
 					</div>
@@ -50,7 +48,8 @@
 								class="btn btn-outline-danger">
 							Cancelar
 						</button>
-						<button mat-raised-button [disabled]="loading || !allValidForms()" class="btn btn-outline-success confirm-button">
+						<button mat-raised-button [disabled]="loading || !allValidForms()"
+								class="btn btn-outline-success confirm-button">
 							Confirmar
 						</button>
 					</mat-action-row>
