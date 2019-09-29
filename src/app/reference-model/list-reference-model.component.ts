@@ -64,6 +64,8 @@ export class ListReferenceModelComponent implements OnInit {
 		this.referenceModelService.delete(referenceModel.idReferenceModel).subscribe(value => {
 			this.list();
 			this.createSnackBar('Deletado com sucesso', 'success');
+		}, error => {
+			this.createSnackBar(error, 'error');
 		});
 	}
 
