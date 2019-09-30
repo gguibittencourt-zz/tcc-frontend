@@ -1,5 +1,5 @@
 ﻿import {Component, Input} from '@angular/core';
-import {Process, Question, Rating, Result, ScaleValues} from '../../_models';
+import {Process, Question, Rating, Result} from '../../_models';
 import {FormGroup} from '@angular/forms';
 
 @Component({
