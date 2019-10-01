@@ -3,16 +3,16 @@
 <h2>Modelos de Avaliação</h2>
 
 <div>
-	<mat-form-field class="col-md-10">
-		<input matInput spellcheck="false" (keyup)="applyFilter($event.target.value)" placeholder="Filtro">
-	</mat-form-field>
-
-	<a [routerLink]="['/measurement-framework/register']" class="btn btn-sm mat-raised-button col-md-2">
+	<a [routerLink]="['/measurement-framework/register']" class="btn btn btn-outline-secondary col-md-2">
 		<span class="mat-button-wrapper">
 				Adicionar
 				<i class="fa fa-plus"></i>
 		</span>
 	</a>
+	<mat-form-field class="col-md-10">
+		<input matInput spellcheck="false" (keyup)="applyFilter($event.target.value)" placeholder="Filtro">
+	</mat-form-field>
+
 
 	<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
