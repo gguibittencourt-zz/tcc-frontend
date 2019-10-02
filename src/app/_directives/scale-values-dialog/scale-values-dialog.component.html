@@ -7,15 +7,21 @@
 		<div class="col-md-2">Máximo</div>
 	</div>
 	<div class="content">
-		<div class="scale-value col-md-12" *ngFor="let rating of data">
-			<input class="input-value col-md-4" spellcheck="false" [(ngModel)]="rating.name" required/>
-			<input class="input-value col-md-4" spellcheck="false" [(ngModel)]="rating.mappedName" required/>
-			<input class="value col-md-1 text-center" spellcheck="false" type="number"
-				   [(ngModel)]="rating.minValue" required/>
-			<input value="%" class="col-md-1 text-center padding-zero percentage" disabled/>
-			<input class="value col-md-1 text-center" spellcheck="false" type="number"
-				   [(ngModel)]="rating.maxValue" required/>
-			<input value="%" class="col-md-1 text-center padding-zero percentage" disabled/>
+		<div *ngFor="let rating of data; let i = index">
+			<div class="col-md-12 scale-value display-flex">
+				<input class="input-value col-md-3" spellcheck="false" [(ngModel)]="rating.name" required/>
+				<input class="input-value col-md-4" spellcheck="false" [(ngModel)]="rating.mappedName" required/>
+				<input class="value col-md-1 text-center" spellcheck="false" type="number"
+					   [(ngModel)]="rating.minValue" required/>
+				<input value="%" class="col-md-1 text-center padding-zero percentage" disabled/>
+				<input class="value col-md-1 text-center" spellcheck="false" type="number"
+					   [(ngModel)]="rating.maxValue" required/>
+				<input value="%" class="col-md-1 text-center padding-zero percentage" disabled/>
+				<button class="align-self-center col-md-1 btn btn-outline-danger btn-sm"
+						matTooltip="Excluir" (click)="deleteRating(i)">
+					<i class="fa fa-trash-o"></i>
+				</button>
+			</div>
 		</div>
 	</div>
 </div>

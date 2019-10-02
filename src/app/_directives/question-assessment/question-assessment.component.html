@@ -1,10 +1,7 @@
 ﻿<mat-card>
 	<mat-card-content>
-		<div class="header-group">
-			<div class="header">{{ratings[0].mappedName}}</div>
-			<div class="header">{{ratings[1].mappedName}}</div>
-			<div class="header">{{ratings[2].mappedName}}</div>
-			<div class="header">{{ratings[3].mappedName}}</div>
+		<div class="header-group" [ngClass]="getClassHeaderGroup(ratings)">
+			<div class="header" *ngFor="let rating of ratings">{{rating.mappedName}}</div>
 		</div>
 		<div *ngFor="let question of questions; let i = index" class="display-flex">
 			<div class="question-name">
@@ -26,21 +23,10 @@
 						<mat-radio-group formControlName="value"
 										 (change)="confirmResult(question)"
 										 class="example-radio-group">
-							<mat-radio-button class="example-radio-button label-padding-left-20" value="1"
-											  [matTooltip]="getFirstTooltip(question)">
-							</mat-radio-button>
-							<mat-radio-button class="example-radio-button label-padding-left-20" value="2"
-											  [matTooltip]="ratings[1].mappedName"
-											  [matTooltipDisabled]="question.type === 'boolean'"
-											  [ngClass]="question.type === 'boolean' ? 'display-none': ''">
-							</mat-radio-button>
-							<mat-radio-button class="example-radio-button label-padding-left-20" value="3"
-											  [matTooltip]="ratings[2].mappedName"
-											  [matTooltipDisabled]="question.type === 'boolean'"
-											  [ngClass]="question.type === 'boolean' ? 'display-none': ''">
-							</mat-radio-button>
-							<mat-radio-button class="example-radio-button label-padding-left-20" value="4"
-											  [matTooltip]="getLastTooltip(question)">
+							<mat-radio-button *ngFor="let rating of ratings" class="example-radio-button label-padding-left-20" [value]="rating.id"
+											  [matTooltip]="getTooltip(question, rating)"
+											  [matTooltipDisabled]="displayNoneRadioButton(question, rating)"
+											  [ngClass]="displayNoneRadioButton(question, rating) ? 'display-none': ''">
 							</mat-radio-button>
 						</mat-radio-group>
 					</div>

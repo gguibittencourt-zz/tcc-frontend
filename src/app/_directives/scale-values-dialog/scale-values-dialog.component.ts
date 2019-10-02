@@ -21,4 +21,8 @@ export class ScaleValuesDialogComponent {
 	confirm(): void {
 		this.dialogRef.close(this.data);
 	}
+
+	deleteRating(i: number) {
+		this.data.splice(i, 1);
+	}
 }

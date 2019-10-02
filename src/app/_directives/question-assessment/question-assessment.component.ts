@@ -45,21 +45,29 @@ export class QuestionAssessmentComponent {
 		window.open(tip, '_blank');
 	}
 
-	getFirstTooltip(question: Question) {
+	getTooltip(question: Question, rating: Rating) {
 		if (question.type === 'boolean') {
-			return 'Falso';
-		}
-		if (question.type === 'scale-nominal') {
-			return this.ratings[0].mappedName;
-		}
-	}
-
-	getLastTooltip(question: Question) {
-		if (question.type === 'boolean') {
+			if (rating.id == '1') {
+				return 'Falso';
+			}
 			return 'Verdadeiro';
 		}
 		if (question.type === 'scale-nominal') {
-			return this.ratings[3].mappedName;
+			return rating.mappedName;
 		}
+	}
+
+	displayNoneRadioButton(question: Question, rating: Rating) {
+		return question.type == 'boolean' && ['2', '3'].includes(rating.id);
+	}
+
+	getClassHeaderGroup(ratings: Rating[]) {
+		if (ratings.length == 3) {
+			return 'margin-left-81';
+		}
+		if (ratings.length == 2) {
+			return 'margin-left-88';
+		}
+		return '';
 	}
 }
