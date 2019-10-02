@@ -75,13 +75,12 @@ export class HomeComponent implements OnInit {
 				const byDate: any = groupBy(assessmentByMeasurementFramework[key], (assessment: Assessment) => {
 					return this.formatDate(assessment.date);
 				});
-				const serie: any = {name: key, data: categories.map(value => 0)};
-				for (let keyBy in byDate) {
-					if (byDate.hasOwnProperty(keyBy)) {
-						const index = categories.findIndex(categorie => categorie == keyBy);
-						serie.data[index] = byDate[keyBy].length;
-					}
-				}
+				const serie: any = {name: key, data: categories.map(value => null)};
+				let value = 0;
+				categories.forEach((category, indexCategory) => {
+					value += byDate[category] ? byDate[category].length : 0;
+					serie.data[indexCategory] = value;
+				});
 				series.push(serie);
 			}
 		}

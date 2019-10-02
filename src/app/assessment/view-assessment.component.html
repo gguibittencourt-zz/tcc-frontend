@@ -54,7 +54,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="legend-class col-md-6 box-shadow class-table">
+		<div class="legend-class col-md-6 class-table">
 			<div class="col-md-12">Legenda:</div>
 			<div class="display-flex col-md-12 legend-class-content">
 				<div class="legend-rating-view col-md-4">
@@ -78,6 +78,36 @@
 	</div>
 
 	<div class="display-flex box-shadow" *ngIf="highcharts && chartOptions">
+		<div class="display-block col-md-5">
+			<mat-card class="padding-top">
+				<mat-card-title class="title-maturity">
+					Maturidade dos Processos
+				</mat-card-title>
+				<mat-card-content>
+					<mat-card *ngFor="let levelResult of assessment.jsonAssessment.levelResults.reverse()">
+						<mat-card-title class="title-cards">
+							{{levelResult.classification.name}}
+						</mat-card-title>
+						<mat-card-content>
+							<mat-accordion>
+								<mat-card *ngFor="let processResult of levelResult.processes" class="card-process-result"
+										  [matTooltip]="'Clique para abrir os resultados do processo: ' +processResult.process.prefix + ' - ' + processResult.process.name  "
+										  (click)="openResultDialog(levelResult, processResult)">
+									<mat-card-header class="expansion-panel-header">
+										<div class="col-md-12 content-card">
+											<div class="col-md-8 border-right text-justify">
+												{{processResult.process.prefix + ' - ' + processResult.process.name}}
+											</div>
+											<div class="col-md-4">{{processResult.result}}</div>
+										</div>
+									</mat-card-header>
+								</mat-card>
+							</mat-accordion>
+						</mat-card-content>
+					</mat-card>
+				</mat-card-content>
+			</mat-card>
+		</div>
 		<div class="box-shadow margin-right-10 col-md-7">
 			<highcharts-chart update
 							  [Highcharts]="highcharts"
@@ -90,30 +120,6 @@
 				{{rating.name[0] + ' - ' + rating.name}}
 			</span>
 			</div>
-		</div>
-
-		<div class="display-block col-md-5">
-			<mat-card *ngFor="let levelResult of assessment.jsonAssessment.levelResults.reverse()">
-				<mat-card-title class="title-cards">
-					{{levelResult.classification.name}}
-				</mat-card-title>
-				<mat-card-content>
-					<mat-accordion>
-						<mat-card *ngFor="let processResult of levelResult.processes" class="card-process-result"
-								  [matTooltip]="'Clique para abrir os resultados do processo: ' +processResult.process.prefix + ' - ' + processResult.process.name  "
-								  (click)="openResultDialog(levelResult, processResult)">
-							<mat-card-header class="expansion-panel-header">
-								<div class="col-md-12 content-card">
-									<div class="col-md-8 border-right text-justify">
-										{{processResult.process.prefix + ' - ' + processResult.process.name}}
-									</div>
-									<div class="col-md-4">{{processResult.result}}</div>
-								</div>
-							</mat-card-header>
-						</mat-card>
-					</mat-accordion>
-				</mat-card-content>
-			</mat-card>
 		</div>
 	</div>
 </div>

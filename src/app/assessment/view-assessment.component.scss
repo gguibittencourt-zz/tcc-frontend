@@ -38,6 +38,16 @@
 	font-weight: bold;
 }
 
+.title-maturity {
+	color: #333333;
+	font-size: 18px;
+	fill: #333333;
+}
+
+.padding-top {
+	padding-top: 5px !important;
+}
+
 .result-error {
 	margin-top: 10px;
 }
@@ -120,6 +130,9 @@
 
 .legend-class {
 	margin: 0 0 10px;
+	border: 1px solid #8f8f8f33;
+	border-radius: 5px;
+	border-bottom: 0 !important;
 
 	.legend-class-content {
 		align-items: baseline;
