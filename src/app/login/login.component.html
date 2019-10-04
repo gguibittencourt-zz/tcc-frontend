@@ -1,11 +1,14 @@
-﻿<div class="signin-content">
+﻿<div class="signin-content login">
 	<mat-card>
 		<mat-card-content>
 			<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-				<p>Faça o login para continuar  </p>
+				<div class="text-center">
+					<img class="logo" src="../../styles/logo.png"/>
+					<p>Faça o login para continuar</p>
+				</div>
 
-				<div class="form-group">
-					<mat-form-field class="full-width-input">
+				<div class="form-group class-table">
+					<mat-form-field class="col-md-12">
 						<input matInput spellcheck="false" formControlName="username" class="form-control" placeholder="Usuário"
 							   [ngClass]="{ 'is-invalid': submitted && f.username.errors }"/>
 					</mat-form-field>
@@ -13,7 +16,7 @@
 						<div *ngIf="f.password.errors.required">Usuário é obrigatório</div>
 					</div>
 
-					<mat-form-field class="full-width-input">
+					<mat-form-field class="col-md-12">
 						<input matInput spellcheck="false" type="password" placeholder="Senha" formControlName="password"
 							   [ngClass]="{ 'is-invalid': submitted && f.password.errors }">
 					</mat-form-field>
@@ -21,9 +24,9 @@
 						<div *ngIf="f.password.errors.required">Senha é obrigatória</div>
 					</div>
 				</div>
-				<div class="form-group">
-					<button mat-raised-button [disabled]="loading" class="btn btn-outline-primary">Login</button>
-					<a [routerLink]="['/user']" class="btn btn-link">Cadastrar</a>
+				<div class="form-group text-center">
+					<button [disabled]="loading" class="btn btn-outline-success" style="margin-right: 2px">Login</button>
+					<a [routerLink]="['/user']" class="btn btn-outline-secondary">Cadastrar</a>
 				</div>
 			</form>
 		</mat-card-content>
