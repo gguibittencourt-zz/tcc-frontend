@@ -36,7 +36,7 @@
 						</ng-template>
 						<mat-step [stepControl]="processForms[i]">
 							<form [formGroup]="processForms[i]">
-								<ng-template matStepLabel>Preencha o nome e o objetivo</ng-template>
+								<ng-template matStepLabel>Definição do nome e objetivo</ng-template>
 								<div class="form-group">
 									<div class="display-flex">
 										<mat-form-field class="col-md-2">
@@ -76,7 +76,7 @@
 							</form>
 						</mat-step>
 						<mat-step [stepControl]="processForms[i]">
-							<ng-template matStepLabel>Preencha os resultados esperados</ng-template>
+							<ng-template matStepLabel>Definição dos resultados esperados</ng-template>
 
 							<form [formGroup]="processForms[i]" class="padding-bottom">
 								<expected-result formArrayName="expectedResults"

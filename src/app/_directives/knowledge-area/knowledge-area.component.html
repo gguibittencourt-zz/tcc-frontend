@@ -44,11 +44,11 @@
 						</a>
 					</div>
 					<mat-action-row class="action-row">
-						<button mat-raised-button [disabled]="loading" (click)="cancelKnowledgeArea(i)"
+						<button mat-raised-button (click)="cancelKnowledgeArea(i)"
 								class="btn btn-outline-danger">
 							Cancelar
 						</button>
-						<button mat-raised-button [disabled]="loading || !allValidForms()"
+						<button mat-raised-button
 								class="btn btn-outline-success confirm-button">
 							Confirmar
 						</button>

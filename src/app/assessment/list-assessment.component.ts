@@ -57,7 +57,7 @@ export class ListAssessmentComponent implements OnInit {
 	}
 
 	openConfirmationDialog(assessment: Assessment) {
-		const data: DialogData = new DialogData(assessment.jsonAssessment.measurementFramework.name, "Deletar avaliação", "Você deseja deletar a avaliação:");
+		const data: DialogData = new DialogData(assessment.jsonAssessment.measurementFramework.name, "Excluir avaliação", "Você deseja excluir a avaliação:");
 		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
 			disableClose: true,
 			data: data
