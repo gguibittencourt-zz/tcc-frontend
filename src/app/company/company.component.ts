@@ -77,6 +77,10 @@ export class CompanyComponent implements OnInit {
 	}
 
 	cancel(): void {
+		if (this.company) {
+			this.dialogRef.close(this.company);
+			return;
+		}
 		this.router.navigate(['/home']);
 	}
 
