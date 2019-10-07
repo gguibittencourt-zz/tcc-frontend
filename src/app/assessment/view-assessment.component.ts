@@ -18,7 +18,7 @@ import {
 	Rating,
 	ReferenceModel
 } from "../_models";
-import {flatMap, groupBy, indexOf, uniqBy} from "lodash";
+import {flatMap, groupBy, indexOf, uniqBy, sortBy} from "lodash";
 import {ProcessResultDialogComponent} from "../_directives/process-result-dialog";
 import {MatDialog} from "@angular/material";
 import {ProcessAttributeValueChartDialogComponent} from "../_directives/process-attribute-value-chart-dialog";
@@ -232,9 +232,10 @@ export class ViewAssessmentComponent implements OnInit {
 						formatter: function () {
 							const indexProcess: number = this.point.x;
 							const indexProcessAttribute: number = this.point.stackY - 1;
-							const map = flatMap(jsonAssessment.levelResults, (levelResult => {
+							let map = flatMap(jsonAssessment.levelResults, (levelResult => {
 								return ViewAssessmentComponent.getRatingsByProcessAttribute(levelResult);
 							}));
+							map = sortBy(map, (item => item.processAttribute.prefix)).reverse();
 							if (map[indexProcessAttribute]) {
 								const rating = map[indexProcessAttribute].ratings[indexProcess];
 								return '<span style="color: '+ ViewAssessmentComponent.getColor(rating.id) + '">' +  rating.name[0] + '</span>';
