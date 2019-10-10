@@ -1,6 +1,7 @@
 ﻿<loading [isLoading]="loading"></loading>
 
-<h2>Modelo de Avaliação{{measurementFrameworkForm.get('name').value ? ': ' + measurementFrameworkForm.get('name').value : ''}}</h2>
+<h2>Modelo de
+	Avaliação{{measurementFrameworkForm.get('name').value ? ': ' + measurementFrameworkForm.get('name').value : ''}}</h2>
 
 <mat-horizontal-stepper [linear]="true" #stepper>
 	<ng-template matStepperIcon="edit">
@@ -47,6 +48,13 @@
 				<div *ngIf="submitted && f.type.errors" class="invalid-feedback">
 					<div *ngIf="f.type.errors.required">Escala padrão das questões é obrigatório</div>
 				</div>
+				<div class="display-flex padding-bottom">
+					<mat-slide-toggle class="is-accumulate" formControlName="isAccumulate"
+									  labelPosition="before">Avaliação acumulada
+					</mat-slide-toggle>
+					<i class="fa fa-info-circle icon-info"
+					   matTooltip="Ao selecionar uma avaliação acumulada, na hora de calcular o resultado da avaliação para que um nível seja alcançado, os níveis anteriores devem estar totalmente atingidos"></i>
+				</div>
 				<button class="btn btn-outline-secondary btn-sm" type="button"
 						(click)="openDialog(measurementFramework.ratings)">
 					Mapear valores de avaliação
@@ -67,16 +75,17 @@
 
 		<form [formGroup]="measurementFrameworkForm">
 			<capacity-level *ngIf="measurementFramework.ratings"
-								[ratings]="measurementFramework.ratings"
-								[capacityLevels]="measurementFramework.capacityLevels"
-								(onConfirmCapacityLevels)="confirmCapacityLevels($event)">
+							[ratings]="measurementFramework.ratings"
+							[capacityLevels]="measurementFramework.capacityLevels"
+							(onConfirmCapacityLevels)="confirmCapacityLevels($event)">
 			</capacity-level>
 		</form>
 
 		<div class="form-group">
 			<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious>Voltar</button>
 			<button mat-raised-button class="btn btn-outline-secondary save-button" matStepperNext
-					(click)="nextCapabilityLevels()">Próximo</button>
+					(click)="nextCapabilityLevels()">Próximo
+			</button>
 		</div>
 	</mat-step>
 	<mat-step [stepControl]="measurementFrameworkForm">
@@ -94,7 +103,8 @@
 		</form>
 		<div class="form-group">
 			<button mat-raised-button class="btn btn-outline-secondary" matStepperPrevious
-					(click)="backCapabilityLevels()">Voltar</button>
+					(click)="backCapabilityLevels()">Voltar
+			</button>
 			<button mat-raised-button class="btn btn-outline-secondary" mat-button matStepperNext>Próximo</button>
 		</div>
 

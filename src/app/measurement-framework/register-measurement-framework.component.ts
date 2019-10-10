@@ -62,6 +62,7 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			ratings: [[]],
 			capacityLevels: [[]],
 			classifications: [[]],
+			isAccumulate: [true]
 		});
 
 		this.createRatings(this.measurementFramework);

@@ -84,3 +84,11 @@ mat-radio-button.mat-accent .mat-radio-inner-circle {
 .mat-step-header .mat-step-icon-selected {
 	background-color: #808080 !important;
 }
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+	background-color: #808080;
+}
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+	background-color: #b9b9b9;
+}

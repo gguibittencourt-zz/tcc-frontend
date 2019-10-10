@@ -14,4 +14,5 @@ export class MeasurementFramework {
 	ratings?: Rating[];
 	capacityLevels?: CapacityLevel[];
 	classifications?: Classification[];
+	isAccumulate: boolean = true;
 }
