@@ -1,0 +1,43 @@
+﻿<loading [isLoading]="loading"></loading>
+
+<h2>Fonte de Dados</h2>
+<a [routerLink]="['/data-source/register']" class="btn btn btn-outline-secondary col-md-2">
+		<span class="mat-button-wrapper">
+				Adicionar
+				<i class="fa fa-plus"></i>
+		</span>
+</a>
+<mat-form-field class="col-md-10">
+	<input matInput spellcheck="false" (keyup)="applyFilter($event.target.value)" placeholder="Filtro">
+</mat-form-field>
+
+
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+	<ng-container matColumnDef="name">
+		<th mat-header-cell *matHeaderCellDef class=" column-name" mat-sort-header> Nome</th>
+		<td mat-cell *matCellDef="let element"> {{element.name}}</td>
+	</ng-container>
+	<ng-container matColumnDef="url">
+		<th mat-header-cell *matHeaderCellDef class="" mat-sort-header> Url</th>
+		<td mat-cell *matCellDef="let element"> {{element.url}}</td>
+	</ng-container>
+	<ng-container matColumnDef="actions">
+		<th mat-header-cell *matHeaderCellDef class="column-actions-list" mat-sort-header> Ações</th>
+		<td mat-cell *matCellDef="let element">
+			<button mat-button [routerLink]="['/data-source', element.idDataSource]" class="btn btn-sm">
+				<i class="fa fa-edit"></i>
+			</button>
+			<button mat-button (click)="openConfirmationDialog(element)" class="btn btn-sm" matTooltip="Excluir">
+				<i class="fa fa-trash"></i>
+			</button>
+		</td>
+	</ng-container>
+
+	<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+	<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<mat-paginator [length]="dataSource.data.length"
+			   [pageSize]="10"
+			   [pageSizeOptions]="[5, 10, 25, 100]" [showFirstLastButtons]="true">
+</mat-paginator>

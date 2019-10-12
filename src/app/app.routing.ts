@@ -8,6 +8,7 @@ import {CompanyComponent} from "./company";
 import {ListReferenceModelComponent, RegisterReferenceModelComponent} from "./reference-model";
 import {ListMeasurementFrameworkComponent, RegisterMeasurementFrameworkComponent} from "./measurement-framework";
 import {ListAssessmentComponent, RegisterAssessmentComponent, ViewAssessmentComponent} from "./assessment";
+import {ListDataSourceComponent, RegisterDataSourceComponent} from "./data-source";
 
 const appRoutes: Routes = [
 	{path: '', component: HomeComponent, canActivate: [AuthGuard]},
@@ -18,6 +19,9 @@ const appRoutes: Routes = [
 	{path: 'reference-model', component: ListReferenceModelComponent, canActivate: [AuthGuard]},
 	{path: 'reference-model/register', component: RegisterReferenceModelComponent, canActivate: [AuthGuard]},
 	{path: 'reference-model/:idReferenceModel', component: RegisterReferenceModelComponent, canActivate: [AuthGuard]},
+	{path: 'data-source', component: ListDataSourceComponent, canActivate: [AuthGuard]},
+	{path: 'data-source/register', component: RegisterDataSourceComponent, canActivate: [AuthGuard]},
+	{path: 'data-source/:idDataSource', component: RegisterDataSourceComponent, canActivate: [AuthGuard]},
 	{path: 'measurement-framework', component: ListMeasurementFrameworkComponent, canActivate: [AuthGuard]},
 	{path: 'measurement-framework/register', component: RegisterMeasurementFrameworkComponent, canActivate: [AuthGuard]},
 	{path: 'measurement-framework/:idMeasurementFramework', component: RegisterMeasurementFrameworkComponent, canActivate: [AuthGuard]},

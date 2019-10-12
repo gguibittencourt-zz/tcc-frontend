@@ -10,7 +10,7 @@ import {ErrorInterceptor, JwtInterceptor} from './_helpers';
 import {
 	AssessmentService,
 	AuthenticationService,
-	CompanyService,
+	CompanyService, DataSourceService,
 	MeasurementFrameworkService,
 	ReferenceModelService,
 	UserService
@@ -51,6 +51,7 @@ import {ProcessResultDialogComponent} from "./_directives/process-result-dialog"
 import {TutorialDialogComponent} from "./_directives/tutorial-dialog";
 import { ProcessAttributeValueChartDialogComponent } from './_directives/process-attribute-value-chart-dialog';
 import {AboutDialogComponent} from "./_directives/about-dialog";
+import {ListDataSourceComponent, RegisterDataSourceComponent} from "./data-source";
 
 @NgModule({
 	imports: [
@@ -101,7 +102,9 @@ import {AboutDialogComponent} from "./_directives/about-dialog";
 		ViewAssessmentComponent,
 		TutorialDialogComponent,
 		ProcessAttributeValueChartDialogComponent,
-		AboutDialogComponent
+		AboutDialogComponent,
+		ListDataSourceComponent,
+		RegisterDataSourceComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -113,7 +116,8 @@ import {AboutDialogComponent} from "./_directives/about-dialog";
 		CompanyService,
 		ReferenceModelService,
 		MeasurementFrameworkService,
-		AssessmentService
+		AssessmentService,
+		DataSourceService
 	],
 	entryComponents: [
 		ProcessComponent,

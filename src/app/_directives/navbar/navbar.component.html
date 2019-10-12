@@ -12,6 +12,11 @@
 				<span>Organização</span>
 			</button>
 			<button mat-menu-item *ngIf="getUser.role === 'ADM'"
+					[routerLink]="['/data-source']">
+				<i class="icon fa fa-database"></i>
+				<span>Fonte de Dados</span>
+			</button>
+			<button mat-menu-item *ngIf="getUser.role === 'ADM'"
 					[routerLink]="['/reference-model']">
 				<i class="icon fa fa-book"></i>
 				<span>Modelo de Referência</span>
