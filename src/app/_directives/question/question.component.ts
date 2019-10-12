@@ -1,8 +1,10 @@
 import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Guid} from 'guid-typescript';
-import {MAT_DIALOG_DATA, MatDialogRef, MatSelectChange} from '@angular/material';
-import {DependentValue, MatQuestionDialogData, Question} from '../../_models';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSelectChange} from '@angular/material';
+import {DataSource, DependentValue, MatQuestionDialogData, Question, User} from '../../_models';
+import {AuthenticationService, DataSourceService} from "../../_services";
+import {DataSourceDialogComponent} from "../data-source-dialog";
 
 @Component({
 	selector: 'question',
@@ -15,11 +17,15 @@ export class QuestionComponent {
 	mapCloseAccordion: Map<number, boolean> = new Map<number, boolean>();
 	dependentValueByQuestion: any[] = [];
 	defaultValues: any[] = [];
+	dataSources: DataSource[];
 	private _isPossibleConfirm: boolean = true;
 
 	constructor(private dialogRef: MatDialogRef<QuestionComponent>,
+				private  dialog: MatDialog,
 				@Inject(MAT_DIALOG_DATA) public data: MatQuestionDialogData,
-				private formBuilder: FormBuilder) {
+				private formBuilder: FormBuilder,
+				private authenticationService: AuthenticationService,
+				private dataSourceService: DataSourceService) {
 		this.fillDefaultValues(data.type);
 
 		this.data.questions.forEach((value, index) => {
@@ -30,7 +36,18 @@ export class QuestionComponent {
 			this.createDependentValues(value.idDependentQuestion);
 			this.fillDefaultValues(value.type);
 		});
+
+		this.dataSourceService.list(this.getUser.idCompany).subscribe(value => {
+			this.dataSources = value as DataSource[];
+		});
 	}
+
+	get getUser(): User {
+		let user = null;
+		this.authenticationService.isUserIn.subscribe(currentUser => user = currentUser);
+		return user;
+	}
+
 
 	get isPossibleConfirm(): boolean {
 		return this._isPossibleConfirm;
@@ -96,12 +113,35 @@ export class QuestionComponent {
 		this.questionForms[i].get('required').setValue(event.checked);
 	}
 
+	changeHasDataSource(event: any, i: number): void {
+		this.questionForms[i].get('hasDataSource').setValue(event.checked);
+	}
+
+	hasDataSource(i: number) {
+		return this.questionForms[i].get('hasDataSource').value;
+	}
+
 	getQuestionRequired(i: number) {
 		return this.questionForms[i].get('required').value;
 	}
 
 	comparer(o1: any, o2: any): boolean {
 		return o1 && o2 ? o1.value === o2.value : false;
+	}
+
+	openDialogDataSource(index: number): void {
+		const dialogRef = this.dialog.open(DataSourceDialogComponent, {
+			height: '90%',
+			width: '80%',
+			disableClose: true
+		});
+
+		dialogRef.afterClosed().subscribe((result: DataSource) => {
+			if (result) {
+				this.dataSources.push(result);
+				this.questionForms[index].get('dataSourceQuestion').get('idDataSource').setValue(result.idDataSource);
+			}
+		});
 	}
 
 	private createForm(idQuestion: string = '', idTreeNode: string = ''): FormGroup {
@@ -117,15 +157,15 @@ export class QuestionComponent {
 			required: [true],
 			defaultValue: [''],
 			dependsOnAnyQuestion: [false],
-			hasDataSource: [false],
 			idDependentQuestion: [''],
 			dependentValue: [''],
 			updateValue: [''],
-			config: this.formBuilder.group({
-				minCharacters: [],
-				maxCharacters: [],
-				maxValue: [],
-				minValue: []
+			hasDataSource: [false],
+			dataSourceQuestion: this.formBuilder.group({
+				idDataSource: [],
+				path: [''],
+				typeReturn: [],
+				valueReturn: []
 			})
 		});
 		if (this.data.node.processAttributeValues) {

@@ -31,7 +31,7 @@
 						<mat-tab-group>
 							<mat-tab>
 								<ng-template mat-tab-label>
-									Questão
+									Dados básicos
 								</ng-template>
 								<mat-form-field class="col-md-12">
 									<mat-select *ngIf="data.node.expectedResults"
@@ -86,6 +86,45 @@
 											</mat-option>
 										</mat-select>
 									</mat-form-field>
+								</div>
+								<mat-slide-toggle class="col-md-6" formControlName="hasDataSource"
+												  (change)="changeHasDataSource($event, i)"
+												  labelPosition="before">Possui fonte de dados?
+								</mat-slide-toggle>
+								<div *ngIf="hasDataSource(i)" formGroupName="dataSourceQuestion">
+									<mat-form-field class="col-md-4">
+										<mat-select placeholder="Fonte de Dados"
+													formControlName="idDataSource">
+											<mat-option *ngFor="let dataSource of dataSources"
+												[value]="dataSource.idDataSource">
+												{{dataSource.name}}
+											</mat-option>
+										</mat-select>
+									</mat-form-field>
+									<button class="btn btn-outline-secondary btn-sm" type="button"
+											(click)="openDialogDataSource(i)"
+											id="addProcessAttributeValue">
+										Adicionar <i class="fa fa-plus"></i>
+									</button>
+									<mat-form-field class="col-md-6">
+										<input matInput spellcheck="false" formControlName="path" placeholder="Path"/>
+									</mat-form-field>
+									<i class="fa fa-info-circle icon-info question-info-path"
+									   matTooltip="Caminho a ser chamado na fonte de dados para obter os dados. Ex.: /api/dados"></i>
+									<div class="display-flex">
+										<mat-form-field class="col-md-3">
+											<mat-select placeholder="Tipo do Retorno" formControlName="typeReturn">
+												<mat-option value="boolean">Boolean</mat-option>
+												<mat-option value="numeric">Número</mat-option>
+												<mat-option value="string">Texto</mat-option>
+											</mat-select>
+										</mat-form-field>
+										<mat-form-field class="col-md-4">
+											<input matInput spellcheck="false" formControlName="valueReturn" placeholder="Valor do Retorno"/>
+										</mat-form-field>
+										<i class="fa fa-info-circle icon-info question-info-path"
+										   matTooltip="Valor a ser obtido (Json) na resposta chamada da fonte de dados + path. Ex.: dados.qtdItens"></i>
+									</div>
 								</div>
 								<mat-slide-toggle class="col-md-12" formControlName="dependsOnAnyQuestion"
 												  labelPosition="before">Depende de alguma questão?

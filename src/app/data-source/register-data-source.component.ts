@@ -1,14 +1,16 @@
-﻿import {Component, OnInit} from '@angular/core';
+﻿import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {AuthenticationService, DataSourceService} from '../_services';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DataSource, User} from "../_models";
-import {MatSnackBar} from "@angular/material";
+import {MatDialogRef, MatSnackBar} from "@angular/material";
 import {SnackBarComponent} from "../_directives/snack-bar";
 import {UrlValidator} from "../_helpers";
+import {DataSourceDialogComponent} from "../_directives/data-source-dialog";
 
 @Component({
+	selector: 'register-data-source',
 	templateUrl: './register-data-source.component.html',
 	styleUrls: ['register-data-source.component.scss']
 
@@ -19,6 +21,7 @@ export class RegisterDataSourceComponent implements OnInit {
 	submitted = false;
 	idDataSource: number = null;
 	get: string = 'GET';
+	@Input('dialogRef') dialogRef: MatDialogRef<DataSourceDialogComponent>;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -101,6 +104,10 @@ export class RegisterDataSourceComponent implements OnInit {
 				.subscribe(
 					data => {
 						this.createSnackBar('Cadastro com sucesso', 'success');
+						if (this.dialogRef) {
+							this.dialogRef.close(data);
+							return;
+						}
 						this.router.navigate(['/data-source']);
 					},
 					error => {

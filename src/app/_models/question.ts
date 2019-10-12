@@ -1,4 +1,6 @@
-﻿export class Question {
+﻿import {DataSourceQuestion} from "./data-source-question";
+
+export class Question {
 	idQuestion: string;
 	idExpectedResult: string;
 	idProcess: string;
@@ -13,7 +15,7 @@
 	idDependentQuestion: string;
 	dependentValue: any;
 	updateValue: any;
-	config: any;
+	dataSourceQuestion: DataSourceQuestion;
 
 	constructor(idQuestion: string) {
 		this.idQuestion = idQuestion;
