@@ -187,7 +187,7 @@
 												<mat-form-field class="col-md-2">
 													<mat-select placeholder="Resposta"
 																[(ngModel)]="updateValue.valueResult"
-																[ngModelOptions]="{standalone: true}">
+																[ngModelOptions]="{standalone: true}" [compareWith]="comparer">
 														<mat-option *ngFor="let value of defaultValues"
 																	[value]="value.value">
 															<span>{{value.title}}</span>
@@ -225,7 +225,7 @@
 												<mat-form-field class="col-md-2">
 													<mat-select placeholder="Resposta"
 																[(ngModel)]="updateValue.valueResult"
-																[ngModelOptions]="{standalone: true}">
+																[ngModelOptions]="{standalone: true}" [compareWith]="comparer">
 														<mat-option *ngFor="let value of defaultValues"
 																	[value]="value.value">
 															<span>{{value.title}}</span>
