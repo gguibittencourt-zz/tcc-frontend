@@ -71,7 +71,7 @@ export class QuestionComponent {
 		this._isPossibleConfirm = true;
 		this.mapCloseAccordion.set(index, false);
 		const value: Question = this.questionForms[index].value;
-		value.dataSourceQuestion.updateValues = this.updateValues.get(0);
+		value.dataSourceQuestion.updateValues = this.updateValues.get(index);
 		this.data.questions[index] = value;
 	}
 
@@ -137,6 +137,10 @@ export class QuestionComponent {
 		return o1 && o2 ? String(o1) == String(o2) || (o1.value && o2.value && o1.value == o2.value) : false;
 	}
 
+	comparerDataSource(o1: any, o2: any): boolean {
+		return o1 && o2 ? o1.idDataSource == o2.idDataSource : false;
+	}
+
 	changeType(event: any) {
 		this.fillDefaultValues(event);
 	}
@@ -164,7 +168,7 @@ export class QuestionComponent {
 		dialogRef.afterClosed().subscribe((result: DataSource) => {
 			if (result) {
 				this.dataSources.push(result);
-				this.questionForms[index].get('dataSourceQuestion').get('idDataSource').setValue(result.idDataSource);
+				this.questionForms[index].get('dataSourceQuestion').get('dataSource').setValue(result);
 			}
 		});
 	}
@@ -187,7 +191,7 @@ export class QuestionComponent {
 			updateValue: [''],
 			hasDataSource: [false],
 			dataSourceQuestion: this.formBuilder.group({
-				idDataSource: [],
+				dataSource: [],
 				path: [''],
 				typeReturn: [],
 				valueReturn: [],

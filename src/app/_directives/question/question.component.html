@@ -97,15 +97,16 @@
 								<div *ngIf="hasDataSource(i)" formGroupName="dataSourceQuestion">
 									<mat-form-field class="col-md-2">
 										<mat-select placeholder="Fonte de Dados"
-													formControlName="idDataSource">
+													formControlName="dataSource" [compareWith]="comparerDataSource">
 											<mat-option *ngFor="let dataSource of dataSources"
-														[value]="dataSource.idDataSource">
+														[value]="dataSource">
 												{{dataSource.name}}
 											</mat-option>
 										</mat-select>
 									</mat-form-field>
 									<button class="btn btn-outline-secondary btn-sm" type="button"
 											(click)="openDialogDataSource(i)"
+											matTooltip="Adicionar Fonte de Dados"
 											id="addProcessAttributeValue">
 										<i class="fa fa-plus"></i>
 									</button>
@@ -182,6 +183,7 @@
 												<mat-form-field class="col-md-2">
 													<input matInput spellcheck="false"
 														   [(ngModel)]="updateValue.valueConfig"
+														   [ngModelOptions]="{standalone: true}"
 														   placeholder="Valor do Resultado"/>
 												</mat-form-field>
 												<mat-form-field class="col-md-2">
@@ -220,6 +222,7 @@
 												<mat-form-field class="col-md-2">
 													<input matInput spellcheck="false"
 														   [(ngModel)]="updateValue.valueConfig"
+														   [ngModelOptions]="{standalone: true}"
 														   placeholder="Valor do Resultado"/>
 												</mat-form-field>
 												<mat-form-field class="col-md-2">

@@ -7,14 +7,16 @@
 			<div class="question-name">
 				<span>
 					{{i + 1 + '. ' + question.name}}
+					<span *ngIf="question.resultByDataSource">
+						<i class="fa fa-database" [matTooltip]="'Resposta preenchida automaticamente a partir da fonte da dados: ' + question.dataSourceQuestion.dataSource.name"></i>
+					</span>
 					<span *ngIf="question.tip">
-					<i *ngIf="isLink(question.tip); else tip" class="fa fa-info-circle link"
-					   (click)="openLink(question.tip)"
-					   matTooltip="Clique para abrir"></i>
-				<ng-template #tip>
-					<i *ngIf="question.tip" class="fa fa-info-circle" [matTooltip]="question.tip"></i>
-				</ng-template>
-				</span>
+						<i *ngIf="isLink(question.tip); else tip" class="fa fa-info-circle link"
+					 	  (click)="openLink(question.tip)" matTooltip="Clique para abrir"></i>
+						<ng-template #tip>
+							<i *ngIf="question.tip" class="fa fa-info-circle" [matTooltip]="question.tip"></i>
+						</ng-template>
+					</span>
 				</span>
 			</div>
 			<div style="width: 50%; text-align: end;margin: auto;">

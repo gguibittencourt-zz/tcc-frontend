@@ -24,13 +24,14 @@ import {
 	Result,
 	User
 } from "../_models";
-import {flatMap, uniqBy, isNil} from "lodash";
+import {flatMap, uniqBy, get} from "lodash";
 import { ElementRef } from '@angular/core';
 import {Guid} from "guid-typescript";
 import {MatDialog, MatSnackBar, MatVerticalStepper} from "@angular/material";
 import {SnackBarComponent} from "../_directives/snack-bar";
 import {CompanyDialogComponent} from "../_directives/company-dialog";
 import {TutorialDialogComponent} from "../_directives/tutorial-dialog";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
 	templateUrl: './register-assessment.component.html',
@@ -64,7 +65,8 @@ export class RegisterAssessmentComponent implements OnInit {
 		private companyService: CompanyService,
 		private snackBar: MatSnackBar,
 		private myElement: ElementRef,
-		private dialog: MatDialog) {
+		private dialog: MatDialog,
+		private http: HttpClient) {
 	}
 
 	ngOnInit(): void {
@@ -300,7 +302,42 @@ export class RegisterAssessmentComponent implements OnInit {
 		if (question.defaultValue && !formGroup.get('value').value) {
 			formGroup.get('value').setValue(String(question.defaultValue));
 		}
+		if (question.hasDataSource && question.dataSourceQuestion) {
+			this.callDataSource(question, formGroup);
+		}
 		return formGroup;
+	}
+
+	private callDataSource(question: Question, formGroup: FormGroup) {
+		let base64 = '';
+		if (question.dataSourceQuestion.dataSource.user && question.dataSourceQuestion.dataSource.password) {
+			base64 = btoa(question.dataSourceQuestion.dataSource.user + ':' + question.dataSourceQuestion.dataSource.password);
+		}
+		const url = question.dataSourceQuestion.dataSource.url + (question.dataSourceQuestion.path ? question.dataSourceQuestion.path : '');
+		const headers = question.dataSourceQuestion.dataSource.authenticated == 't' ? {headers: {'Authorization': 'Basic ' + base64}} : {};
+		this.http.get<any>(`${url}`, headers).subscribe(value => {
+			const valueReturn = get(JSON.parse(value), question.dataSourceQuestion.valueReturn);
+			const newUpdateValue = question.dataSourceQuestion.updateValues.find(updateValue => {
+				switch (updateValue.config) {
+					case 'greaterThanEqual':
+						return Number(updateValue.valueConfig) >= Number(valueReturn);
+					case 'lessThanEqual':
+						return Number(updateValue.valueConfig) <= Number(valueReturn);
+					default:
+						if (question.dataSourceQuestion.typeReturn == 'boolean') {
+							return Boolean(updateValue.valueConfig) == Boolean(valueReturn);
+						}
+						if (question.dataSourceQuestion.typeReturn == 'string') {
+							return String(updateValue.valueConfig) == String(valueReturn);
+						}
+						return Number(updateValue.valueConfig) == Number(valueReturn);
+				}
+			});
+			if (newUpdateValue) {
+				question.resultByDataSource = true;
+				formGroup.get('value').setValue(newUpdateValue.valueResult);
+			}
+		});
 	}
 
 	private getReferenceModel(idReferenceModel: number): void {

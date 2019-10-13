@@ -15,7 +15,9 @@ export class Question {
 	idDependentQuestion: string;
 	dependentValue: any;
 	updateValue: any;
+	hasDataSource: boolean;
 	dataSourceQuestion: DataSourceQuestion;
+	resultByDataSource: boolean;
 
 	constructor(idQuestion: string) {
 		this.idQuestion = idQuestion;
