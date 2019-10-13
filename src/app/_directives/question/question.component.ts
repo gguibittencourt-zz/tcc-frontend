@@ -2,7 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Guid} from 'guid-typescript';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSelectChange} from '@angular/material';
-import {DataSource, DependentValue, MatQuestionDialogData, Question, User} from '../../_models';
+import {DataSource, DependentValue, MatQuestionDialogData, Question, UpdateValue, User} from '../../_models';
 import {AuthenticationService, DataSourceService} from "../../_services";
 import {DataSourceDialogComponent} from "../data-source-dialog";
 
@@ -18,6 +18,7 @@ export class QuestionComponent {
 	dependentValueByQuestion: any[] = [];
 	defaultValues: any[] = [];
 	dataSources: DataSource[];
+	updateValues: Map<number, UpdateValue[]> = new Map<number, UpdateValue[]>();
 	private _isPossibleConfirm: boolean = true;
 
 	constructor(private dialogRef: MatDialogRef<QuestionComponent>,
@@ -30,7 +31,9 @@ export class QuestionComponent {
 
 		this.data.questions.forEach((value, index) => {
 			const form = this.createForm();
-			form.patchValue(this.data.questions[index]);
+			const question = this.data.questions[index];
+			this.updateValues.set(index, question.dataSourceQuestion ? question.dataSourceQuestion.updateValues : [new UpdateValue()]);
+			form.patchValue(question);
 			this.questionForms[index] = form;
 			this.mapCloseAccordion.set(index, false);
 			this.createDependentValues(value.idDependentQuestion);
@@ -47,7 +50,6 @@ export class QuestionComponent {
 		this.authenticationService.isUserIn.subscribe(currentUser => user = currentUser);
 		return user;
 	}
-
 
 	get isPossibleConfirm(): boolean {
 		return this._isPossibleConfirm;
@@ -68,7 +70,9 @@ export class QuestionComponent {
 
 		this._isPossibleConfirm = true;
 		this.mapCloseAccordion.set(index, false);
-		this.data.questions[index] = this.questionForms[index].value;
+		const value: Question = this.questionForms[index].value;
+		value.dataSourceQuestion.updateValues = this.updateValues.get(0);
+		this.data.questions[index] = value;
 	}
 
 	addQuestion() {
@@ -100,6 +104,10 @@ export class QuestionComponent {
 		return this.questionForms[index].controls['dependsOnAnyQuestion'].value;
 	}
 
+	getTypeReturn(i: number) {
+		return this.questionForms[i].controls['dataSourceQuestion'].get('typeReturn').value;
+	}
+
 	deleteQuestion(index: number): void {
 		this.data.questions.splice(index, 1);
 		this.questionForms.splice(index, 1);
@@ -126,7 +134,24 @@ export class QuestionComponent {
 	}
 
 	comparer(o1: any, o2: any): boolean {
-		return o1 && o2 ? o1.value === o2.value : false;
+		return o1 && o2 ? String(o1) == String(o2) || (o1.value && o2.value && o1.value == o2.value) : false;
+	}
+
+	changeType(event: any) {
+		this.fillDefaultValues(event);
+	}
+
+	addUpdateValue(indexQuestion: number) {
+		const updateValue = new UpdateValue();
+		this.updateValues.get(indexQuestion).push(updateValue);
+	}
+
+	isLastUpdateValue(indexQuestion: number, indexUpdateValue: number) {
+		return (indexUpdateValue + 1) === this.updateValues.get(indexQuestion).length;
+	}
+
+	deleteUpdateValue(indexQuestion: number, indexUpdateValue: number) {
+		this.updateValues.get(indexQuestion).splice(indexUpdateValue, 1);
 	}
 
 	openDialogDataSource(index: number): void {
@@ -165,7 +190,12 @@ export class QuestionComponent {
 				idDataSource: [],
 				path: [''],
 				typeReturn: [],
-				valueReturn: []
+				valueReturn: [],
+				updateValue: this.formBuilder.array([{
+					config: [''],
+					valueConfig: [''],
+					valueResult: ['']
+				}])
 			})
 		});
 		if (this.data.node.processAttributeValues) {

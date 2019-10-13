@@ -18,7 +18,8 @@
 				<mat-expansion-panel *ngFor="let question of data.questions; let i = index"
 									 [expanded]="mapCloseAccordion.get(i)">
 					<mat-expansion-panel-header ngClass="{{mapCloseAccordion.get(i) ? 'not-active' : ''}}">
-						<input matInput spellcheck="false" value="{{i + 1 + '. ' + (question.name ? question.name : '')}}" disabled/>
+						<input matInput spellcheck="false"
+							   value="{{i + 1 + '. ' + (question.name ? question.name : '')}}" disabled/>
 						<button mat-icon-button type="button" (click)="deleteQuestion(i)"
 								class="mat-icon-button active">
 							<mat-icon class="mat-icon material-icons" matTooltip="Excluir">
@@ -37,8 +38,9 @@
 									<mat-select *ngIf="data.node.expectedResults"
 												placeholder="Resultado Esperado" formControlName="idExpectedResult"
 												[ngClass]="{ 'is-invalid': submitted && f.idExpectedResult.errors }">
-										<mat-option *ngFor="let expectedResult of data.node.expectedResults; let i = index"
-													[value]="expectedResult.idExpectedResult">
+										<mat-option
+											*ngFor="let expectedResult of data.node.expectedResults; let i = index"
+											[value]="expectedResult.idExpectedResult">
 											{{data.node.prefix + ' ' + (i + 1) + '. ' + expectedResult.name}}
 										</mat-option>
 									</mat-select>
@@ -63,7 +65,8 @@
 								</mat-form-field>
 
 								<mat-form-field class="col-md-12">
-									<mat-select placeholder="Tipo" formControlName="type">
+									<mat-select placeholder="Tipo" formControlName="type"
+												(valueChange)="changeType($event)">
 										<mat-option value="scale-nominal">Escala Ordinal</mat-option>
 										<mat-option value="boolean">Verdadeiro/Falso</mat-option>
 									</mat-select>
@@ -92,11 +95,11 @@
 												  labelPosition="before">Possui fonte de dados?
 								</mat-slide-toggle>
 								<div *ngIf="hasDataSource(i)" formGroupName="dataSourceQuestion">
-									<mat-form-field class="col-md-4">
+									<mat-form-field class="col-md-2">
 										<mat-select placeholder="Fonte de Dados"
 													formControlName="idDataSource">
 											<mat-option *ngFor="let dataSource of dataSources"
-												[value]="dataSource.idDataSource">
+														[value]="dataSource.idDataSource">
 												{{dataSource.name}}
 											</mat-option>
 										</mat-select>
@@ -104,26 +107,144 @@
 									<button class="btn btn-outline-secondary btn-sm" type="button"
 											(click)="openDialogDataSource(i)"
 											id="addProcessAttributeValue">
-										Adicionar <i class="fa fa-plus"></i>
+										<i class="fa fa-plus"></i>
 									</button>
-									<mat-form-field class="col-md-6">
+									<mat-form-field class="col-md-2">
 										<input matInput spellcheck="false" formControlName="path" placeholder="Path"/>
 									</mat-form-field>
 									<i class="fa fa-info-circle icon-info question-info-path"
 									   matTooltip="Caminho a ser chamado na fonte de dados para obter os dados. Ex.: /api/dados"></i>
-									<div class="display-flex">
-										<mat-form-field class="col-md-3">
-											<mat-select placeholder="Tipo do Retorno" formControlName="typeReturn">
-												<mat-option value="boolean">Boolean</mat-option>
-												<mat-option value="numeric">Número</mat-option>
-												<mat-option value="string">Texto</mat-option>
-											</mat-select>
-										</mat-form-field>
-										<mat-form-field class="col-md-4">
-											<input matInput spellcheck="false" formControlName="valueReturn" placeholder="Valor do Retorno"/>
-										</mat-form-field>
-										<i class="fa fa-info-circle icon-info question-info-path"
-										   matTooltip="Valor a ser obtido (Json) na resposta chamada da fonte de dados + path. Ex.: dados.qtdItens"></i>
+									<mat-form-field class="col-md-2">
+										<mat-select placeholder="Tipo do Retorno" formControlName="typeReturn">
+											<mat-option value="boolean">Boolean</mat-option>
+											<mat-option value="numeric">Número</mat-option>
+											<mat-option value="string">Texto</mat-option>
+										</mat-select>
+									</mat-form-field>
+									<mat-form-field class="col-md-2">
+										<input matInput spellcheck="false" formControlName="valueReturn"
+											   placeholder="Valor do Retorno"/>
+									</mat-form-field>
+									<i class="fa fa-info-circle icon-info question-info-path"
+									   matTooltip="Valor a ser obtido (Json) na resposta chamada da fonte de dados + path. Ex.: dados.qtdItens"></i>
+									<div [ngSwitch]="getTypeReturn(i)" formArrayName="updateValue">
+										<div
+											*ngFor="let updateValue of updateValues.get(i); let indexUpdateValue = index">
+											<div *ngSwitchCase="'boolean'" class="col-md-12">
+												<label [for]="'name-' + indexUpdateValue" class="label-name">
+													<span>{{(indexUpdateValue + 1) + '. '}}</span>
+												</label>
+												<mat-form-field class="col-md-2">
+													<mat-select placeholder="Valor Resultado"
+																[(ngModel)]="updateValue.valueConfig"
+																[ngModelOptions]="{standalone: true}">
+														<mat-option value="true">Verdadeiro</mat-option>
+														<mat-option value="false">Falso</mat-option>
+													</mat-select>
+												</mat-form-field>
+												<mat-form-field class="col-md-2">
+													<mat-select placeholder="Resposta"
+																[(ngModel)]="updateValue.valueResult"
+																[ngModelOptions]="{standalone: true}" [compareWith]="comparer">
+														<mat-option *ngFor="let value of defaultValues"
+																	[value]="value.value">
+															<span>{{value.title}}</span>
+														</mat-option>
+													</mat-select>
+												</mat-form-field>
+												<button class="align-self-center btn btn-outline-danger btn-sm"
+														matTooltip="Excluir"
+														*ngIf="updateValues.get(i).length > 1"
+														(click)="deleteUpdateValue(i, indexUpdateValue)">
+													<i class="fa fa-trash-o"></i>
+												</button>
+												<button class="btn btn-outline-secondary btn-sm" type="button"
+														*ngIf="isLastUpdateValue(i, indexUpdateValue) && defaultValues.length > (indexUpdateValue + 1)"
+														(click)="addUpdateValue(i)">
+													<i class="fa fa-plus"></i>
+												</button>
+											</div>
+											<div *ngSwitchCase="'numeric'" class="col-md-12">
+												<label [for]="'name-' + indexUpdateValue" class="label-name">
+													<span>{{(indexUpdateValue + 1) + '. '}}</span>
+												</label>
+												<mat-form-field class="col-md-1 config-update-value">
+													<mat-select placeholder="Configuração"
+																[(ngModel)]="updateValue.config"
+																[ngModelOptions]="{standalone: true}">
+														<mat-option class="text-center" value="greaterThanEqual">&ge;
+														</mat-option>
+														<mat-option class="text-center" value="lessThanEqual">&le;
+														</mat-option>
+														<mat-option class="text-center" value="equal">=</mat-option>
+													</mat-select>
+												</mat-form-field>
+												<mat-form-field class="col-md-2">
+													<input matInput spellcheck="false"
+														   [(ngModel)]="updateValue.valueConfig"
+														   placeholder="Valor do Resultado"/>
+												</mat-form-field>
+												<mat-form-field class="col-md-2">
+													<mat-select placeholder="Resposta"
+																[(ngModel)]="updateValue.valueResult"
+																[ngModelOptions]="{standalone: true}">
+														<mat-option *ngFor="let value of defaultValues"
+																	[value]="value.value">
+															<span>{{value.title}}</span>
+														</mat-option>
+													</mat-select>
+												</mat-form-field>
+												<button class="align-self-center btn btn-outline-danger btn-sm"
+														matTooltip="Excluir"
+														*ngIf="updateValues.get(i).length > 1"
+														(click)="deleteUpdateValue(i, indexUpdateValue)">
+													<i class="fa fa-trash-o"></i>
+												</button>
+												<button class="btn btn-outline-secondary btn-sm" type="button"
+														*ngIf="isLastUpdateValue(i, indexUpdateValue)  && defaultValues.length > (indexUpdateValue + 1)"
+														(click)="addUpdateValue(i)">
+													<i class="fa fa-plus"></i>
+												</button>
+											</div>
+											<div *ngSwitchCase="'string'" class="col-md-12">
+												<label [for]="'name-' + indexUpdateValue" class="label-name">
+													<span>{{(indexUpdateValue + 1) + '. '}}</span>
+												</label>
+												<mat-form-field class="col-md-1 config-update-value">
+													<mat-select placeholder="Configuração"
+																[(ngModel)]="updateValue.config"
+																[ngModelOptions]="{standalone: true}">
+														<mat-option class="text-center" value="equal">=</mat-option>
+													</mat-select>
+												</mat-form-field>
+												<mat-form-field class="col-md-2">
+													<input matInput spellcheck="false"
+														   [(ngModel)]="updateValue.valueConfig"
+														   placeholder="Valor do Resultado"/>
+												</mat-form-field>
+												<mat-form-field class="col-md-2">
+													<mat-select placeholder="Resposta"
+																[(ngModel)]="updateValue.valueResult"
+																[ngModelOptions]="{standalone: true}">
+														<mat-option *ngFor="let value of defaultValues"
+																	[value]="value.value">
+															<span>{{value.title}}</span>
+														</mat-option>
+													</mat-select>
+												</mat-form-field>
+												<button class="align-self-center btn btn-outline-danger btn-sm"
+														matTooltip="Excluir"
+														*ngIf="updateValues.get(i).length > 1"
+														(click)="deleteUpdateValue(i, indexUpdateValue)">
+													<i class="fa fa-trash-o"></i>
+												</button>
+												<button class="btn btn-outline-secondary btn-sm" type="button"
+														*ngIf="isLastUpdateValue(i, indexUpdateValue) && defaultValues.length > (indexUpdateValue + 1)"
+														(click)="addUpdateValue(i)">
+													<i class="fa fa-plus"></i>
+												</button>
+											</div>
+										</div>
 									</div>
 								</div>
 								<mat-slide-toggle class="col-md-12" formControlName="dependsOnAnyQuestion"

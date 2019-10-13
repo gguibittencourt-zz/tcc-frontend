@@ -30,3 +30,4 @@ export * from './process-result-dialog-data';
 export * from './process-attribute-value-chart-dialog';
 export * from './data-source';
 export * from './data-source-question';
+export * from './update-value';
