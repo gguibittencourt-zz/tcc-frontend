@@ -325,7 +325,7 @@ export class RegisterAssessmentComponent implements OnInit {
 						return Number(updateValue.valueConfig) <= Number(valueReturn);
 					default:
 						if (question.dataSourceQuestion.typeReturn == 'boolean') {
-							return Boolean(updateValue.valueConfig) == Boolean(valueReturn);
+							return updateValue.valueConfig == String(valueReturn);
 						}
 						if (question.dataSourceQuestion.typeReturn == 'string') {
 							return String(updateValue.valueConfig) == String(valueReturn);

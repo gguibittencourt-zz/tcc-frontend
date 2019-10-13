@@ -8,7 +8,7 @@
 				<span>
 					{{i + 1 + '. ' + question.name}}
 					<span *ngIf="question.resultByDataSource">
-						<i class="fa fa-database" [matTooltip]="'Resposta preenchida automaticamente a partir da fonte da dados: ' + question.dataSourceQuestion.dataSource.name"></i>
+						<i class="fa fa-database" style="cursor: pointer;" [matTooltip]="'Resposta preenchida automaticamente a partir da fonte da dados: ' + question.dataSourceQuestion.dataSource.name"></i>
 					</span>
 					<span *ngIf="question.tip">
 						<i *ngIf="isLink(question.tip); else tip" class="fa fa-info-circle link"
