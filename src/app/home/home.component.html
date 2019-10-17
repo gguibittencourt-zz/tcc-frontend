@@ -35,7 +35,7 @@
 						</button>
 					</div>
 				</div>
-				<div class="webkit-center" *ngIf="highcharts && chartOptions && assessments">
+				<div class="webkit-center" *ngIf="highcharts && chartOptions && assessments.length">
 					<highcharts-chart
 						[Highcharts]="highcharts"
 						[options]="chartOptions">
