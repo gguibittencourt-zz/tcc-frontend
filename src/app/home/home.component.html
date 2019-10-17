@@ -30,12 +30,12 @@
 					</div>
 					<div class="col-md-6">
 						<button class="btn btn-outline-secondary btn-lg" type="button"
-								[routerLink]="['/assessment']">
+								[routerLink]="['/assessment/register']">
 							Iniciar nova Avaliação
 						</button>
 					</div>
 				</div>
-				<div class="webkit-center" *ngIf="highcharts && chartOptions">
+				<div class="webkit-center" *ngIf="highcharts && chartOptions && assessments">
 					<highcharts-chart
 						[Highcharts]="highcharts"
 						[options]="chartOptions">

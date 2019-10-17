@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
 	currentUser: User;
 	referenceModels: ReferenceModel[];
 	measurementFrameworks: MeasurementFramework[];
+	assessments: Assessment[];
 	highcharts = Highcharts;
 	chartOptions: any;
 	loading: boolean = false;
@@ -35,6 +36,7 @@ export class HomeComponent implements OnInit {
 		});
 
 		this.assessmentService.list(this.currentUser.idUser).subscribe((assessments: Assessment[]) => {
+			this.assessments = assessments;
 			const assessmentByDate = groupBy(assessments, (assessment: Assessment) => {
 				return this.formatDate(assessment.date);
 			});
