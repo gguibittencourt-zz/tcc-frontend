@@ -33,7 +33,7 @@
 					<mat-select placeholder="Selecione um papel" formControlName="role"
 								[ngClass]="{ 'is-invalid': submitted && f.role.errors }">
 						<mat-option *ngFor="let role of roles" [value]="role">
-							{{role == 'ADM' ? 'Administrador' : 'Responsável da organização'}}
+							{{role == 'ADM' ? 'Responsável da organização' : 'Gerente de projeto'}}
 						</mat-option>
 					</mat-select>
 
