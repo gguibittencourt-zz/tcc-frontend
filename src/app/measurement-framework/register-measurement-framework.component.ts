@@ -18,6 +18,7 @@ import {ScaleValuesDialogComponent} from "../_directives/scale-values-dialog";
 import {Guid} from "guid-typescript";
 import {flatMap, flatten, isEmpty} from 'lodash';
 import {SnackBarComponent} from "../_directives/snack-bar";
+import {ReferenceModelDialogComponent} from "../_directives/reference-model-dialog";
 
 @Component({
 	templateUrl: './register-measurement-framework.component.html',
@@ -90,8 +91,8 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 		});
 	}
 
-	changeReferenceModel(event: MatSelectChange): void {
-		this.referenceModel = this.getReferenceModel(event.value);
+	changeReferenceModel(idReferenceModel: number): void {
+		this.referenceModel = this.getReferenceModel(idReferenceModel);
 	}
 
 	getReferenceModel(idReferenceModel: number): ReferenceModel {
@@ -242,6 +243,22 @@ export class RegisterMeasurementFrameworkComponent implements OnInit {
 			data: message,
 			panelClass: [panelClass],
 			duration: 5000
+		});
+	}
+
+	openDialogReferenceModel() {
+		const dialogRef = this.dialog.open(ReferenceModelDialogComponent, {
+			height: '90%',
+			width: '80%',
+			disableClose: true
+		});
+
+		dialogRef.afterClosed().subscribe((result: ReferenceModel) => {
+			if (result) {
+				this.referenceModels.push(result);
+				this.referenceModel = result;
+				this.measurementFrameworkForm.get('idReferenceModel').setValue(result.idReferenceModel);
+			}
 		});
 	}
 }

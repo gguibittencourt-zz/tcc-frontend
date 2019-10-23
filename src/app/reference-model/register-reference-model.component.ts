@@ -1,13 +1,15 @@
-﻿import {Component, OnInit} from '@angular/core';
+﻿import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 
 import {ReferenceModelService} from '../_services';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {KnowledgeArea, ReferenceModel} from "../_models";
-import {MatSnackBar} from "@angular/material";
+import {MatDialogRef, MatSnackBar} from "@angular/material";
 import {SnackBarComponent} from "../_directives/snack-bar";
+import {ReferenceModelDialogComponent} from "../_directives/reference-model-dialog";
 
 @Component({
+	selector: 'register-reference-model',
 	templateUrl: './register-reference-model.component.html',
 	styleUrls: ['register-reference-model.component.scss']
 
@@ -18,6 +20,7 @@ export class RegisterReferenceModelComponent implements OnInit {
 	submitted = false;
 	idReferenceModel: number = null;
 	knowledgeAreas: KnowledgeArea[] = [];
+	@Input('dialogRef') dialogRef: MatDialogRef<ReferenceModelDialogComponent>;
 
 	constructor(
 		private route: ActivatedRoute,
@@ -74,6 +77,10 @@ export class RegisterReferenceModelComponent implements OnInit {
 			this.referenceModelService.register(this.referenceModelForm.value)
 				.subscribe(
 					data => {
+						if (this.dialogRef) {
+							this.dialogRef.close(data);
+							return;
+						}
 						this.createSnackBar('Cadastro com sucesso', 'success');
 						this.router.navigate(['/reference-model']);
 					},

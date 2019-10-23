@@ -53,6 +53,7 @@ import { ProcessAttributeValueChartDialogComponent } from './_directives/process
 import {AboutDialogComponent} from "./_directives/about-dialog";
 import {ListDataSourceComponent, RegisterDataSourceComponent} from "./data-source";
 import {DataSourceDialogComponent} from "./_directives/data-source-dialog";
+import {ReferenceModelDialogComponent} from "./_directives/reference-model-dialog";
 
 @NgModule({
 	imports: [
@@ -106,7 +107,8 @@ import {DataSourceDialogComponent} from "./_directives/data-source-dialog";
 		AboutDialogComponent,
 		ListDataSourceComponent,
 		RegisterDataSourceComponent,
-		DataSourceDialogComponent
+		DataSourceDialogComponent,
+		ReferenceModelDialogComponent
 	],
 	providers: [
 		{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
@@ -135,7 +137,8 @@ import {DataSourceDialogComponent} from "./_directives/data-source-dialog";
 		TutorialDialogComponent,
 		ProcessAttributeValueChartDialogComponent,
 		AboutDialogComponent,
-		DataSourceDialogComponent
+		DataSourceDialogComponent,
+		ReferenceModelDialogComponent
 	],
 	bootstrap: [AppComponent]
 })

@@ -20,7 +20,7 @@
 
 			<div class="col-md-12">
 				<div class="display-flex">
-					<div class="col-md-6">
+					<div class="col-md-3">
 
 						<i class="icon fa fa-book"></i>
 						<span class="font-weight-bold">Modelos disponíveis: </span>
@@ -28,14 +28,22 @@
 							- {{measurementFramework.name}}
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-4">
+						<button class="btn btn-outline-secondary btn-lg" type="button"
+								[routerLink]="['/measurement-framework/register']">
+							Cadastrar Modelo de Avaliação
+						</button>
+					</div>
+					<div class="col-md-4">
 						<div>
 							<button class="btn btn-outline-secondary btn-lg" type="button"
 									[routerLink]="['/assessment/register']">
 								Iniciar nova Avaliação
 							</button>
 						</div>
-						<a href="https://www.youtube.com/watch?v=PeeG4kG6OPo" target="_blank" matTooltip="Link disponível para tutorial de como realizar uma autoavaliação">Como realizar uma
+						<a href="https://www.youtube.com/watch?v=PeeG4kG6OPo" target="_blank"
+						   matTooltip="Link disponível para tutorial de como realizar uma autoavaliação">Como realizar
+							uma
 							autoavaliação?</a>
 					</div>
 				</div>
