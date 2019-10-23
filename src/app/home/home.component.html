@@ -28,7 +28,7 @@
 							- {{measurementFramework.name}}
 						</div>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-4" *ngIf="currentUser.role === 'ADM'">
 						<button class="btn btn-outline-secondary btn-lg" type="button"
 								[routerLink]="['/measurement-framework/register']">
 							Cadastrar Modelo de Avaliação
