@@ -27,7 +27,7 @@ export class ProcessResultDialogComponent {
 	get getCapacityLevel(): string {
 		const processResults = cloneDeep(this.data.processResults.filter(processResult => processResult.result == 'Satisfeito'));
 		if (processResults) {
-			const processResult = processResults.pop();
+			const processResult = processResults[0];
 			if (processResult) {
 				return processResult.capacityResults.pop().capacityLevel.name;
 			}
