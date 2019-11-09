@@ -1,4 +1,4 @@
-﻿import {Component, Input} from '@angular/core';
+﻿import {Component, Input, OnInit} from '@angular/core';
 import {Process, Question, Rating, Result} from '../../_models';
 import {FormGroup} from '@angular/forms';
 
@@ -8,13 +8,19 @@ import {FormGroup} from '@angular/forms';
 	styleUrls: ['question-assessment.component.scss']
 })
 
-export class QuestionAssessmentComponent {
+export class QuestionAssessmentComponent implements OnInit {
 	@Input('questions') questions: Question[];
 	@Input('process') process: Process;
 	@Input('finish') finish: boolean;
 	@Input('ratings') ratings: Rating[];
 	@Input('resultForms') resultForms: FormGroup[];
 	readonly REGEX_LINK = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+
+	ngOnInit(): void {
+		this.questions.forEach(question => {
+			this.confirmResult(question);
+		})
+	}
 
 	confirmResult(question: Question) {
 		const value: Result = this.getFormByIdQuestion(question).value;
