@@ -117,6 +117,11 @@ export class RegisterDataSourceComponent implements OnInit {
 		}
 	}
 
+	cancel() {
+		this.dataSourceForm.reset();
+		this.dialogRef.close();
+	}
+
 	private createSnackBar(message: string, panelClass: string): void {
 		this.snackBar.openFromComponent(SnackBarComponent, {
 			data: message,

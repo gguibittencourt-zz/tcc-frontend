@@ -41,7 +41,7 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<button *ngIf="dialogRef; else botaoCancelar" mat-raised-button (click)="dialogRef.close()" class="btn btn-outline-danger">Cancelar</button>
+		<button *ngIf="dialogRef; else botaoCancelar" mat-raised-button (click)="cancel()" class="btn btn-outline-danger">Cancelar</button>
 		<ng-template #botaoCancelar>
 			<button mat-raised-button [routerLink]="['/data-source']" class="btn btn-outline-danger">Cancelar</button>
 		</ng-template>

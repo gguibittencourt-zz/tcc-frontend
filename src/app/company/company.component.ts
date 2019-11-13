@@ -78,6 +78,7 @@ export class CompanyComponent implements OnInit {
 
 	cancel(): void {
 		if (this.company) {
+			this.companyForm.reset();
 			this.dialogRef.close(this.company);
 			return;
 		}

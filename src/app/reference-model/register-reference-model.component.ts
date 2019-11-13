@@ -103,6 +103,15 @@ export class RegisterReferenceModelComponent implements OnInit {
 		this.knowledgeAreas.splice(index, 1);
 	}
 
+	cancel(): void {
+		if (this.dialogRef) {
+			this.referenceModelForm.reset();
+			this.dialogRef.close(null);
+			return;
+		}
+		this.router.navigate(['/reference-model']);
+	}
+
 	private createSnackBar(message: string, panelClass: string): void {
 		this.snackBar.openFromComponent(SnackBarComponent, {
 			data: message,
